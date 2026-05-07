@@ -644,6 +644,11 @@
       <button class="back-btn" onclick="goPage('profile','nav-prof')">←</button>
       <div style="font-weight:800;font-size:20px;">Indstillinger</div>
     </div>
+    <div style="font-size:11px;font-weight:700;color:var(--text3);letter-spacing:0.5px;text-transform:uppercase;margin-bottom:8px;">Udseende</div>
+    <div class="menu-row" style="justify-content:space-between;margin-bottom:16px;">
+      <span>☀️ Lyst tema</span>
+      <div class="tgsw" id="theme-toggle" onclick="toggleTheme()"></div>
+    </div>
     <div style="font-size:11px;font-weight:700;color:var(--text3);letter-spacing:0.5px;text-transform:uppercase;margin-bottom:8px;">Konto</div>
     <div class="menu-row">👤 Rediger profil <span>→</span></div>
     <div class="menu-row">🔒 Skift adgangskode <span>→</span></div>
@@ -662,9 +667,74 @@
       <div class="tgsw on" onclick="this.classList.toggle('on')"></div>
     </div>
     <div style="font-size:11px;font-weight:700;color:var(--text3);letter-spacing:0.5px;text-transform:uppercase;margin:16px 0 8px;">Om appen</div>
-    <div class="menu-row">📋 Privatlivspolitik <span>→</span></div>
-    <div class="menu-row">📜 Vilkår og betingelser <span>→</span></div>
+    <div class="menu-row" onclick="goPage('privacy')">📋 Privatlivspolitik <span>→</span></div>
+    <div class="menu-row" onclick="goPage('terms')">📜 Vilkår og betingelser <span>→</span></div>
     <div class="menu-row">ℹ️ Version 1.0.0 <span style="color:var(--text3);">Beta</span></div>
+  </div>
+</div>
+
+
+<!-- PRIVATLIVSPOLITIK -->
+<div id="page-privacy" class="page">
+  <div class="profile-wrap">
+    <div style="display:flex;align-items:center;gap:10px;margin-bottom:20px;">
+      <button class="back-btn" onclick="goPage('settings')">←</button>
+      <div style="font-weight:800;font-size:20px;">Privatlivspolitik</div>
+    </div>
+    <div style="font-size:12px;color:var(--text3);margin-bottom:20px;">Sidst opdateret: 07-05-2026</div>
+
+    <div style="font-weight:700;font-size:16px;margin-bottom:8px;">1. Hvem er vi?</div>
+    <div style="font-size:14px;color:var(--text2);line-height:1.7;margin-bottom:16px;">CykelHub er en dansk markedsplads for køb og salg af cykler og el-cykler. Vi er ansvarlige for behandlingen af dine personlige oplysninger.</div>
+
+    <div style="font-weight:700;font-size:16px;margin-bottom:8px;">2. Hvilke data indsamler vi?</div>
+    <div style="font-size:14px;color:var(--text2);line-height:1.7;margin-bottom:16px;">Vi indsamler følgende oplysninger når du bruger CykelHub:<br><br>• Navn og e-mailadresse ved oprettelse af konto<br>• Annonceinformation (titel, pris, billeder, by, stelnummer)<br>• Beskeder sendt via platformen<br>• Tekniske data (IP-adresse, browsertype)</div>
+
+    <div style="font-weight:700;font-size:16px;margin-bottom:8px;">3. Hvordan bruger vi dine data?</div>
+    <div style="font-size:14px;color:var(--text2);line-height:1.7;margin-bottom:16px;">Dine data bruges til:<br><br>• At drive og forbedre CykelHub<br>• At sende notifikationer om beskeder og annoncer<br>• At verificere din identitet<br>• At forhindre svindel og misbrug</div>
+
+    <div style="font-weight:700;font-size:16px;margin-bottom:8px;">4. Dine rettigheder (GDPR)</div>
+    <div style="font-size:14px;color:var(--text2);line-height:1.7;margin-bottom:16px;">Du har ret til at:<br><br>• Få indsigt i dine personlige oplysninger<br>• Få rettet forkerte oplysninger<br>• Få slettet dine oplysninger<br>• Trække dit samtykke tilbage<br>• Klage til Datatilsynet (datatilsynet.dk)</div>
+
+    <div style="font-weight:700;font-size:16px;margin-bottom:8px;">5. Cookies</div>
+    <div style="font-size:14px;color:var(--text2);line-height:1.7;margin-bottom:16px;">Vi bruger cookies til at huske dine præferencer og holde dig logget ind. Du kan slå cookies fra i din browser.</div>
+
+    <div style="font-weight:700;font-size:16px;margin-bottom:8px;">6. Kontakt</div>
+    <div style="font-size:14px;color:var(--text2);line-height:1.7;margin-bottom:16px;">Har du spørgsmål til vores privatlivspolitik? Kontakt os på:<br><br>📧 malsayed516@gmail.com</div>
+  </div>
+</div>
+
+<!-- VILKÅR OG BETINGELSER -->
+<div id="page-terms" class="page">
+  <div class="profile-wrap">
+    <div style="display:flex;align-items:center;gap:10px;margin-bottom:20px;">
+      <button class="back-btn" onclick="goPage('settings')">←</button>
+      <div style="font-weight:800;font-size:20px;">Vilkår og betingelser</div>
+    </div>
+    <div style="font-size:12px;color:var(--text3);margin-bottom:20px;">Sidst opdateret: 07-05-2026</div>
+
+    <div style="font-weight:700;font-size:16px;margin-bottom:8px;">1. Accept af vilkår</div>
+    <div style="font-size:14px;color:var(--text2);line-height:1.7;margin-bottom:16px;">Ved at bruge CykelHub accepterer du disse vilkår og betingelser. Hvis du ikke accepterer vilkårene, bedes du ikke bruge platformen.</div>
+
+    <div style="font-weight:700;font-size:16px;margin-bottom:8px;">2. Brug af platformen</div>
+    <div style="font-size:14px;color:var(--text2);line-height:1.7;margin-bottom:16px;">CykelHub er en markedsplads hvor private sælgere kan annoncere cykler og el-cykler. Det er ikke tilladt at:<br><br>• Sælge stjålne cykler<br>• Oprette falske annoncer<br>• Bruge platformen til svindel<br>• Chikane andre brugere</div>
+
+    <div style="font-weight:700;font-size:16px;margin-bottom:8px;">3. Sælgers ansvar</div>
+    <div style="font-size:14px;color:var(--text2);line-height:1.7;margin-bottom:16px;">Som sælger er du ansvarlig for:<br><br>• At oplysningerne i din annonce er korrekte<br>• At cyklen ikke er stjålet (verificeret via stelnummer)<br>• At overholde dansk forbrugerlovgivning<br>• At gennemføre handlen som aftalt</div>
+
+    <div style="font-weight:700;font-size:16px;margin-bottom:8px;">4. Priser og betaling</div>
+    <div style="font-size:14px;color:var(--text2);line-height:1.7;margin-bottom:16px;">• Gratis: Op til 5 annoncer i 30 dage<br>• Premium boost: 49 kr. pr. annonce<br>• Lynhurtig Salg: 199 kr. pr. annonce<br>• CykelHub tager 3-5% commission ved salg via platformen<br>• Alle priser er inkl. moms</div>
+
+    <div style="font-weight:700;font-size:16px;margin-bottom:8px;">5. Annoncers varighed</div>
+    <div style="font-size:14px;color:var(--text2);line-height:1.7;margin-bottom:16px;">• Gratis annoncer slettes automatisk efter 30 dage<br>• Du modtager en email 3 dage før din annonce udløber<br>• Premium annoncer er aktive i 30 dage<br>• Lynhurtig Salg annoncer er aktive i 60 dage</div>
+
+    <div style="font-weight:700;font-size:16px;margin-bottom:8px;">6. CykelHubs ansvar</div>
+    <div style="font-size:14px;color:var(--text2);line-height:1.7;margin-bottom:16px;">CykelHub er en formidlingsplatform og er ikke part i handlen mellem køber og sælger. Vi er ikke ansvarlige for:<br><br>• Kvaliteten af solgte cykler<br>• Manglende betaling<br>• Tvister mellem køber og sælger</div>
+
+    <div style="font-weight:700;font-size:16px;margin-bottom:8px;">7. Ændringer</div>
+    <div style="font-size:14px;color:var(--text2);line-height:1.7;margin-bottom:16px;">CykelHub forbeholder sig retten til at ændre disse vilkår. Du vil blive informeret via email ved væsentlige ændringer.</div>
+
+    <div style="font-weight:700;font-size:16px;margin-bottom:8px;">8. Kontakt</div>
+    <div style="font-size:14px;color:var(--text2);line-height:1.7;margin-bottom:16px;">📧 malsayed516@gmail.com</div>
   </div>
 </div>
 
