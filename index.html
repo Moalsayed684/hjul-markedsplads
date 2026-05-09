@@ -308,6 +308,16 @@
     .empty .e-icon{font-size:40px;margin-bottom:10px;}
     .toast{position:fixed;bottom:86px;left:50%;transform:translateX(-50%);background:var(--bg2);color:var(--text);border:1px solid #333;padding:11px 20px;border-radius:50px;font-size:13px;font-weight:600;z-index:999;opacity:0;transition:opacity 0.3s;white-space:nowrap;pointer-events:none;}
     .toast.show{opacity:1;}
+
+    /* IMAGE SUBCAT BAR */
+    .img-subcat-bar{display:flex;gap:10px;overflow-x:auto;scrollbar-width:none;padding:12px 16px;background:#111;}
+    .img-subcat-bar::-webkit-scrollbar{display:none;}
+    .img-subcat-card{flex-shrink:0;width:100px;border-radius:14px;overflow:hidden;cursor:pointer;position:relative;transition:transform 0.15s;}
+    .img-subcat-card:active{transform:scale(0.95);}
+    .img-subcat-card img{width:100px;height:120px;object-fit:cover;display:block;}
+    .img-subcat-overlay{position:absolute;bottom:0;left:0;right:0;background:linear-gradient(transparent,rgba(0,0,0,0.75));padding:8px 8px 10px;}
+    .img-subcat-name{font-size:12px;font-weight:700;color:#fff;text-align:center;}
+    .img-subcat-card.active .img-subcat-overlay{background:linear-gradient(transparent,rgba(143,188,90,0.85));}
   </style>
 </head>
 <body>
@@ -1086,7 +1096,18 @@ function handleSearch(val){renderHome(!val.trim()?allListings:allListings.filter
 
 function selectCat(cat,el){document.querySelectorAll('.cat-icon-item').forEach(t=>t.classList.remove('active'));el.classList.add('active');renderHome(allListings);showPage('home');}
 
-function selectSubcat(subcat,el){document.querySelectorAll('.subcat-item').forEach(i=>i.classList.remove('active'));el.classList.add('active');const map={bycykel:'Bycykel',mountainbike:'Mountainbike',racercykel:'Racercykel',damecykel:'Damecykel',børnecykel:'Børnecykel',herrecykel:'Herrecykel',ladcykel:'Ladcykel',elladcykel:'El-ladcykel'};const t=map[subcat];renderHome(t?allListings.filter(l=>l.type===t):allListings);showPage('home');}
+function selectSubcat(subcat,el){
+  document.querySelectorAll('.img-subcat-card').forEach(i=>i.classList.remove('active'));
+  el.classList.add('active');
+  const map={bycykel:'Bycykel',mountainbike:'Mountainbike',racercykel:'Racercykel',damecykel:'Damecykel',børnecykel:'Børnecykel',ladcykel:'Ladcykel',elcykel:'elcykler'};
+  const t=map[subcat];
+  let items;
+  if(subcat==='elcykel') items=allListings.filter(l=>l.cat==='elcykler');
+  else if(t) items=allListings.filter(l=>l.type===t);
+  else items=allListings;
+  renderHome(items);
+  showPage('home');
+}
 
 function openCatPage(cat){activeCat=cat;activeFilters={};const titles={cykler:'🚲 Cykler',elcykler:'⚡ El-cykler'};document.getElementById('cat-page-title').textContent=titles[cat];document.getElementById('filter-open-btn').classList.remove('has-filters');document.getElementById('filter-open-btn').textContent='⚙️ Filter';const items=allListings.filter(l=>l.cat===cat);document.getElementById('results-count').textContent=items.length+' annoncer';document.getElementById('cat-listings').innerHTML=items.length?items.map(l=>listingCard(l)).join(''):'<div class="empty"><div class="e-icon">🔍</div><p>Ingen annoncer</p></div>';showPage('cat');}
 
