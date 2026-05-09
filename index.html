@@ -487,7 +487,19 @@
         <div class="detail-section-title">Sælger</div>
         <div class="seller-row"><div class="seller-avatar">👤</div><div><div style="font-weight:600;font-size:14px" id="detail-seller"></div><div style="font-size:12px;color:#999;margin-top:2px">Privat sælger · Medlem siden 2025</div></div></div>
       </div>
-      <button class="contact-btn" onclick="contactSeller()">💬 Kontakt sælger</button>
+      <div style="margin-bottom:10px;">
+        <div style="font-size:11px;font-weight:700;color:#aaa;letter-spacing:0.5px;text-transform:uppercase;margin-bottom:10px;">Kontakt sælger</div>
+        <div style="display:flex;gap:10px;">
+          <button id="call-btn" onclick="callSeller()" style="display:none;flex:1;background:#1c1c1c;border:1.5px solid #8fbc5a;color:#8fbc5a;border-radius:50px;padding:14px;font-family:Inter,sans-serif;font-weight:700;font-size:15px;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px;">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#8fbc5a" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 13a19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 3.6 2h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L7.91 9.91a16 16 0 0 0 6.18 6.18l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+            Ring op
+          </button>
+          <button onclick="contactSeller()" style="flex:1;background:#8fbc5a;color:#111;border:none;border-radius:50px;padding:14px;font-family:Inter,sans-serif;font-weight:700;font-size:15px;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px;">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#111" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+            Send besked
+          </button>
+        </div>
+      </div>
       <div class="annonce-id" id="detail-annonce-id"></div>
       <button class="police-btn" onclick="window.open('https://politi.dk/cykler-og-koeretoejer/tjek-om-en-cykel-eller-et-koeretoej-er-efterlyst/tjek-om-en-cykel-er-efterlyst','_blank')">🔍 Tjek, om en cykel er efterlyst</button>
     </div>
@@ -676,16 +688,12 @@
       <div class="tgsw" id="theme-toggle" onclick="toggleTheme()"></div>
     </div>
     <div style="font-size:11px;font-weight:700;color:#999;letter-spacing:0.5px;text-transform:uppercase;margin-bottom:8px;">Konto</div>
-    <div class="menu-row">👤 Rediger profil <span>→</span></div>
+    <div class="menu-row" onclick="goPage('edit-profile')">👤 Rediger profil <span>→</span></div>
     <div class="menu-row">🔒 Skift adgangskode <span>→</span></div>
     <div class="menu-row">📧 Skift e-mail <span>→</span></div>
     <div style="font-size:11px;font-weight:700;color:#999;letter-spacing:0.5px;text-transform:uppercase;margin:16px 0 8px;">Notifikationer</div>
     <div class="menu-row" style="justify-content:space-between;">
       <span>📩 Email ved ny besked</span>
-      <div class="tgsw on" onclick="this.classList.toggle('on')"></div>
-    </div>
-    <div class="menu-row" style="justify-content:space-between;">
-      <span>❤️ Email ved like</span>
       <div class="tgsw on" onclick="this.classList.toggle('on')"></div>
     </div>
     <div class="menu-row" style="justify-content:space-between;">
@@ -761,6 +769,45 @@
 
     <div style="font-weight:700;font-size:16px;margin-bottom:8px;">8. Kontakt</div>
     <div style="font-size:14px;color:#bbb;line-height:1.7;margin-bottom:16px;">📧 malsayed516@gmail.com</div>
+  </div>
+</div>
+
+
+<!-- EDIT PROFILE -->
+<div id="page-edit-profile" class="page">
+  <div class="profile-wrap">
+    <div style="display:flex;align-items:center;gap:10px;margin-bottom:24px;">
+      <button class="back-btn" onclick="goPage('settings')">←</button>
+      <div style="font-weight:800;font-size:20px;">Rediger profil</div>
+    </div>
+
+    <!-- Profile picture -->
+    <div style="display:flex;flex-direction:column;align-items:center;margin-bottom:24px;">
+      <div id="edit-avatar" style="width:90px;height:90px;border-radius:50%;background:#252525;display:flex;align-items:center;justify-content:center;font-size:36px;margin-bottom:12px;overflow:hidden;border:2px solid #8fbc5a;cursor:pointer;" onclick="document.getElementById('avatar-input').click()">👤</div>
+      <div style="font-size:13px;color:#8fbc5a;cursor:pointer;" onclick="document.getElementById('avatar-input').click()">Skift profilbillede</div>
+      <input type="file" id="avatar-input" accept="image/*" style="display:none" onchange="handleAvatarUpload(event)">
+    </div>
+
+    <div class="form-group">
+      <label class="form-label">Fornavn</label>
+      <input class="form-input" type="text" id="edit-firstname" placeholder="Dit fornavn">
+    </div>
+    <div class="form-group">
+      <label class="form-label">Efternavn</label>
+      <input class="form-input" type="text" id="edit-lastname" placeholder="Dit efternavn">
+    </div>
+    <div class="form-group">
+      <label class="form-label">By</label>
+      <input class="form-input" type="text" id="edit-city" placeholder="Søg by eller postnummer..." oninput="filterEditCities(this.value)" autocomplete="off">
+      <div class="city-dropdown" id="edit-city-dropdown"></div>
+    </div>
+    <div class="form-group">
+      <label class="form-label">Telefon</label>
+      <input class="form-input" type="tel" id="edit-phone" placeholder="+45 12 34 56 78">
+    </div>
+
+    <div id="edit-profile-msg" class="msg-box"></div>
+    <button class="btn-primary" onclick="saveProfile()">Gem ændringer</button>
   </div>
 </div>
 
@@ -946,6 +993,72 @@ function loadTheme() {
   }
 }
 
+
+function filterEditCities(val) {
+  const dd = document.getElementById('edit-city-dropdown');
+  if (!val || val.length < 2) { dd.style.display='none'; return; }
+  const filtered = danishCities.filter(c =>
+    c.city.toLowerCase().includes(val.toLowerCase()) || c.zip.startsWith(val)
+  ).slice(0, 8);
+  if (!filtered.length) { dd.style.display='none'; return; }
+  dd.style.display = 'block';
+  dd.innerHTML = filtered.map(c =>
+    '<div class="city-option" onclick="selectEditCity(\''+c.zip+' '+c.city+'\')"><span style="color:#8fbc5a;font-weight:700;font-family:monospace;">'+c.zip+'</span> '+c.city+'</div>'
+  ).join('');
+}
+
+function selectEditCity(val) {
+  document.getElementById('edit-city').value = val;
+  document.getElementById('edit-city-dropdown').style.display = 'none';
+}
+
+function handleAvatarUpload(e) {
+  const file = e.target.files[0];
+  if (!file) return;
+  const reader = new FileReader();
+  reader.onload = ev => {
+    const avatar = document.getElementById('edit-avatar');
+    avatar.innerHTML = '<img src="'+ev.target.result+'" style="width:100%;height:100%;object-fit:cover;">';
+    localStorage.setItem('avatar', ev.target.result);
+  };
+  reader.readAsDataURL(file);
+  e.target.value = '';
+}
+
+function saveProfile() {
+  const firstname = document.getElementById('edit-firstname').value.trim();
+  const lastname = document.getElementById('edit-lastname').value.trim();
+  const city = document.getElementById('edit-city').value.trim();
+  const phone = document.getElementById('edit-phone').value.trim();
+  if (!firstname || !lastname) {
+    const el = document.getElementById('edit-profile-msg');
+    el.textContent = 'Udfyld fornavn og efternavn';
+    el.className = 'msg-box err';
+    return;
+  }
+  localStorage.setItem('profile', JSON.stringify({firstname, lastname, city, phone}));
+  const fullName = firstname + ' ' + lastname;
+  document.getElementById('p-name').textContent = fullName;
+  toast('Profil gemt! ✅');
+  goPage('profile', 'nav-prof');
+}
+
+function loadProfile() {
+  const saved = localStorage.getItem('profile');
+  if (saved) {
+    const p = JSON.parse(saved);
+    if (document.getElementById('edit-firstname')) document.getElementById('edit-firstname').value = p.firstname || '';
+    if (document.getElementById('edit-lastname')) document.getElementById('edit-lastname').value = p.lastname || '';
+    if (document.getElementById('edit-city')) document.getElementById('edit-city').value = p.city || '';
+    if (document.getElementById('edit-phone')) document.getElementById('edit-phone').value = p.phone || '';
+  }
+  const avatar = localStorage.getItem('avatar');
+  if (avatar) {
+    const el = document.getElementById('edit-avatar');
+    if (el) el.innerHTML = '<img src="'+avatar+'" style="width:100%;height:100%;object-fit:cover;">';
+  }
+}
+
 async function init(){
   loadTheme();
   const{data:{session}}=await sb.auth.getSession();
@@ -979,9 +1092,37 @@ function openCatPage(cat){activeCat=cat;activeFilters={};const titles={cykler:'�
 
 function goBackHome(){document.getElementById('topbar').style.display='block';document.getElementById('subcat-bar').style.display='flex';showPage('home');document.querySelectorAll('.nav-item').forEach((i,idx)=>i.classList.toggle('active',idx===0));}
 
-function openListing(id){const l=allListings.find(x=>x.id===id);if(!l)return;detailId=id;detailFrom=document.querySelector('.page.active')?.id?.replace('page-','')||'home';document.getElementById('detail-header-title').textContent=l.title;document.getElementById('detail-title').textContent=l.title;document.getElementById('detail-price').textContent=l.price;document.getElementById('detail-loc').textContent='📍 '+l.city;document.getElementById('detail-img-wrap').innerHTML=l.img?`<img src="${l.img}" alt="${l.title}">`:'<div class="detail-img-ph">🚲</div>';const stelSec=document.getElementById('detail-stel-section');if(l.stelnummer){stelSec.style.display='block';document.getElementById('detail-stel-val').textContent=l.stelnummer;}else stelSec.style.display='none';const specs=[];if(l.type)specs.push(l.type);if(l.brand)specs.push(l.brand);if(l.model)specs.push(l.model);if(l.year)specs.push(l.year);if(l.color)specs.push(l.color);if(l.condition)specs.push(l.condition);const spSec=document.getElementById('detail-specs-section');if(specs.length){spSec.style.display='block';document.getElementById('detail-specs').innerHTML=specs.map(s=>`<div class="detail-tag">${s}</div>`).join('');}else spSec.style.display='none';const dSec=document.getElementById('detail-desc-section');if(l.desc){dSec.style.display='block';document.getElementById('detail-desc-txt').textContent=l.desc;}else dSec.style.display='none';document.getElementById('detail-seller').textContent=l.seller||'Privat sælger';const aid='#'+String(l.id).slice(-6).padStart(6,'0');document.getElementById('detail-annonce-id').textContent='Annonce ID: '+aid;showPage('detail');}
+function openListing(id){const l=allListings.find(x=>x.id===id);if(!l)return;detailId=id;detailFrom=document.querySelector('.page.active')?.id?.replace('page-','')||'home';document.getElementById('detail-header-title').textContent=l.title;document.getElementById('detail-title').textContent=l.title;document.getElementById('detail-price').textContent=l.price;document.getElementById('detail-loc').textContent='📍 '+l.city;document.getElementById('detail-img-wrap').innerHTML=l.img?`<img src="${l.img}" alt="${l.title}">`:'<div class="detail-img-ph">🚲</div>';const stelSec=document.getElementById('detail-stel-section');if(l.stelnummer){stelSec.style.display='block';document.getElementById('detail-stel-val').textContent=l.stelnummer;}else stelSec.style.display='none';const specs=[];if(l.type)specs.push(l.type);if(l.brand)specs.push(l.brand);if(l.model)specs.push(l.model);if(l.year)specs.push(l.year);if(l.color)specs.push(l.color);if(l.condition)specs.push(l.condition);const spSec=document.getElementById('detail-specs-section');if(specs.length){spSec.style.display='block';document.getElementById('detail-specs').innerHTML=specs.map(s=>`<div class="detail-tag">${s}</div>`).join('');}else spSec.style.display='none';const dSec=document.getElementById('detail-desc-section');if(l.desc){dSec.style.display='block';document.getElementById('detail-desc-txt').textContent=l.desc;}else dSec.style.display='none';document.getElementById('detail-seller').textContent=l.seller||'Privat sælger';
+  // Show call button only if seller has phone
+  const callBtn = document.getElementById('call-btn');
+  if(callBtn) {
+    if(l.phone) {
+      callBtn.style.display='flex';
+      callBtn.setAttribute('data-phone', l.phone);
+    } else {
+      callBtn.style.display='none';
+    }
+  }const aid='#'+String(l.id).slice(-6).padStart(6,'0');document.getElementById('detail-annonce-id').textContent='Annonce ID: '+aid;showPage('detail');}
 
 function goDetailBack(){showPage(detailFrom);if(detailFrom==='cat'){document.getElementById('topbar').style.display='none';document.getElementById('subcat-bar').style.display='none';}else{document.getElementById('topbar').style.display='block';document.getElementById('subcat-bar').style.display='flex';}}
+
+
+function callSeller() {
+  const btn = document.getElementById('call-btn');
+  const phone = btn ? btn.getAttribute('data-phone') : null;
+  if (phone) {
+    window.location.href = 'tel:' + phone.replace(/\s/g, '');
+  } else {
+    toast('Sælger har ikke angivet telefonnummer');
+  }
+}
+
+
+function callSeller() {
+  const l = allListings.find(x => x.id === detailId);
+  if (!l || !l.phone) return;
+  window.location.href = 'tel:' + l.phone;
+}
 
 function contactSeller(){if(!me){toast('Log ind for at kontakte sælger');goPage('profile','nav-prof');return;}const l=allListings.find(x=>x.id===detailId);document.getElementById('chat-name').textContent='Sælger';document.getElementById('chat-sub').textContent=l?'om: '+l.title:'';showPage('chat');loadChat('l'+detailId);}
 
@@ -999,7 +1140,8 @@ function updateImgGrid(){for(let i=0;i<6;i++){const slot=document.getElementById
 
 function removeImg(i){uploadedImgs.splice(i,1);updateImgGrid();}
 
-function submitListing(){if(!me){toast('Log ind for at oprette annonce');goPage('profile','nav-prof');return;}const title=document.getElementById('sell-title').value.trim(),price=document.getElementById('sell-price').value,city=document.getElementById('sell-city').value.trim();if(!title||!price||!city){const el=document.getElementById('sell-msg');el.textContent='Udfyld titel, pris og by';el.className='msg-box err';return;}const img=uploadedImgs.length>0?uploadedImgs[0].url:(photos[currentSellCat]||photos.cykler)[Math.floor(Math.random()*3)];const stelnummer=document.getElementById('sf-stelnummer')?.value.trim()||'';const desc=document.getElementById('sell-desc')?.value.trim()||'';const brand=document.getElementById('sf-brand')?.value||'';const type=document.getElementById('sf-type')?.value||'';allListings.unshift({id:Date.now(),title,price:price+' kr.',city,cat:currentSellCat,img,stelnummer,desc,brand,type,seller:me.user_metadata?.name||me.email.split('@')[0]});renderHome(allListings);toast('Annonce oprettet! 🎉');goPage('home','nav-home');}
+function submitListing(){if(!me){toast('Log ind for at oprette annonce');goPage('profile','nav-prof');return;}const title=document.getElementById('sell-title').value.trim(),price=document.getElementById('sell-price').value,city=document.getElementById('sell-city').value.trim();if(!title||!price||!city){const el=document.getElementById('sell-msg');el.textContent='Udfyld titel, pris og by';el.className='msg-box err';return;}const img=uploadedImgs.length>0?uploadedImgs[0].url:(photos[currentSellCat]||photos.cykler)[Math.floor(Math.random()*3)];const stelnummer=document.getElementById('sf-stelnummer')?.value.trim()||'';const desc=document.getElementById('sell-desc')?.value.trim()||'';const brand=document.getElementById('sf-brand')?.value||'';const type=document.getElementById('sf-type')?.value||'';const savedProfile = JSON.parse(localStorage.getItem('profile')||'{}');
+  allListings.unshift({id:Date.now(),title,price:price+' kr.',city,cat:currentSellCat,img,stelnummer,desc,brand,type,seller:me.user_metadata?.name||me.email.split('@')[0],phone:savedProfile.phone||''});renderHome(allListings);toast('Annonce oprettet! 🎉');goPage('home','nav-home');}
 
 
 function filterSignupCities(val) {
@@ -1123,7 +1265,7 @@ function clearMsg(){const el=document.getElementById('auth-msg');el.className='m
 
 function selectPlan(plan){if(!me){toast('Log ind for at vælge en plan');goPage('profile','nav-prof');return;}const msgs={gratis:'Du bruger Gratis planen ✓',premium:'Premium – 49 kr. (Stripe kommer snart) 🚀',elite:'Lynhurtig Salg – 199 kr. (Stripe kommer snart) ⚡'};toast(msgs[plan]);}
 
-function showPage(name){document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));document.getElementById('page-'+name).classList.add('active');const hideTop=['cat','chat','sell-picker','sell-form','detail'].includes(name);document.getElementById('topbar').style.display=hideTop?'none':'block';document.getElementById('subcat-bar').style.display=hideTop?'none':'flex';if(name==='messages')loadConvs();if(name==='buy-results'){};if(name==='notifications'){notifs.forEach(n=>n.unread=false);updateBellDot();document.getElementById('notif-list').innerHTML=notifs.map(n=>`<div class="notif-item ${n.unread?'unread':''}"><div style="font-size:22px">${n.icon}</div><div><div style="font-weight:600;font-size:14px">${n.title}</div><div style="font-size:12px;color:#999;margin-top:2px">${n.sub}</div></div></div>`).join('');}}
+function showPage(name){document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));document.getElementById('page-'+name).classList.add('active');const hideTop=['cat','chat','sell-picker','sell-form','detail'].includes(name);document.getElementById('topbar').style.display=hideTop?'none':'block';document.getElementById('subcat-bar').style.display=hideTop?'none':'flex';if(name==='messages')loadConvs();if(name==='buy-results'){};if(name==='edit-profile')loadProfile();if(name==='notifications'){notifs.forEach(n=>n.unread=false);updateBellDot();document.getElementById('notif-list').innerHTML=notifs.map(n=>`<div class="notif-item ${n.unread?'unread':''}"><div style="font-size:22px">${n.icon}</div><div><div style="font-weight:600;font-size:14px">${n.title}</div><div style="font-size:12px;color:#999;margin-top:2px">${n.sub}</div></div></div>`).join('');}}
 function goPage(name,navId){showPage(name);document.querySelectorAll('.nav-item').forEach(i=>i.classList.remove('active'));if(navId)document.getElementById(navId)?.classList.add('active');}
 function requireAuth(page,navId){if(!me){toast('Log ind for at fortsætte');goPage('profile','nav-prof');return;}goPage(page,navId);}
 function toast(msg){const t=document.getElementById('toast');t.textContent=msg;t.classList.add('show');setTimeout(()=>t.classList.remove('show'),2500);}
