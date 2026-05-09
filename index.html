@@ -39,7 +39,7 @@
     .search-wrap{flex:1;background:var(--search-bg);border-radius:50px;display:flex;align-items:center;padding:9px 14px;gap:8px;border:1.5px solid var(--border2);}
     .search-wrap:focus-within{border-color:#8fbc5a;}
     .search-wrap input{background:none;border:none;outline:none;font-size:14px;width:100%;color:var(--text);}
-    .search-wrap input::placeholder{color:var(--text3);}
+    .search-wrap input::placeholder{color:#999;}
     .bell-btn{width:38px;height:38px;background:var(--search-bg);border-radius:50%;display:flex;align-items:center;justify-content:center;border:none;cursor:pointer;flex-shrink:0;font-size:18px;position:relative;}
     .bell-dot{position:absolute;top:6px;right:6px;width:8px;height:8px;background:#e03030;border-radius:50%;border:2px solid #111;display:none;}
     .bell-dot.on{display:block;}
@@ -58,7 +58,7 @@
     .subcat-item.active .subcat-label{color:#8fbc5a;font-weight:700;}
     .subcat-svg{width:40px;height:40px;background:var(--bg2);border-radius:50%;display:flex;align-items:center;justify-content:center;}
     .subcat-item.active .subcat-svg{background:#1a2a1a;}
-    .subcat-label{font-size:10px;font-weight:500;color:#666;text-align:center;white-space:nowrap;}
+    .subcat-label{font-size:10px;font-weight:500;color:#aaa;text-align:center;white-space:nowrap;}
 
     .page{display:none;}
     .page.active{display:block;animation:fadeUp 0.2s ease;}
@@ -73,8 +73,8 @@
     .listing-info{padding:10px 10px 12px;}
     .listing-title{font-weight:600;font-size:13px;margin-bottom:4px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
     .listing-price{font-weight:700;font-size:15px;}
-    .listing-loc{font-size:11px;color:var(--text3);margin-top:2px;}
-    .heart-btn{position:absolute;top:8px;right:8px;width:28px;height:28px;background:rgba(0,0,0,0.6);border-radius:50%;border:none;cursor:pointer;font-size:14px;color:var(--text2);display:flex;align-items:center;justify-content:center;}
+    .listing-loc{font-size:11px;color:#999;margin-top:2px;}
+    .heart-btn{position:absolute;top:8px;right:8px;width:28px;height:28px;background:rgba(0,0,0,0.6);border-radius:50%;border:none;cursor:pointer;font-size:14px;color:#bbb;display:flex;align-items:center;justify-content:center;}
     .heart-btn.liked{color:#8fbc5a;}
     .premium-badge{position:absolute;top:8px;left:8px;background:#8fbc5a;color:#111;font-size:10px;font-weight:700;padding:3px 8px;border-radius:50px;}
 
@@ -84,7 +84,7 @@
     .cat-page-title{font-weight:800;font-size:18px;flex:1;}
     .filter-open-btn{display:flex;align-items:center;gap:5px;background:var(--search-bg);border:1.5px solid #8fbc5a;border-radius:50px;padding:7px 14px;font-size:13px;font-weight:600;cursor:pointer;flex-shrink:0;color:#8fbc5a;}
     .filter-open-btn.has-filters{background:#8fbc5a;color:#111;}
-    .results-count{font-size:13px;color:var(--text3);padding:8px 16px 0;}
+    .results-count{font-size:13px;color:#999;padding:8px 16px 0;}
 
     .bottom-nav{position:fixed;bottom:0;left:50%;transform:translateX(-50%);width:100%;max-width:430px;height:72px;background:var(--bg2);display:flex;align-items:center;justify-content:space-around;padding:0 4px 8px;z-index:200;}
     .nav-item{display:flex;flex-direction:column;align-items:center;gap:3px;cursor:pointer;padding:6px 10px;flex:1;}
@@ -98,20 +98,20 @@
 
     .sell-picker{padding:24px 16px;}
     .sell-picker-title{font-weight:800;font-size:22px;margin-bottom:6px;}
-    .sell-picker-sub{color:var(--text3);font-size:14px;margin-bottom:24px;}
+    .sell-picker-sub{color:#999;font-size:14px;margin-bottom:24px;}
     .sell-cat-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;}
     .sell-cat-btn{background:var(--bg2);border:1.5px solid var(--border2);border-radius:16px;padding:20px 16px;display:flex;flex-direction:column;align-items:center;gap:10px;cursor:pointer;transition:all 0.2s;}
     .sell-cat-btn:active{transform:scale(0.97);}
     .sell-cat-btn:hover{border-color:#8fbc5a;}
     .sell-cat-icon{font-size:36px;}
     .sell-cat-name{font-weight:700;font-size:14px;text-align:center;}
-    .sell-cat-desc{font-size:11px;color:var(--text3);text-align:center;}
+    .sell-cat-desc{font-size:11px;color:#999;text-align:center;}
 
     .sell-form-wrap{padding:0 16px 20px;}
     .sell-form-header{display:flex;align-items:center;gap:10px;padding:14px 0 16px;}
     .sell-form-title{font-weight:800;font-size:20px;flex:1;}
     .form-group{margin-bottom:14px;}
-    .form-label{font-size:11px;font-weight:700;color:var(--text3);letter-spacing:0.5px;text-transform:uppercase;margin-bottom:6px;display:block;}
+    .form-label{font-size:11px;font-weight:700;color:#999;letter-spacing:0.5px;text-transform:uppercase;margin-bottom:6px;display:block;}
     .form-input{width:100%;background:var(--bg2);border:1.5px solid var(--border2);border-radius:12px;padding:12px 14px;color:var(--text);font-family:'Inter',sans-serif;font-size:14px;outline:none;transition:border-color 0.2s;}
     .form-input:focus{border-color:#8fbc5a;}
     textarea.form-input{resize:vertical;}
@@ -124,7 +124,7 @@
     .brand-input-row{display:flex;align-items:center;background:var(--bg2);border:1.5px solid var(--border2);border-radius:12px;overflow:hidden;transition:border-color 0.2s;}
     .brand-input-row:focus-within{border-color:#8fbc5a;}
     .brand-input-row input{flex:1;background:none;border:none;outline:none;padding:12px 14px;color:var(--text);font-family:'Inter',sans-serif;font-size:14px;}
-    .brand-input-row input::placeholder{color:var(--text3);}
+    .brand-input-row input::placeholder{color:#999;}
     .brand-arrow{padding:0 14px;cursor:pointer;color:#8fbc5a;font-size:12px;border-left:1px solid #252525;height:46px;display:flex;align-items:center;}
     .brand-dropdown{display:none;position:absolute;top:100%;left:0;right:0;background:var(--bg2);border:1.5px solid #8fbc5a;border-radius:12px;margin-top:4px;max-height:200px;overflow-y:auto;z-index:200;box-shadow:0 8px 24px rgba(0,0,0,0.5);}
     .brand-option{padding:10px 14px;cursor:pointer;font-size:14px;border-bottom:1px solid #252525;transition:background 0.15s;}
@@ -143,12 +143,12 @@
     .img-slot img{width:100%;height:100%;object-fit:cover;}
     .img-slot .plus{font-size:24px;color:#333;}
     .img-slot .remove-img{position:absolute;top:4px;right:4px;width:22px;height:22px;background:rgba(0,0,0,0.8);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:11px;color:#fff;cursor:pointer;border:none;z-index:2;}
-    .img-count{font-size:12px;color:var(--text3);margin-top:6px;}
+    .img-count{font-size:12px;color:#999;margin-top:6px;}
     .main-img-badge{position:absolute;bottom:4px;left:4px;background:#8fbc5a;color:#111;font-size:9px;font-weight:700;padding:2px 6px;border-radius:50px;z-index:2;}
 
     .btn-primary{width:100%;background:#8fbc5a;color:#111;border:none;border-radius:50px;padding:15px;font-family:'Inter',sans-serif;font-weight:700;font-size:16px;cursor:pointer;margin-top:8px;}
     .btn-outline{width:100%;background:transparent;color:var(--text);border:1.5px solid #333;border-radius:50px;padding:13px;font-family:'Inter',sans-serif;font-weight:600;font-size:14px;cursor:pointer;margin-top:10px;}
-    .upgrade-link{text-align:center;margin-top:14px;font-size:13px;color:var(--text3);}
+    .upgrade-link{text-align:center;margin-top:14px;font-size:13px;color:#999;}
     .upgrade-link span{color:#8fbc5a;font-weight:600;cursor:pointer;}
 
     .detail-wrap{background:var(--bg);min-height:100vh;}
@@ -159,9 +159,9 @@
     .detail-body{padding:16px;}
     .detail-title{font-weight:800;font-size:22px;margin-bottom:6px;}
     .detail-price{font-weight:800;font-size:28px;color:#8fbc5a;margin-bottom:4px;}
-    .detail-loc{color:var(--text3);font-size:13px;margin-bottom:16px;}
+    .detail-loc{color:#999;font-size:13px;margin-bottom:16px;}
     .detail-section{margin-bottom:20px;}
-    .detail-section-title{font-size:11px;font-weight:700;color:var(--text3);letter-spacing:0.6px;text-transform:uppercase;margin-bottom:10px;}
+    .detail-section-title{font-size:11px;font-weight:700;color:#999;letter-spacing:0.6px;text-transform:uppercase;margin-bottom:10px;}
     .detail-tags{display:flex;flex-wrap:wrap;gap:8px;}
     .detail-tag{background:var(--bg2);border:1px solid var(--border2);border-radius:50px;padding:6px 14px;font-size:13px;color:#ccc;}
     .stelnummer-box{background:#1a2a1a;border:1.5px solid #8fbc5a;border-radius:12px;padding:14px 16px;display:flex;align-items:center;gap:12px;}
@@ -176,15 +176,15 @@
 
     .buy-wrap{padding:16px;}
     .buy-title{font-weight:800;font-size:22px;margin-bottom:4px;}
-    .buy-sub{color:var(--text3);font-size:14px;margin-bottom:16px;}
+    .buy-sub{color:#999;font-size:14px;margin-bottom:16px;}
     .buy-search{display:flex;align-items:center;background:var(--bg2);border-radius:50px;padding:12px 16px;gap:10px;border:1.5px solid #8fbc5a;margin-bottom:14px;}
     .buy-search input{background:none;border:none;outline:none;font-size:15px;width:100%;color:var(--text);font-family:'Inter',sans-serif;}
-    .buy-search input::placeholder{color:var(--text3);}
+    .buy-search input::placeholder{color:#999;}
     .quick-filters{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:16px;}
     .quick-filter{padding:8px 14px;border-radius:50px;border:1.5px solid var(--border2);font-size:13px;font-weight:500;cursor:pointer;background:var(--bg2);color:var(--text);white-space:nowrap;}
     .quick-filter.active{background:#8fbc5a;color:#111;border-color:#8fbc5a;}
     .sort-row{display:flex;align-items:center;justify-content:space-between;margin-bottom:10px;}
-    .buy-count{font-size:13px;color:var(--text3);font-weight:500;}
+    .buy-count{font-size:13px;color:#999;font-weight:500;}
     .sort-select{background:var(--bg2);border:1.5px solid var(--border2);border-radius:50px;padding:6px 12px;color:var(--text);font-size:13px;outline:none;font-family:'Inter',sans-serif;}
 
     .msg-page{padding:16px;}
@@ -194,8 +194,8 @@
     .conv-avatar{width:46px;height:46px;border-radius:50%;background:var(--bg3);display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0;}
     .conv-info{flex:1;min-width:0;}
     .conv-name{font-weight:600;font-size:14px;}
-    .conv-preview{font-size:12px;color:var(--text3);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;margin-top:2px;}
-    .conv-time{font-size:11px;color:var(--text3);}
+    .conv-preview{font-size:12px;color:#999;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;margin-top:2px;}
+    .conv-time{font-size:11px;color:#999;}
     .unread-dot{width:8px;height:8px;background:#8fbc5a;border-radius:50%;flex-shrink:0;}
     .chat-wrap{display:flex;flex-direction:column;height:calc(100vh - 72px);background:var(--bg);}
     .chat-header{padding:12px 16px;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:12px;}
@@ -203,7 +203,7 @@
     .bubble{max-width:74%;padding:10px 14px;border-radius:18px;font-size:14px;line-height:1.4;}
     .bubble.sent{background:#8fbc5a;color:#111;align-self:flex-end;border-bottom-right-radius:4px;}
     .bubble.recv{background:var(--bg2);color:var(--text);align-self:flex-start;border-bottom-left-radius:4px;}
-    .btime{font-size:10px;color:var(--text3);margin-top:3px;}
+    .btime{font-size:10px;color:#999;margin-top:3px;}
     .chat-footer{padding:10px 14px;border-top:1px solid var(--border);display:flex;gap:8px;align-items:center;}
     .chat-input{flex:1;background:var(--bg2);border:1.5px solid var(--border2);border-radius:50px;padding:10px 14px;font-size:14px;outline:none;color:var(--text);font-family:'Inter',sans-serif;}
     .chat-input:focus{border-color:#8fbc5a;}
@@ -212,7 +212,7 @@
     .notif-wrap,.profile-wrap{padding:16px;}
     .p-avatar{width:72px;height:72px;border-radius:50%;background:var(--bg3);display:flex;align-items:center;justify-content:center;font-size:28px;margin-bottom:12px;}
     .p-name{font-weight:700;font-size:18px;}
-    .p-email{color:var(--text3);font-size:13px;margin-top:3px;margin-bottom:22px;}
+    .p-email{color:#999;font-size:13px;margin-top:3px;margin-bottom:22px;}
     .menu-row{display:flex;align-items:center;justify-content:space-between;padding:14px 16px;background:var(--bg2);border-radius:14px;cursor:pointer;font-weight:500;font-size:14px;margin-bottom:6px;border:1px solid var(--border2);}
     .logout-btn{width:100%;border:1.5px solid #e03030;color:#e03030;background:transparent;border-radius:50px;padding:13px;font-family:'Inter',sans-serif;font-weight:700;font-size:14px;cursor:pointer;margin-top:14px;}
     .notif-item{display:flex;gap:12px;padding:12px;border-radius:14px;margin-bottom:4px;}
@@ -220,11 +220,11 @@
 
     .auth-wrap{padding:36px 24px;}
     .auth-logo{font-weight:800;font-size:26px;margin-bottom:6px;}
-    .auth-sub{color:var(--text3);font-size:14px;margin-bottom:28px;}
+    .auth-sub{color:#999;font-size:14px;margin-bottom:28px;}
     .auth-tabs{display:flex;background:var(--bg2);border-radius:12px;padding:4px;margin-bottom:22px;}
-    .auth-tab{flex:1;text-align:center;padding:9px;border-radius:9px;font-weight:600;font-size:13px;cursor:pointer;color:var(--text3);}
+    .auth-tab{flex:1;text-align:center;padding:9px;border-radius:9px;font-weight:600;font-size:13px;cursor:pointer;color:#999;}
     .auth-tab.active{background:var(--bg3);color:#8fbc5a;}
-    .forgot-link{text-align:center;margin-top:12px;font-size:13px;color:var(--text3);cursor:pointer;text-decoration:underline;}
+    .forgot-link{text-align:center;margin-top:12px;font-size:13px;color:#999;cursor:pointer;text-decoration:underline;}
     .msg-box{padding:11px 14px;border-radius:10px;font-size:13px;margin-bottom:12px;display:none;}
     .msg-box.err{background:#2a1a1a;color:#ff6b6b;border:1px solid #3a2020;display:block;}
     .msg-box.ok{background:#1a2a1a;color:#8fbc5a;border:1px solid #2a3a2a;display:block;}
@@ -238,8 +238,8 @@
     .plan-icon{font-size:30px;margin-bottom:6px;}
     .plan-name{font-weight:800;font-size:18px;margin-bottom:4px;}
     .plan-price{font-weight:800;font-size:28px;margin-bottom:4px;}
-    .plan-price span{font-size:14px;font-weight:400;color:var(--text3);}
-    .plan-desc{font-size:13px;color:var(--text3);margin-bottom:14px;}
+    .plan-price span{font-size:14px;font-weight:400;color:#999;}
+    .plan-desc{font-size:13px;color:#999;margin-bottom:14px;}
     .plan-features{display:flex;flex-direction:column;gap:8px;margin-bottom:16px;}
     .plan-feature{display:flex;align-items:center;gap:8px;font-size:13px;color:#ccc;}
     .check{color:#8fbc5a;font-size:14px;flex-shrink:0;}
@@ -251,10 +251,10 @@
     .plan-note{text-align:center;font-size:11px;color:#444;margin-top:5px;}
     .faq-item{background:var(--bg2);border-radius:14px;padding:14px;margin-bottom:8px;cursor:pointer;border:1px solid var(--border2);}
     .faq-q{font-weight:600;font-size:14px;display:flex;justify-content:space-between;}
-    .faq-a{font-size:13px;color:var(--text3);margin-top:8px;line-height:1.5;display:none;}
+    .faq-a{font-size:13px;color:#999;margin-top:8px;line-height:1.5;display:none;}
     .faq-a.open{display:block;}
 
-    .drawer-overlay{position:fixed;inset:0;background:rgba(0,0,0,0.7);z-index:400;opacity:0;pointer-events:none;transition:opacity 0.3s;}
+    .drawer-overlay{position:fixed;inset:0;background:rgba(0,0,0,0.5);z-index:400;opacity:0;pointer-events:none;transition:opacity 0.3s;}
     .drawer-overlay.open{opacity:1;pointer-events:all;}
     .filter-drawer{position:fixed;bottom:0;left:50%;transform:translateX(-50%) translateY(100%);width:100%;max-width:430px;background:var(--bg2);border-radius:24px 24px 0 0;z-index:401;transition:transform 0.35s cubic-bezier(0.32,0.72,0,1);max-height:90vh;display:flex;flex-direction:column;}
     .filter-drawer.open{transform:translateX(-50%) translateY(0);}
@@ -266,7 +266,7 @@
     .btn-reset{flex:1;background:var(--bg3);border:none;border-radius:50px;padding:13px;font-weight:600;font-size:14px;cursor:pointer;font-family:'Inter',sans-serif;color:var(--text);}
     .btn-apply{flex:2;background:#8fbc5a;color:#111;border:none;border-radius:50px;padding:13px;font-weight:700;font-size:14px;cursor:pointer;font-family:'Inter',sans-serif;}
     .fsection{padding:16px 20px;border-bottom:1px solid var(--border);}
-    .fsection-title{font-size:11px;font-weight:700;color:var(--text3);letter-spacing:0.6px;text-transform:uppercase;margin-bottom:10px;}
+    .fsection-title{font-size:11px;font-weight:700;color:#999;letter-spacing:0.6px;text-transform:uppercase;margin-bottom:10px;}
     .fchips{display:flex;flex-wrap:wrap;gap:8px;}
     .fchip{padding:7px 14px;border-radius:50px;border:1.5px solid var(--border2);font-size:13px;font-weight:500;cursor:pointer;background:var(--bg);color:var(--text);white-space:nowrap;}
     .fchip.sel{background:#8fbc5a;color:#111;border-color:#8fbc5a;}
@@ -276,7 +276,7 @@
     .tgsw.on{background:#8fbc5a;}
     .tgsw::after{content:'';position:absolute;top:3px;left:3px;width:20px;height:20px;background:#fff;border-radius:50%;transition:transform 0.2s;}
     .tgsw.on::after{transform:translateX(18px);}
-    .range-labels{display:flex;justify-content:space-between;margin-bottom:6px;font-size:12px;color:var(--text3);}
+    .range-labels{display:flex;justify-content:space-between;margin-bottom:6px;font-size:12px;color:#999;}
     .range-cur{font-weight:700;font-size:15px;text-align:center;margin-bottom:8px;}
     input[type=range]{width:100%;accent-color:#8fbc5a;cursor:pointer;}
     .map-visual{width:100%;height:130px;background:linear-gradient(135deg,#1a2a1a,#162616);border-radius:16px;display:flex;align-items:center;justify-content:center;position:relative;overflow:hidden;margin-bottom:12px;}
@@ -290,18 +290,18 @@
     .share-options{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:16px;}
     .share-option{display:flex;flex-direction:column;align-items:center;gap:8px;cursor:pointer;}
     .share-option-icon{width:52px;height:52px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:24px;background:var(--bg3);}
-    .share-option-label{font-size:10px;color:var(--text2);text-align:center;}
+    .share-option-label{font-size:10px;color:#bbb;text-align:center;}
     .share-copy-row{display:flex;align-items:center;gap:8px;background:var(--bg);border-radius:12px;padding:10px 14px;}
-    .share-copy-url{flex:1;font-size:11px;color:var(--text3);overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-family:monospace;}
+    .share-copy-url{flex:1;font-size:11px;color:#999;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-family:monospace;}
     .share-copy-btn{background:#8fbc5a;color:#111;border:none;border-radius:50px;padding:6px 14px;font-size:12px;font-weight:700;cursor:pointer;flex-shrink:0;}
 
     .ad-card{background:var(--bg2);border-radius:14px;overflow:hidden;border:1px solid var(--border2);grid-column:span 2;position:relative;}
-    .ad-badge{position:absolute;top:8px;left:8px;background:rgba(0,0,0,0.7);color:var(--text3);font-size:10px;padding:3px 8px;border-radius:50px;}
+    .ad-badge{position:absolute;top:8px;left:8px;background:rgba(0,0,0,0.7);color:#999;font-size:10px;padding:3px 8px;border-radius:50px;}
     .ad-img{width:100%;height:120px;object-fit:cover;display:block;}
     .ad-inner{padding:12px 14px;display:flex;align-items:center;gap:12px;}
     .ad-logo{width:40px;height:40px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0;background:var(--bg3);}
     .ad-brand{font-weight:700;font-size:14px;margin-bottom:2px;}
-    .ad-desc{font-size:12px;color:var(--text3);}
+    .ad-desc{font-size:12px;color:#999;}
     .ad-cta{margin-top:8px;display:inline-block;background:#8fbc5a;color:#111;border-radius:50px;padding:6px 14px;font-size:12px;font-weight:700;cursor:pointer;}
 
     .empty{text-align:center;padding:50px 20px;color:#333;grid-column:span 2;}
@@ -359,10 +359,7 @@
     <div class="subcat-svg"><svg width="24" height="24" viewBox="0 0 36 36" fill="none"><circle cx="11" cy="26" r="5" stroke="#8fbc5a" stroke-width="2"/><circle cx="25" cy="26" r="5" stroke="#8fbc5a" stroke-width="2"/><path d="M11 26L16 14h7l2 8M16 14l9 12" stroke="#8fbc5a" stroke-width="2" stroke-linecap="round"/><circle cx="18" cy="8" r="2.5" stroke="#8fbc5a" stroke-width="1.5"/></svg></div>
     <div class="subcat-label">Børnecykel</div>
   </div>
-  <div class="subcat-item" onclick="selectSubcat('herrecykel',this)">
-    <div class="subcat-svg"><svg width="24" height="24" viewBox="0 0 36 36" fill="none"><circle cx="9" cy="25" r="6" stroke="#8fbc5a" stroke-width="2"/><circle cx="27" cy="25" r="6" stroke="#8fbc5a" stroke-width="2"/><path d="M9 25L15 11h6l3 9M15 11l9 14M18 11h5" stroke="#8fbc5a" stroke-width="2" stroke-linecap="round"/></svg></div>
-    <div class="subcat-label">Herrecykel</div>
-  </div>
+
   <div class="subcat-item" onclick="selectSubcat('ladcykel',this)">
     <div class="subcat-svg"><svg width="24" height="24" viewBox="0 0 36 36" fill="none"><circle cx="7" cy="27" r="5" stroke="#8fbc5a" stroke-width="2"/><circle cx="29" cy="27" r="5" stroke="#8fbc5a" stroke-width="2"/><rect x="9" y="12" width="18" height="11" rx="2" stroke="#8fbc5a" stroke-width="2"/><path d="M27 18l2 4M9 23l-2 4" stroke="#8fbc5a" stroke-width="1.5" stroke-linecap="round"/></svg></div>
     <div class="subcat-label">Ladcykel</div>
@@ -436,7 +433,7 @@
       <div style="display:flex;align-items:center;gap:8px;margin-bottom:6px;">
         <label class="form-label" style="margin-bottom:0">Stelnummer</label>
         <div onclick="document.getElementById('stel-info').style.display=document.getElementById('stel-info').style.display==='none'?'block':'none'" style="width:20px;height:20px;background:var(--bg3);border-radius:50%;display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:11px;font-weight:700;color:#8fbc5a;border:1.5px solid #8fbc5a;flex-shrink:0;">?</div>
-        <span style="font-size:11px;color:var(--text3);">(valgfrit)</span>
+        <span style="font-size:11px;color:#999;">(valgfrit)</span>
       </div>
       <div id="stel-info" style="display:none;background:#1a2a1a;border:1px solid #2a3a2a;border-radius:10px;padding:10px 14px;font-size:12px;color:#8fbc5a;margin-bottom:8px;line-height:1.6;">🔍 Stelnummeret finder du:<br>• Under kranken / pedalerne<br>• På stelrøret (rammen)<br>• Det bruges til at verificere cyklen og beskytte mod tyveri.</div>
       <input class="form-input" type="text" id="sf-stelnummer" placeholder="fx. WTU123456789 (valgfrit)" style="font-family:monospace;letter-spacing:1px;">
@@ -462,7 +459,12 @@
     <div class="detail-header">
       <button class="back-btn" onclick="goDetailBack()">←</button>
       <div style="flex:1;font-weight:700;font-size:15px" id="detail-header-title"></div>
-      <button class="heart-btn" style="position:static;width:34px;height:34px;background:#1c1c1c" onclick="this.classList.toggle('liked');this.textContent=this.classList.contains('liked')?'♥':'♡'">♡</button>
+      <div style="display:flex;align-items:center;gap:8px;">
+        <button onclick="openShareDrawer()" style="width:40px;height:40px;background:#1c1c1c;border-radius:50%;border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#ccc" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg>
+        </button>
+        <button class="heart-btn" id="detail-heart" style="position:static;width:40px;height:40px;background:#1c1c1c;font-size:18px;color:#ccc;" onclick="this.classList.toggle('liked');this.style.color=this.classList.contains('liked')?'#8fbc5a':'#ccc'">♡</button>
+      </div>
     </div>
     <div class="detail-imgs" id="detail-img-wrap"></div>
     <div class="detail-body">
@@ -471,7 +473,7 @@
       <div class="detail-loc" id="detail-loc"></div>
       <div id="detail-stel-section" style="display:none;margin-bottom:20px">
         <div class="detail-section-title">🔒 Stelnummer</div>
-        <div class="stelnummer-box"><div style="font-size:22px">🚲</div><div><div style="font-size:11px;color:var(--text3);font-weight:600;text-transform:uppercase;">Registreret stelnummer</div><div class="stelnummer-val" id="detail-stel-val"></div></div></div>
+        <div class="stelnummer-box"><div style="font-size:22px">🚲</div><div><div style="font-size:11px;color:#999;font-weight:600;text-transform:uppercase;">Registreret stelnummer</div><div class="stelnummer-val" id="detail-stel-val"></div></div></div>
       </div>
       <div class="detail-section" id="detail-specs-section" style="display:none">
         <div class="detail-section-title">Specifikationer</div>
@@ -483,43 +485,59 @@
       </div>
       <div class="detail-section">
         <div class="detail-section-title">Sælger</div>
-        <div class="seller-row"><div class="seller-avatar">👤</div><div><div style="font-weight:600;font-size:14px" id="detail-seller"></div><div style="font-size:12px;color:var(--text3);margin-top:2px">Privat sælger · Medlem siden 2025</div></div></div>
+        <div class="seller-row"><div class="seller-avatar">👤</div><div><div style="font-weight:600;font-size:14px" id="detail-seller"></div><div style="font-size:12px;color:#999;margin-top:2px">Privat sælger · Medlem siden 2025</div></div></div>
       </div>
       <button class="contact-btn" onclick="contactSeller()">💬 Kontakt sælger</button>
-      <button class="share-btn" onclick="openShareDrawer()">↗ Del annonce</button>
       <div class="annonce-id" id="detail-annonce-id"></div>
       <button class="police-btn" onclick="window.open('https://politi.dk/cykler-og-koeretoejer/tjek-om-en-cykel-eller-et-koeretoej-er-efterlyst/tjek-om-en-cykel-er-efterlyst','_blank')">🔍 Tjek, om en cykel er efterlyst</button>
     </div>
   </div>
 </div>
 
-<!-- BUY -->
+<!-- BUY PICKER -->
 <div id="page-buy" class="page">
-  <div class="buy-wrap">
-    <div class="buy-title">🔍 Vil du købe?</div>
-    <div class="buy-sub">Find din næste cykel</div>
-    <div class="buy-search">
-      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#8fbc5a" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
-      <input type="text" id="buy-search-input" placeholder="Søg mærke, model, by..." oninput="filterBuy()">
+  <div class="sell-picker">
+    <div class="sell-picker-title">Vil du købe?</div>
+    <div class="sell-picker-sub">Vælg kategori for at søge og filtrere</div>
+    <div class="sell-cat-grid">
+      <div class="sell-cat-btn" onclick="openBuyFilter('cykler')">
+        <div class="sell-cat-icon">
+          <svg width="52" height="40" viewBox="0 0 36 28" fill="none">
+            <circle cx="7" cy="21" r="6" stroke="#8fbc5a" stroke-width="2"/>
+            <circle cx="29" cy="21" r="6" stroke="#8fbc5a" stroke-width="2"/>
+            <path d="M7 21L13 7h8l4 10M13 7l12 14M20 14h6" stroke="#8fbc5a" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </div>
+        <div class="sell-cat-name">Cykler</div>
+        <div class="sell-cat-desc">Søg og filtrer cykler</div>
+      </div>
+      <div class="sell-cat-btn" onclick="openBuyFilter('elcykler')">
+        <div class="sell-cat-icon">
+          <svg width="52" height="40" viewBox="0 0 36 28" fill="none">
+            <circle cx="7" cy="21" r="6" stroke="#8fbc5a" stroke-width="2"/>
+            <circle cx="29" cy="21" r="6" stroke="#8fbc5a" stroke-width="2"/>
+            <path d="M7 21L13 7h8l4 10M13 7l12 14" stroke="#8fbc5a" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            <path d="M22 2l-3 5h4l-3 5" stroke="#f0c040" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </div>
+        <div class="sell-cat-name">El-cykler</div>
+        <div class="sell-cat-desc">Søg og filtrer el-cykler</div>
+      </div>
     </div>
-    <div class="quick-filters">
-      <div class="quick-filter active" onclick="setBuyFilter('alle',this)">Alle</div>
-      <div class="quick-filter" onclick="setBuyFilter('cykler',this)">🚲 Cykler</div>
-      <div class="quick-filter" onclick="setBuyFilter('elcykler',this)">⚡ El-cykler</div>
-      <div class="quick-filter" onclick="setBuyFilter('under3000',this)">Under 3.000 kr.</div>
-      <div class="quick-filter" onclick="setBuyFilter('under10000',this)">Under 10.000 kr.</div>
-      <div class="quick-filter" onclick="setBuyFilter('stelnummer',this)">🔒 Med stelnummer</div>
-    </div>
-    <div class="sort-row">
-      <div class="buy-count" id="buy-count">0 annoncer</div>
-      <select class="sort-select" onchange="sortBuy(this.value)">
-        <option value="newest">Nyeste først</option>
-        <option value="price_asc">Pris: Lavest</option>
-        <option value="price_desc">Pris: Højest</option>
-      </select>
-    </div>
-    <div class="listings-grid" id="buy-listings" style="padding:0;"></div>
   </div>
+</div>
+
+<!-- BUY RESULTS PAGE -->
+<div id="page-buy-results" class="page" style="padding:0">
+  <div class="cat-page-header">
+    <div class="cat-page-top">
+      <button class="back-btn" onclick="showPage('buy');goPage('buy','nav-buy')">←</button>
+      <div class="cat-page-title" id="buy-results-title">Cykler</div>
+      <button class="filter-open-btn" id="buy-filter-btn" onclick="openBuyFilterDrawer()">⚙️ Filter</button>
+    </div>
+  </div>
+  <div style="padding:8px 16px 0;font-size:13px;color:#aaa;" id="buy-results-count"></div>
+  <div class="listings-grid" id="buy-results-listings"></div>
 </div>
 
 <!-- MESSAGES -->
@@ -565,8 +583,16 @@
         <div class="forgot-link" onclick="showForgot()">Glemt adgangskode?</div>
       </div>
       <div id="f-signup" style="display:none">
-        <div class="form-group"><label class="form-label">Navn</label><input class="form-input" type="text" id="s-name" placeholder="Dit navn"></div>
+        <div class="form-group"><label class="form-label">Fornavn</label><input class="form-input" type="text" id="s-firstname" placeholder="Dit fornavn"></div>
+        <div class="form-group"><label class="form-label">Efternavn</label><input class="form-input" type="text" id="s-lastname" placeholder="Dit efternavn"></div>
+        <div class="form-group">
+          <label class="form-label">By</label>
+          <input class="form-input" type="text" id="s-city" placeholder="Søg by eller postnummer..." oninput="filterSignupCities(this.value)" autocomplete="off">
+          <div class="city-dropdown" id="signup-city-dropdown"></div>
+        </div>
+        <div class="form-group"><label class="form-label">Telefon <span style="color:#666;font-weight:400;">(valgfrit)</span></label><input class="form-input" type="tel" id="s-phone" placeholder="+45 12 34 56 78"></div>
         <div class="form-group"><label class="form-label">E-mail</label><input class="form-input" type="email" id="s-email" placeholder="din@email.dk"></div>
+        <div class="form-group"><label class="form-label">Gentag e-mail</label><input class="form-input" type="email" id="s-email2" placeholder="din@email.dk igen"></div>
         <div class="form-group"><label class="form-label">Adgangskode</label><input class="form-input" type="password" id="s-pass" placeholder="Min. 6 tegn" onkeydown="if(event.key==='Enter')doSignup()"></div>
         <button class="btn-primary" onclick="doSignup()">Opret konto</button>
       </div>
@@ -595,7 +621,7 @@
 <div id="page-pricing" class="page">
   <div class="pricing-wrap">
     <div style="font-weight:800;font-size:24px;margin-bottom:4px;">Vælg din plan</div>
-    <div style="color:var(--text3);font-size:14px;margin-bottom:24px;">Sælg din cykel hurtigere</div>
+    <div style="color:#999;font-size:14px;margin-bottom:24px;">Sælg din cykel hurtigere</div>
     <div class="plan-card">
       <div class="plan-icon">🆓</div><div class="plan-name">Gratis</div>
       <div class="plan-price">0 <span>kr.</span></div>
@@ -644,16 +670,16 @@
       <button class="back-btn" onclick="goPage('profile','nav-prof')">←</button>
       <div style="font-weight:800;font-size:20px;">Indstillinger</div>
     </div>
-    <div style="font-size:11px;font-weight:700;color:var(--text3);letter-spacing:0.5px;text-transform:uppercase;margin-bottom:8px;">Udseende</div>
+    <div style="font-size:11px;font-weight:700;color:#999;letter-spacing:0.5px;text-transform:uppercase;margin-bottom:8px;">Udseende</div>
     <div class="menu-row" style="justify-content:space-between;margin-bottom:16px;">
-      <span>☀️ Lyst tema</span>
+      <span>☀️ Lyst skærm</span>
       <div class="tgsw" id="theme-toggle" onclick="toggleTheme()"></div>
     </div>
-    <div style="font-size:11px;font-weight:700;color:var(--text3);letter-spacing:0.5px;text-transform:uppercase;margin-bottom:8px;">Konto</div>
+    <div style="font-size:11px;font-weight:700;color:#999;letter-spacing:0.5px;text-transform:uppercase;margin-bottom:8px;">Konto</div>
     <div class="menu-row">👤 Rediger profil <span>→</span></div>
     <div class="menu-row">🔒 Skift adgangskode <span>→</span></div>
     <div class="menu-row">📧 Skift e-mail <span>→</span></div>
-    <div style="font-size:11px;font-weight:700;color:var(--text3);letter-spacing:0.5px;text-transform:uppercase;margin:16px 0 8px;">Notifikationer</div>
+    <div style="font-size:11px;font-weight:700;color:#999;letter-spacing:0.5px;text-transform:uppercase;margin:16px 0 8px;">Notifikationer</div>
     <div class="menu-row" style="justify-content:space-between;">
       <span>📩 Email ved ny besked</span>
       <div class="tgsw on" onclick="this.classList.toggle('on')"></div>
@@ -666,10 +692,10 @@
       <span>⏰ Email før annonce udløber</span>
       <div class="tgsw on" onclick="this.classList.toggle('on')"></div>
     </div>
-    <div style="font-size:11px;font-weight:700;color:var(--text3);letter-spacing:0.5px;text-transform:uppercase;margin:16px 0 8px;">Om appen</div>
+    <div style="font-size:11px;font-weight:700;color:#999;letter-spacing:0.5px;text-transform:uppercase;margin:16px 0 8px;">Om appen</div>
     <div class="menu-row" onclick="goPage('privacy')">📋 Privatlivspolitik <span>→</span></div>
     <div class="menu-row" onclick="goPage('terms')">📜 Vilkår og betingelser <span>→</span></div>
-    <div class="menu-row">ℹ️ Version 1.0.0 <span style="color:var(--text3);">Beta</span></div>
+    <div class="menu-row">ℹ️ Version 1.0.0 <span style="color:#999;">Beta</span></div>
   </div>
 </div>
 
@@ -681,25 +707,25 @@
       <button class="back-btn" onclick="goPage('settings')">←</button>
       <div style="font-weight:800;font-size:20px;">Privatlivspolitik</div>
     </div>
-    <div style="font-size:12px;color:var(--text3);margin-bottom:20px;">Sidst opdateret: 07-05-2026</div>
+    <div style="font-size:12px;color:#999;margin-bottom:20px;">Sidst opdateret: 07-05-2026</div>
 
     <div style="font-weight:700;font-size:16px;margin-bottom:8px;">1. Hvem er vi?</div>
-    <div style="font-size:14px;color:var(--text2);line-height:1.7;margin-bottom:16px;">CykelHub er en dansk markedsplads for køb og salg af cykler og el-cykler. Vi er ansvarlige for behandlingen af dine personlige oplysninger.</div>
+    <div style="font-size:14px;color:#bbb;line-height:1.7;margin-bottom:16px;">CykelHub er en dansk markedsplads for køb og salg af cykler og el-cykler. Vi er ansvarlige for behandlingen af dine personlige oplysninger.</div>
 
     <div style="font-weight:700;font-size:16px;margin-bottom:8px;">2. Hvilke data indsamler vi?</div>
-    <div style="font-size:14px;color:var(--text2);line-height:1.7;margin-bottom:16px;">Vi indsamler følgende oplysninger når du bruger CykelHub:<br><br>• Navn og e-mailadresse ved oprettelse af konto<br>• Annonceinformation (titel, pris, billeder, by, stelnummer)<br>• Beskeder sendt via platformen<br>• Tekniske data (IP-adresse, browsertype)</div>
+    <div style="font-size:14px;color:#bbb;line-height:1.7;margin-bottom:16px;">Vi indsamler følgende oplysninger når du bruger CykelHub:<br><br>• Navn og e-mailadresse ved oprettelse af konto<br>• Annonceinformation (titel, pris, billeder, by, stelnummer)<br>• Beskeder sendt via platformen<br>• Tekniske data (IP-adresse, browsertype)</div>
 
     <div style="font-weight:700;font-size:16px;margin-bottom:8px;">3. Hvordan bruger vi dine data?</div>
-    <div style="font-size:14px;color:var(--text2);line-height:1.7;margin-bottom:16px;">Dine data bruges til:<br><br>• At drive og forbedre CykelHub<br>• At sende notifikationer om beskeder og annoncer<br>• At verificere din identitet<br>• At forhindre svindel og misbrug</div>
+    <div style="font-size:14px;color:#bbb;line-height:1.7;margin-bottom:16px;">Dine data bruges til:<br><br>• At drive og forbedre CykelHub<br>• At sende notifikationer om beskeder og annoncer<br>• At verificere din identitet<br>• At forhindre svindel og misbrug</div>
 
     <div style="font-weight:700;font-size:16px;margin-bottom:8px;">4. Dine rettigheder (GDPR)</div>
-    <div style="font-size:14px;color:var(--text2);line-height:1.7;margin-bottom:16px;">Du har ret til at:<br><br>• Få indsigt i dine personlige oplysninger<br>• Få rettet forkerte oplysninger<br>• Få slettet dine oplysninger<br>• Trække dit samtykke tilbage<br>• Klage til Datatilsynet (datatilsynet.dk)</div>
+    <div style="font-size:14px;color:#bbb;line-height:1.7;margin-bottom:16px;">Du har ret til at:<br><br>• Få indsigt i dine personlige oplysninger<br>• Få rettet forkerte oplysninger<br>• Få slettet dine oplysninger<br>• Trække dit samtykke tilbage<br>• Klage til Datatilsynet (datatilsynet.dk)</div>
 
     <div style="font-weight:700;font-size:16px;margin-bottom:8px;">5. Cookies</div>
-    <div style="font-size:14px;color:var(--text2);line-height:1.7;margin-bottom:16px;">Vi bruger cookies til at huske dine præferencer og holde dig logget ind. Du kan slå cookies fra i din browser.</div>
+    <div style="font-size:14px;color:#bbb;line-height:1.7;margin-bottom:16px;">Vi bruger cookies til at huske dine præferencer og holde dig logget ind. Du kan slå cookies fra i din browser.</div>
 
     <div style="font-weight:700;font-size:16px;margin-bottom:8px;">6. Kontakt</div>
-    <div style="font-size:14px;color:var(--text2);line-height:1.7;margin-bottom:16px;">Har du spørgsmål til vores privatlivspolitik? Kontakt os på:<br><br>📧 malsayed516@gmail.com</div>
+    <div style="font-size:14px;color:#bbb;line-height:1.7;margin-bottom:16px;">Har du spørgsmål til vores privatlivspolitik? Kontakt os på:<br><br>📧 malsayed516@gmail.com</div>
   </div>
 </div>
 
@@ -710,31 +736,31 @@
       <button class="back-btn" onclick="goPage('settings')">←</button>
       <div style="font-weight:800;font-size:20px;">Vilkår og betingelser</div>
     </div>
-    <div style="font-size:12px;color:var(--text3);margin-bottom:20px;">Sidst opdateret: 07-05-2026</div>
+    <div style="font-size:12px;color:#999;margin-bottom:20px;">Sidst opdateret: 07-05-2026</div>
 
     <div style="font-weight:700;font-size:16px;margin-bottom:8px;">1. Accept af vilkår</div>
-    <div style="font-size:14px;color:var(--text2);line-height:1.7;margin-bottom:16px;">Ved at bruge CykelHub accepterer du disse vilkår og betingelser. Hvis du ikke accepterer vilkårene, bedes du ikke bruge platformen.</div>
+    <div style="font-size:14px;color:#bbb;line-height:1.7;margin-bottom:16px;">Ved at bruge CykelHub accepterer du disse vilkår og betingelser. Hvis du ikke accepterer vilkårene, bedes du ikke bruge platformen.</div>
 
     <div style="font-weight:700;font-size:16px;margin-bottom:8px;">2. Brug af platformen</div>
-    <div style="font-size:14px;color:var(--text2);line-height:1.7;margin-bottom:16px;">CykelHub er en markedsplads hvor private sælgere kan annoncere cykler og el-cykler. Det er ikke tilladt at:<br><br>• Sælge stjålne cykler<br>• Oprette falske annoncer<br>• Bruge platformen til svindel<br>• Chikane andre brugere</div>
+    <div style="font-size:14px;color:#bbb;line-height:1.7;margin-bottom:16px;">CykelHub er en markedsplads hvor private sælgere kan annoncere cykler og el-cykler. Det er ikke tilladt at:<br><br>• Sælge stjålne cykler<br>• Oprette falske annoncer<br>• Bruge platformen til svindel<br>• Chikane andre brugere</div>
 
     <div style="font-weight:700;font-size:16px;margin-bottom:8px;">3. Sælgers ansvar</div>
-    <div style="font-size:14px;color:var(--text2);line-height:1.7;margin-bottom:16px;">Som sælger er du ansvarlig for:<br><br>• At oplysningerne i din annonce er korrekte<br>• At cyklen ikke er stjålet (verificeret via stelnummer)<br>• At overholde dansk forbrugerlovgivning<br>• At gennemføre handlen som aftalt</div>
+    <div style="font-size:14px;color:#bbb;line-height:1.7;margin-bottom:16px;">Som sælger er du ansvarlig for:<br><br>• At oplysningerne i din annonce er korrekte<br>• At cyklen ikke er stjålet (verificeret via stelnummer)<br>• At overholde dansk forbrugerlovgivning<br>• At gennemføre handlen som aftalt</div>
 
     <div style="font-weight:700;font-size:16px;margin-bottom:8px;">4. Priser og betaling</div>
-    <div style="font-size:14px;color:var(--text2);line-height:1.7;margin-bottom:16px;">• Gratis: Op til 5 annoncer i 30 dage<br>• Premium boost: 49 kr. pr. annonce<br>• Lynhurtig Salg: 199 kr. pr. annonce<br>• CykelHub tager 3-5% commission ved salg via platformen<br>• Alle priser er inkl. moms</div>
+    <div style="font-size:14px;color:#bbb;line-height:1.7;margin-bottom:16px;">• Gratis: Op til 5 annoncer i 30 dage<br>• Premium boost: 49 kr. pr. annonce<br>• Lynhurtig Salg: 199 kr. pr. annonce<br>• CykelHub tager 3-5% commission ved salg via platformen<br>• Alle priser er inkl. moms</div>
 
     <div style="font-weight:700;font-size:16px;margin-bottom:8px;">5. Annoncers varighed</div>
-    <div style="font-size:14px;color:var(--text2);line-height:1.7;margin-bottom:16px;">• Gratis annoncer slettes automatisk efter 30 dage<br>• Du modtager en email 3 dage før din annonce udløber<br>• Premium annoncer er aktive i 30 dage<br>• Lynhurtig Salg annoncer er aktive i 60 dage</div>
+    <div style="font-size:14px;color:#bbb;line-height:1.7;margin-bottom:16px;">• Gratis annoncer slettes automatisk efter 30 dage<br>• Du modtager en email 3 dage før din annonce udløber<br>• Premium annoncer er aktive i 30 dage<br>• Lynhurtig Salg annoncer er aktive i 60 dage</div>
 
     <div style="font-weight:700;font-size:16px;margin-bottom:8px;">6. CykelHubs ansvar</div>
-    <div style="font-size:14px;color:var(--text2);line-height:1.7;margin-bottom:16px;">CykelHub er en formidlingsplatform og er ikke part i handlen mellem køber og sælger. Vi er ikke ansvarlige for:<br><br>• Kvaliteten af solgte cykler<br>• Manglende betaling<br>• Tvister mellem køber og sælger</div>
+    <div style="font-size:14px;color:#bbb;line-height:1.7;margin-bottom:16px;">CykelHub er en formidlingsplatform og er ikke part i handlen mellem køber og sælger. Vi er ikke ansvarlige for:<br><br>• Kvaliteten af solgte cykler<br>• Manglende betaling<br>• Tvister mellem køber og sælger</div>
 
     <div style="font-weight:700;font-size:16px;margin-bottom:8px;">7. Ændringer</div>
-    <div style="font-size:14px;color:var(--text2);line-height:1.7;margin-bottom:16px;">CykelHub forbeholder sig retten til at ændre disse vilkår. Du vil blive informeret via email ved væsentlige ændringer.</div>
+    <div style="font-size:14px;color:#bbb;line-height:1.7;margin-bottom:16px;">CykelHub forbeholder sig retten til at ændre disse vilkår. Du vil blive informeret via email ved væsentlige ændringer.</div>
 
     <div style="font-weight:700;font-size:16px;margin-bottom:8px;">8. Kontakt</div>
-    <div style="font-size:14px;color:var(--text2);line-height:1.7;margin-bottom:16px;">📧 malsayed516@gmail.com</div>
+    <div style="font-size:14px;color:#bbb;line-height:1.7;margin-bottom:16px;">📧 malsayed516@gmail.com</div>
   </div>
 </div>
 
@@ -768,14 +794,54 @@
   <div class="share-handle"></div>
   <div class="share-title">Del annonce</div>
   <div class="share-options">
-    <div class="share-option" onclick="shareVia('sms')"><div class="share-option-icon">💬</div><div class="share-option-label">SMS</div></div>
-    <div class="share-option" onclick="shareVia('email')"><div class="share-option-icon">📧</div><div class="share-option-label">E-mail</div></div>
-    <div class="share-option" onclick="shareVia('facebook')"><div class="share-option-icon">📘</div><div class="share-option-label">Facebook</div></div>
-    <div class="share-option" onclick="shareVia('whatsapp')"><div class="share-option-icon">💚</div><div class="share-option-label">WhatsApp</div></div>
-    <div class="share-option" onclick="shareVia('messenger')"><div class="share-option-icon">💙</div><div class="share-option-label">Messenger</div></div>
-    <div class="share-option" onclick="shareVia('instagram')"><div class="share-option-icon">📸</div><div class="share-option-label">Instagram</div></div>
-    <div class="share-option" onclick="shareVia('snapchat')"><div class="share-option-icon">👻</div><div class="share-option-label">Snapchat</div></div>
-    <div class="share-option" onclick="copyLink()"><div class="share-option-icon">🔗</div><div class="share-option-label">Kopiér</div></div>
+    <div class="share-option" onclick="shareVia('sms')">
+      <div class="share-option-icon" style="background:#25D366;">
+        <svg width="28" height="28" viewBox="0 0 24 24" fill="white"><path d="M20 2H4a2 2 0 0 0-2 2v18l4-4h14a2 2 0 0 0 2-2V4a2 2 0 0 0-2-2zm-2 10H6v-2h12v2zm0-4H6V6h12v2z"/></svg>
+      </div>
+      <div class="share-option-label">SMS</div>
+    </div>
+    <div class="share-option" onclick="shareVia('whatsapp')">
+      <div class="share-option-icon" style="background:#25D366;">
+        <svg width="28" height="28" viewBox="0 0 24 24" fill="white"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 0 1-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 0 1-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 0 1 2.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0 0 12.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 0 0 5.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 0 0-3.48-8.413z"/></svg>
+      </div>
+      <div class="share-option-label">WhatsApp</div>
+    </div>
+    <div class="share-option" onclick="shareVia('telegram')">
+      <div class="share-option-icon" style="background:#0088cc;">
+        <svg width="28" height="28" viewBox="0 0 24 24" fill="white"><path d="M11.944 0A12 12 0 0 0 0 12a12 12 0 0 0 12 12 12 12 0 0 0 12-12A12 12 0 0 0 12 0a12 12 0 0 0-.056 0zm4.962 7.224c.1-.002.321.023.465.14a.506.506 0 0 1 .171.325c.016.093.036.306.02.472-.18 1.898-.962 6.502-1.36 8.627-.168.9-.499 1.201-.82 1.23-.696.065-1.225-.46-1.9-.902-1.056-.693-1.653-1.124-2.678-1.8-1.185-.78-.417-1.21.258-1.91.177-.184 3.247-2.977 3.307-3.23.007-.032.014-.15-.056-.212s-.174-.041-.249-.024c-.106.024-1.793 1.14-5.061 3.345-.48.33-.913.49-1.302.48-.428-.008-1.252-.241-1.865-.44-.752-.245-1.349-.374-1.297-.789.027-.216.325-.437.893-.663 3.498-1.524 5.83-2.529 6.998-3.014 3.332-1.386 4.025-1.627 4.476-1.635z"/></svg>
+      </div>
+      <div class="share-option-label">Telegram</div>
+    </div>
+    <div class="share-option" onclick="shareVia('facebook')">
+      <div class="share-option-icon" style="background:#1877F2;">
+        <svg width="28" height="28" viewBox="0 0 24 24" fill="white"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>
+      </div>
+      <div class="share-option-label">Facebook</div>
+    </div>
+    <div class="share-option" onclick="shareVia('messenger')">
+      <div class="share-option-icon" style="background:linear-gradient(135deg,#00B2FF,#006AFF,#7B2FBE);">
+        <svg width="28" height="28" viewBox="0 0 24 24" fill="white"><path d="M12 0C5.373 0 0 4.975 0 11.111c0 3.497 1.745 6.616 4.472 8.652V24l4.086-2.242c1.09.301 2.246.464 3.442.464 6.627 0 12-4.975 12-11.111C24 4.975 18.627 0 12 0zm1.193 14.963l-3.056-3.259-5.963 3.259 6.559-6.963 3.13 3.259 5.889-3.259-6.559 6.963z"/></svg>
+      </div>
+      <div class="share-option-label">Messenger</div>
+    </div>
+    <div class="share-option" onclick="shareVia('snapchat')">
+      <div class="share-option-icon" style="background:#FFFC00;">
+        <svg width="28" height="28" viewBox="0 0 24 24" fill="black"><path d="M12.206.793c.99 0 4.347.276 5.93 3.821.529 1.193.403 3.219.299 4.847l-.003.06c-.012.18-.022.345-.03.51.075.045.203.09.401.09.3-.016.659-.12 1.033-.301.165-.088.344-.104.464-.104.182 0 .359.029.509.09.45.149.734.479.734.838.015.449-.39.839-1.213 1.168-.089.029-.209.075-.344.119-.45.135-1.139.36-1.333.81-.09.224-.061.524.12.868l.015.015c.06.136 1.526 3.475 4.791 4.014.255.044.435.27.42.509 0 .075-.015.149-.045.225-.24.569-1.273.988-3.146 1.271-.059.091-.12.375-.164.57-.029.179-.074.36-.134.553-.076.271-.27.405-.555.405h-.03c-.135 0-.313-.031-.538-.074-.36-.075-.765-.135-1.273-.135-.3 0-.599.015-.913.074-.6.104-1.123.464-1.723.884-.853.599-1.826 1.288-3.294 1.288-.06 0-.119-.015-.18-.015h-.149c-1.468 0-2.427-.675-3.279-1.288-.599-.42-1.107-.779-1.707-.884-.314-.045-.629-.074-.928-.074-.54 0-.958.089-1.272.149-.211.043-.391.074-.54.074-.374 0-.523-.224-.583-.42-.061-.192-.09-.389-.135-.567-.046-.181-.105-.494-.166-.57-1.918-.222-2.95-.642-3.189-1.226-.031-.075-.046-.15-.046-.225-.015-.243.165-.465.42-.509 3.264-.54 4.73-3.879 4.791-4.02l.016-.029c.18-.345.224-.645.119-.869-.195-.434-.884-.658-1.332-.809-.121-.029-.24-.074-.346-.119-1.107-.435-1.257-.93-1.197-1.273.09-.479.674-.793 1.168-.793.146 0 .27.029.383.074.42.194.789.3 1.104.3.234 0 .384-.06.465-.105l-.046-.569c-.098-1.626-.225-3.651.307-4.837C7.392 1.077 10.739.807 11.727.807l.419-.015h.06z"/></svg>
+      </div>
+      <div class="share-option-label">Snapchat</div>
+    </div>
+    <div class="share-option" onclick="shareVia('email')">
+      <div class="share-option-icon" style="background:#EA4335;">
+        <svg width="28" height="28" viewBox="0 0 24 24" fill="white"><path d="M24 5.457v13.909c0 .904-.732 1.636-1.636 1.636h-3.819V11.73L12 16.64l-6.545-4.91v9.273H1.636A1.636 1.636 0 0 1 0 19.366V5.457c0-2.023 2.309-3.178 3.927-1.964L5.455 4.64 12 9.548l6.545-4.91 1.528-1.145C21.69 2.28 24 3.434 24 5.457z"/></svg>
+      </div>
+      <div class="share-option-label">E-mail</div>
+    </div>
+    <div class="share-option" onclick="copyLink()">
+      <div class="share-option-icon" style="background:#555;">
+        <svg width="28" height="28" viewBox="0 0 24 24" fill="white"><path d="M16 1H4c-1.1 0-2 .9-2 2v14h2V3h12V1zm3 4H8c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h11c1.1 0 2-.9 2-2V7c0-1.1-.9-2-2-2zm0 16H8V7h11v14z"/></svg>
+      </div>
+      <div class="share-option-label">Kopiér link</div>
+    </div>
   </div>
   <div class="share-copy-row">
     <div class="share-copy-url" id="share-url"></div>
@@ -935,6 +1001,70 @@ function removeImg(i){uploadedImgs.splice(i,1);updateImgGrid();}
 
 function submitListing(){if(!me){toast('Log ind for at oprette annonce');goPage('profile','nav-prof');return;}const title=document.getElementById('sell-title').value.trim(),price=document.getElementById('sell-price').value,city=document.getElementById('sell-city').value.trim();if(!title||!price||!city){const el=document.getElementById('sell-msg');el.textContent='Udfyld titel, pris og by';el.className='msg-box err';return;}const img=uploadedImgs.length>0?uploadedImgs[0].url:(photos[currentSellCat]||photos.cykler)[Math.floor(Math.random()*3)];const stelnummer=document.getElementById('sf-stelnummer')?.value.trim()||'';const desc=document.getElementById('sell-desc')?.value.trim()||'';const brand=document.getElementById('sf-brand')?.value||'';const type=document.getElementById('sf-type')?.value||'';allListings.unshift({id:Date.now(),title,price:price+' kr.',city,cat:currentSellCat,img,stelnummer,desc,brand,type,seller:me.user_metadata?.name||me.email.split('@')[0]});renderHome(allListings);toast('Annonce oprettet! 🎉');goPage('home','nav-home');}
 
+
+function filterSignupCities(val) {
+  const dd = document.getElementById('signup-city-dropdown');
+  if (!val || val.length < 2) { dd.style.display='none'; return; }
+  const filtered = danishCities.filter(c =>
+    c.city.toLowerCase().includes(val.toLowerCase()) || c.zip.startsWith(val)
+  ).slice(0, 8);
+  if (!filtered.length) { dd.style.display='none'; return; }
+  dd.style.display = 'block';
+  dd.innerHTML = filtered.map(c =>
+    '<div class="city-option" onclick="selectSignupCity(\''+c.zip+' '+c.city+'\')"><span style="color:#8fbc5a;font-weight:700;font-family:monospace;">'+c.zip+'</span> '+c.city+'</div>'
+  ).join('');
+}
+
+function selectSignupCity(val) {
+  document.getElementById('s-city').value = val;
+  document.getElementById('signup-city-dropdown').style.display = 'none';
+}
+
+
+// BUY PAGE
+let activeBuyCat = 'cykler';
+let buyActiveFilters = {};
+
+function openBuyFilter(cat) {
+  activeBuyCat = cat;
+  buyActiveFilters = {};
+  const titles = {cykler:'🚲 Cykler', elcykler:'⚡ El-cykler'};
+  document.getElementById('buy-results-title').textContent = titles[cat];
+  document.getElementById('buy-filter-btn').textContent = '⚙️ Filter';
+  document.getElementById('buy-filter-btn').classList.remove('has-filters');
+  renderBuyResults(allListings.filter(l => l.cat === cat));
+  showPage('buy-results');
+}
+
+function renderBuyResults(items) {
+  document.getElementById('buy-results-count').textContent = items.length + ' annoncer';
+  document.getElementById('buy-results-listings').innerHTML = items.length
+    ? items.map(l => listingCard(l)).join('')
+    : '<div class="empty"><div class="e-icon">🔍</div><p>Ingen annoncer</p></div>';
+}
+
+function openBuyFilterDrawer() {
+  const def = filterDefs[activeBuyCat];
+  if (!def) return;
+  document.getElementById('drawer-title').textContent = def.title;
+  document.getElementById('drawer-body').innerHTML = def.sections.map(s => buildSection(s)).join('');
+  // Override apply button for buy page
+  document.querySelector('.btn-apply').onclick = applyBuyFilters;
+  document.getElementById('filter-drawer').classList.add('open');
+  document.getElementById('drawer-overlay').classList.add('open');
+}
+
+function applyBuyFilters() {
+  closeFilter();
+  const hasAny = Object.values(buyActiveFilters).some(v => Array.isArray(v) ? v.length > 0 : v !== false && v !== undefined);
+  const btn = document.getElementById('buy-filter-btn');
+  btn.classList.toggle('has-filters', hasAny);
+  btn.textContent = hasAny ? '✓ Filter' : '⚙️ Filter';
+  let items = allListings.filter(l => l.cat === activeBuyCat);
+  renderBuyResults(items);
+  toast('Filter anvendt ✓');
+}
+
 function filterCities(val){const dd=document.getElementById('city-dropdown');if(!val||val.length<2){dd.style.display='none';return;}const filtered=danishCities.filter(c=>c.city.toLowerCase().includes(val.toLowerCase())||c.zip.startsWith(val)).slice(0,8);if(!filtered.length){dd.style.display='none';return;}dd.style.display='block';dd.innerHTML=filtered.map(c=>'<div class="city-option" onclick="selectCity(\''+c.zip+' '+c.city+'\')"><span style="color:#8fbc5a;font-weight:700;font-family:monospace;">'+c.zip+'</span> '+c.city+'</div>').join('');}
 
 function selectCity(val){document.getElementById('sell-city').value=val;document.getElementById('city-dropdown').style.display='none';}
@@ -957,7 +1087,7 @@ function filterBuy(){const searchVal=(document.getElementById('buy-search-input'
 
 function openShareDrawer(){const l=allListings.find(x=>x.id===detailId);if(!l)return;shareListingId=detailId;const url='https://thunderous-bienenstitch-fd830e.netlify.app?annonce='+detailId;document.getElementById('share-url').textContent=url;document.getElementById('share-overlay').classList.add('open');document.getElementById('share-drawer').classList.add('open');}
 function closeShareDrawer(){document.getElementById('share-overlay').classList.remove('open');document.getElementById('share-drawer').classList.remove('open');}
-function shareVia(platform){const l=allListings.find(x=>x.id===shareListingId);if(!l)return;const url='https://thunderous-bienenstitch-fd830e.netlify.app?annonce='+shareListingId;const text=l.title+' - '+l.price+' - CykelHub';const links={sms:'sms:?body='+encodeURIComponent(text+' '+url),email:'mailto:?subject='+encodeURIComponent(l.title+' på CykelHub')+'&body='+encodeURIComponent(text+'\n\n'+url),facebook:'https://www.facebook.com/sharer/sharer.php?u='+encodeURIComponent(url),whatsapp:'https://wa.me/?text='+encodeURIComponent(text+' '+url),messenger:'https://www.facebook.com/dialog/send?link='+encodeURIComponent(url),snapchat:'https://www.snapchat.com/scan?attachmentUrl='+encodeURIComponent(url)};if(platform==='instagram'){copyLink();toast('Link kopieret - indsæt i Instagram! 📸');return;}window.open(links[platform],'_blank');closeShareDrawer();}
+function shareVia(platform){const l=allListings.find(x=>x.id===shareListingId);if(!l)return;const url='https://thunderous-bienenstitch-fd830e.netlify.app?annonce='+shareListingId;const text=l.title+' - '+l.price+' - CykelHub';const links={sms:'sms:?body='+encodeURIComponent(text+' '+url),email:'mailto:?subject='+encodeURIComponent(l.title+' på CykelHub')+'&body='+encodeURIComponent(text+'\n\n'+url),facebook:'https://www.facebook.com/sharer/sharer.php?u='+encodeURIComponent(url),whatsapp:'https://api.whatsapp.com/send?text='+encodeURIComponent(text+' '+url),telegram:'https://t.me/share/url?url='+encodeURIComponent(url)+'&text='+encodeURIComponent(text),messenger:'fb-messenger://share/?link='+encodeURIComponent(url),snapchat:'https://www.snapchat.com/scan?attachmentUrl='+encodeURIComponent(url)};window.open(links[platform],'_blank');closeShareDrawer();}
 function copyLink(){const url=document.getElementById('share-url').textContent;navigator.clipboard.writeText(url).then(()=>{toast('Link kopieret! 🔗');closeShareDrawer();}).catch(()=>toast('Link kopieret!'));}
 
 function loadChat(id){chatId=id;drawMsgs(JSON.parse(localStorage.getItem('ch_'+id)||'[]'));}
@@ -970,7 +1100,22 @@ function updateBellDot(){document.getElementById('bell-dot').classList.toggle('o
 function switchTab(tab){document.querySelectorAll('.auth-tab').forEach((t,i)=>t.classList.toggle('active',(i===0&&tab==='login')||(i===1&&tab==='signup')));document.getElementById('f-login').style.display=tab==='login'?'block':'none';document.getElementById('f-signup').style.display=tab==='signup'?'block':'none';document.getElementById('f-forgot').style.display='none';clearMsg();}
 function showForgot(){document.getElementById('f-login').style.display='none';document.getElementById('f-forgot').style.display='block';document.querySelectorAll('.auth-tab').forEach(t=>t.classList.remove('active'));}
 async function doLogin(){const email=document.getElementById('l-email').value.trim(),pass=document.getElementById('l-pass').value;if(!email||!pass){setMsg('Udfyld alle felter','err');return;}const{error}=await sb.auth.signInWithPassword({email,password:pass});if(error)setMsg(error.message,'err');else{toast('Velkommen tilbage! 👋');goPage('home','nav-home');}}
-async function doSignup(){const name=document.getElementById('s-name').value.trim(),email=document.getElementById('s-email').value.trim(),pass=document.getElementById('s-pass').value;if(!name||!email||!pass){setMsg('Udfyld alle felter','err');return;}const{error}=await sb.auth.signUp({email,password:pass,options:{data:{name}}});if(error)setMsg(error.message,'err');else setMsg('Tjek din e-mail for bekræftelse ✉️','ok');}
+async function doSignup(){
+  const firstname=document.getElementById('s-firstname').value.trim();
+  const lastname=document.getElementById('s-lastname').value.trim();
+  const city=document.getElementById('s-city').value.trim();
+  const email=document.getElementById('s-email').value.trim();
+  const email2=document.getElementById('s-email2').value.trim();
+  const pass=document.getElementById('s-pass').value;
+  const phone=document.getElementById('s-phone').value.trim();
+  if(!firstname||!lastname||!city||!email||!email2||!pass){setMsg('Udfyld alle påkrævede felter','err');return;}
+  if(email!==email2){setMsg('E-mails stemmer ikke overens','err');return;}
+  if(pass.length<6){setMsg('Adgangskode skal være mindst 6 tegn','err');return;}
+  const name=firstname+' '+lastname;
+  const{error}=await sb.auth.signUp({email,password:pass,options:{data:{name,firstname,lastname,city,phone}}});
+  if(error)setMsg(error.message,'err');
+  else setMsg('Tjek din e-mail for bekræftelse ✉️','ok');
+}
 async function doReset(){const email=document.getElementById('r-email').value.trim();if(!email){setMsg('Indtast din e-mail','err');return;}const{error}=await sb.auth.resetPasswordForEmail(email,{redirectTo:window.location.href});if(error)setMsg(error.message,'err');else setMsg('Nulstillingslink sendt ✉️','ok');}
 async function doLogout(){await sb.auth.signOut();toast('Du er nu logget ud');goPage('home','nav-home');}
 function setMsg(m,type){const el=document.getElementById('auth-msg');el.textContent=m;el.className='msg-box '+type;}
@@ -978,7 +1123,7 @@ function clearMsg(){const el=document.getElementById('auth-msg');el.className='m
 
 function selectPlan(plan){if(!me){toast('Log ind for at vælge en plan');goPage('profile','nav-prof');return;}const msgs={gratis:'Du bruger Gratis planen ✓',premium:'Premium – 49 kr. (Stripe kommer snart) 🚀',elite:'Lynhurtig Salg – 199 kr. (Stripe kommer snart) ⚡'};toast(msgs[plan]);}
 
-function showPage(name){document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));document.getElementById('page-'+name).classList.add('active');const hideTop=['cat','chat','sell-picker','sell-form','detail'].includes(name);document.getElementById('topbar').style.display=hideTop?'none':'block';document.getElementById('subcat-bar').style.display=hideTop?'none':'flex';if(name==='messages')loadConvs();if(name==='buy')initBuyPage();if(name==='notifications'){notifs.forEach(n=>n.unread=false);updateBellDot();document.getElementById('notif-list').innerHTML=notifs.map(n=>`<div class="notif-item ${n.unread?'unread':''}"><div style="font-size:22px">${n.icon}</div><div><div style="font-weight:600;font-size:14px">${n.title}</div><div style="font-size:12px;color:var(--text3);margin-top:2px">${n.sub}</div></div></div>`).join('');}}
+function showPage(name){document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));document.getElementById('page-'+name).classList.add('active');const hideTop=['cat','chat','sell-picker','sell-form','detail'].includes(name);document.getElementById('topbar').style.display=hideTop?'none':'block';document.getElementById('subcat-bar').style.display=hideTop?'none':'flex';if(name==='messages')loadConvs();if(name==='buy-results'){};if(name==='notifications'){notifs.forEach(n=>n.unread=false);updateBellDot();document.getElementById('notif-list').innerHTML=notifs.map(n=>`<div class="notif-item ${n.unread?'unread':''}"><div style="font-size:22px">${n.icon}</div><div><div style="font-weight:600;font-size:14px">${n.title}</div><div style="font-size:12px;color:#999;margin-top:2px">${n.sub}</div></div></div>`).join('');}}
 function goPage(name,navId){showPage(name);document.querySelectorAll('.nav-item').forEach(i=>i.classList.remove('active'));if(navId)document.getElementById(navId)?.classList.add('active');}
 function requireAuth(page,navId){if(!me){toast('Log ind for at fortsætte');goPage('profile','nav-prof');return;}goPage(page,navId);}
 function toast(msg){const t=document.getElementById('toast');t.textContent=msg;t.classList.add('show');setTimeout(()=>t.classList.remove('show'),2500);}
