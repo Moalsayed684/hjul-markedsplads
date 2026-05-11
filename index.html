@@ -29,18 +29,15 @@
     .cat-icon-item.active{border-bottom-color:#8fbc5a;}
     .cat-icon-item.active .cat-icon-label{color:#8fbc5a;font-weight:700;}
     .cat-icon-label{font-size:12px;font-weight:500;color:#666;white-space:nowrap;}
-
-    /* IMAGE SUBCAT BAR */
     /* SUBCAT BAR */
-    .subcat-bar{display:flex;flex-direction:row;flex-wrap:nowrap;overflow-x:auto;overflow-y:hidden;scrollbar-width:none;-webkit-overflow-scrolling:touch;background:var(--bg);border-bottom:1px solid var(--border);padding:6px 8px;}
+    .subcat-bar{display:flex;flex-direction:row;flex-wrap:nowrap;overflow-x:auto;overflow-y:hidden;scrollbar-width:none;background:var(--bg);border-bottom:1px solid var(--border);padding:6px 8px;-webkit-overflow-scrolling:touch;}
     .subcat-bar::-webkit-scrollbar{display:none;}
-    .subcat-item{display:flex;flex-direction:column;align-items:center;gap:5px;padding:8px 12px;cursor:pointer;flex-shrink:0;border-radius:12px;transition:all 0.2s;min-width:68px;}
+    .subcat-item{display:flex;flex-direction:column;align-items:center;gap:5px;padding:8px 12px;cursor:pointer;flex:0 0 auto;border-radius:12px;transition:all 0.2s;min-width:68px;}
     .subcat-item.active{background:var(--bg2);}
     .subcat-item.active .subcat-label{color:#8fbc5a;font-weight:700;}
-    .subcat-svg{width:44px;height:44px;background:var(--bg2);border-radius:50%;display:flex;align-items:center;justify-content:center;}
+    .subcat-svg{width:40px;height:40px;background:var(--bg2);border-radius:50%;display:flex;align-items:center;justify-content:center;}
     .subcat-item.active .subcat-svg{background:#1a2a1a;}
     .subcat-label{font-size:10px;font-weight:500;color:#aaa;text-align:center;white-space:nowrap;}
-
     .page{display:none;}
     .page.active{display:block;animation:fadeUp 0.2s ease;}
     @keyframes fadeUp{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
@@ -82,7 +79,7 @@
     .sell-cat-btn:hover{border-color:#8fbc5a;}
     .sell-cat-icon{font-size:36px;}
     .sell-cat-name{font-weight:700;font-size:14px;text-align:center;}
-    .sell-cat-desc{font-size:11px;color:#f0f0f0;text-align:center;}
+    .sell-cat-desc{font-size:11px;color:#999;text-align:center;}
     .sell-form-wrap{padding:0 16px 20px;}
     .sell-form-header{display:flex;align-items:center;gap:10px;padding:14px 0 16px;}
     .sell-form-title{font-weight:800;font-size:20px;flex:1;}
@@ -103,7 +100,7 @@
     .brand-dropdown{display:none;position:absolute;top:100%;left:0;right:0;background:var(--bg2);border:1.5px solid #8fbc5a;border-radius:12px;margin-top:4px;max-height:200px;overflow-y:auto;z-index:200;box-shadow:0 8px 24px rgba(0,0,0,0.5);}
     .brand-option{padding:10px 14px;cursor:pointer;font-size:14px;border-bottom:1px solid #252525;transition:background 0.15s;}
     .brand-option:last-child{border-bottom:none;}
-    .brand-option:hover{background:var(--bg3);}
+    .brand-option:hover,.brand-option:active{background:var(--bg3);}
     .brand-option.highlight{color:#8fbc5a;font-weight:600;}
     .city-dropdown{display:none;background:var(--bg2);border:1.5px solid #8fbc5a;border-radius:12px;margin-top:4px;max-height:200px;overflow-y:auto;z-index:100;}
     .city-option{padding:10px 14px;cursor:pointer;font-size:14px;border-bottom:1px solid #252525;transition:background 0.15s;}
@@ -115,7 +112,7 @@
     .img-slot img{width:100%;height:100%;object-fit:cover;}
     .img-slot .plus{font-size:24px;color:#333;}
     .img-slot .remove-img{position:absolute;top:4px;right:4px;width:22px;height:22px;background:rgba(0,0,0,0.8);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:11px;color:#fff;cursor:pointer;border:none;z-index:2;}
-    .img-count{font-size:12px;color:#aaa;margin-top:6px;}
+    .img-count{font-size:12px;color:#999;margin-top:6px;}
     .main-img-badge{position:absolute;bottom:4px;left:4px;background:#8fbc5a;color:#111;font-size:9px;font-weight:700;padding:2px 6px;border-radius:50px;z-index:2;}
     .btn-primary{width:100%;background:#8fbc5a;color:#111;border:none;border-radius:50px;padding:15px;font-family:'Inter',sans-serif;font-weight:700;font-size:16px;cursor:pointer;margin-top:8px;}
     .btn-outline{width:100%;background:transparent;color:var(--text);border:1.5px solid #333;border-radius:50px;padding:13px;font-family:'Inter',sans-serif;font-weight:600;font-size:14px;cursor:pointer;margin-top:10px;}
@@ -136,11 +133,11 @@
     .detail-tag{background:var(--bg2);border:1px solid var(--border2);border-radius:50px;padding:6px 14px;font-size:13px;color:#ccc;}
     .stelnummer-box{background:#1a2a1a;border:1.5px solid #8fbc5a;border-radius:12px;padding:14px 16px;display:flex;align-items:center;gap:12px;}
     .stelnummer-val{font-size:16px;font-weight:700;color:#8fbc5a;letter-spacing:1px;font-family:monospace;}
+    .annonce-id{font-size:11px;color:#444;text-align:center;margin-bottom:10px;font-family:monospace;}
     .police-btn{width:100%;background:transparent;color:#e03030;border:1.5px solid #e03030;border-radius:50px;padding:13px;font-family:'Inter',sans-serif;font-weight:700;font-size:14px;cursor:pointer;}
     .seller-row{display:flex;align-items:center;gap:12px;background:var(--bg2);border-radius:14px;padding:14px;border:1px solid var(--border2);margin-bottom:16px;}
     .seller-avatar{width:44px;height:44px;border-radius:50%;background:var(--bg3);display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0;}
     .detail-desc{font-size:14px;color:#bbb;line-height:1.6;}
-    .annonce-id{font-size:11px;color:#444;text-align:center;margin-bottom:10px;font-family:monospace;}
     .msg-page{padding:16px;}
     .page-title{font-weight:700;font-size:20px;margin-bottom:14px;}
     .conv-item{display:flex;align-items:center;gap:12px;padding:12px;border-radius:14px;cursor:pointer;transition:background 0.15s;}
@@ -234,7 +231,7 @@
     .share-title{font-weight:700;font-size:16px;margin-bottom:16px;text-align:center;}
     .share-options{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:16px;}
     .share-option{display:flex;flex-direction:column;align-items:center;gap:8px;cursor:pointer;}
-    .share-option-icon{width:52px;height:52px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:24px;}
+    .share-option-icon{width:52px;height:52px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:24px;background:var(--bg3);}
     .share-option-label{font-size:10px;color:#bbb;text-align:center;}
     .share-copy-row{display:flex;align-items:center;gap:8px;background:var(--bg);border-radius:12px;padding:10px 14px;}
     .share-copy-url{flex:1;font-size:11px;color:#999;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-family:monospace;}
@@ -254,7 +251,6 @@
   </style>
 </head>
 <body>
-
 <div class="topbar" id="topbar">
   <div class="topbar-row">
     <div class="logo-text">Cykel<span>Hub</span></div>
@@ -280,117 +276,40 @@
   </div>
 </div>
 
-<!-- SUBCAT BAR - IMAGE CARDS -->
-<div class="<!-- SUBCAT BAR -->
+<!-- SUBCAT BAR -->
 <div class="subcat-bar" id="subcat-bar">
-
-  <!-- Bycykel - upright city bike with fender/rack -->
   <div class="subcat-item active" onclick="selectSubcat('bycykel',this)">
-    <div class="subcat-svg">
-      <svg width="36" height="36" viewBox="0 0 40 40" fill="none">
-        <circle cx="10" cy="28" r="7" stroke="#8fbc5a" stroke-width="2"/>
-        <circle cx="30" cy="28" r="7" stroke="#8fbc5a" stroke-width="2"/>
-        <path d="M10 28L16 14h10l4 10" stroke="#8fbc5a" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-        <path d="M16 14l12 14" stroke="#8fbc5a" stroke-width="2" stroke-linecap="round"/>
-        <path d="M7 14h8" stroke="#8fbc5a" stroke-width="2" stroke-linecap="round"/>
-        <path d="M14 10h6" stroke="#8fbc5a" stroke-width="2" stroke-linecap="round"/>
-        <path d="M8 20h6" stroke="#8fbc5a" stroke-width="1.5" stroke-linecap="round"/>
-      </svg>
-    </div>
+    <div class="subcat-svg"><svg width="24" height="24" viewBox="0 0 36 36" fill="none"><circle cx="9" cy="25" r="6" stroke="#8fbc5a" stroke-width="2"/><circle cx="27" cy="25" r="6" stroke="#8fbc5a" stroke-width="2"/><path d="M9 25L15 11h6l3 9M15 11l9 14" stroke="#8fbc5a" stroke-width="2" stroke-linecap="round"/><path d="M5 11h6" stroke="#8fbc5a" stroke-width="2" stroke-linecap="round"/></svg></div>
     <div class="subcat-label">Bycykel</div>
   </div>
-
-  <!-- Mountainbike - knobby tires, suspension fork -->
   <div class="subcat-item" onclick="selectSubcat('mountainbike',this)">
-    <div class="subcat-svg">
-      <svg width="36" height="36" viewBox="0 0 40 40" fill="none">
-        <circle cx="9" cy="28" r="7" stroke="#8fbc5a" stroke-width="2"/>
-        <circle cx="31" cy="28" r="7" stroke="#8fbc5a" stroke-width="2"/>
-        <path d="M9 28L15 12h8l4 12" stroke="#8fbc5a" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-        <path d="M15 12l14 16" stroke="#8fbc5a" stroke-width="2" stroke-linecap="round"/>
-        <path d="M4 23l5 2M36 23l-5 2" stroke="#8fbc5a" stroke-width="1.5" stroke-linecap="round"/>
-        <path d="M14 12l2-4h4" stroke="#8fbc5a" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-      </svg>
-    </div>
+    <div class="subcat-svg"><svg width="24" height="24" viewBox="0 0 36 36" fill="none"><circle cx="8" cy="25" r="6" stroke="#8fbc5a" stroke-width="2"/><circle cx="28" cy="25" r="6" stroke="#8fbc5a" stroke-width="2"/><path d="M8 25L14 11h7l4 10M14 11l12 14" stroke="#8fbc5a" stroke-width="2" stroke-linecap="round"/><path d="M3 20l5 2M33 20l-5 2" stroke="#8fbc5a" stroke-width="1.5" stroke-linecap="round"/></svg></div>
     <div class="subcat-label">Mountainbike</div>
   </div>
-
-  <!-- Racercykel - drop handlebars, slim tires -->
   <div class="subcat-item" onclick="selectSubcat('racercykel',this)">
-    <div class="subcat-svg">
-      <svg width="36" height="36" viewBox="0 0 40 40" fill="none">
-        <circle cx="9" cy="28" r="6" stroke="#8fbc5a" stroke-width="2"/>
-        <circle cx="31" cy="28" r="6" stroke="#8fbc5a" stroke-width="2"/>
-        <path d="M9 28L15 13h9l4 11" stroke="#8fbc5a" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-        <path d="M15 13l14 15" stroke="#8fbc5a" stroke-width="2" stroke-linecap="round"/>
-        <path d="M13 13c2-3 6-4 9-2" stroke="#8fbc5a" stroke-width="2" stroke-linecap="round"/>
-        <path d="M12 11c0 0 1-3 3-3" stroke="#8fbc5a" stroke-width="1.5" stroke-linecap="round"/>
-      </svg>
-    </div>
+    <div class="subcat-svg"><svg width="24" height="24" viewBox="0 0 36 36" fill="none"><circle cx="8" cy="25" r="6" stroke="#8fbc5a" stroke-width="2"/><circle cx="28" cy="25" r="6" stroke="#8fbc5a" stroke-width="2"/><path d="M8 25L14 12h8l3 9M14 12l12 13" stroke="#8fbc5a" stroke-width="2" stroke-linecap="round"/><path d="M12 12c2-3 6-4 8-2" stroke="#8fbc5a" stroke-width="1.5" stroke-linecap="round"/></svg></div>
     <div class="subcat-label">Racercykel</div>
   </div>
-
-  <!-- Damecykel - step-through frame (no top tube) -->
   <div class="subcat-item" onclick="selectSubcat('damecykel',this)">
-    <div class="subcat-svg">
-      <svg width="36" height="36" viewBox="0 0 40 40" fill="none">
-        <circle cx="10" cy="28" r="7" stroke="#8fbc5a" stroke-width="2"/>
-        <circle cx="30" cy="28" r="7" stroke="#8fbc5a" stroke-width="2"/>
-        <path d="M10 28L16 16h14" stroke="#8fbc5a" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-        <path d="M16 16l14 12" stroke="#8fbc5a" stroke-width="2" stroke-linecap="round"/>
-        <path d="M10 28L20 16" stroke="#8fbc5a" stroke-width="1.5" stroke-linecap="round"/>
-        <circle cx="23" cy="11" r="2.5" stroke="#8fbc5a" stroke-width="1.5"/>
-      </svg>
-    </div>
+    <div class="subcat-svg"><svg width="24" height="24" viewBox="0 0 36 36" fill="none"><circle cx="9" cy="25" r="6" stroke="#8fbc5a" stroke-width="2"/><circle cx="27" cy="25" r="6" stroke="#8fbc5a" stroke-width="2"/><path d="M9 25L15 15h12M15 15l12 10" stroke="#8fbc5a" stroke-width="2" stroke-linecap="round"/><circle cx="22" cy="10" r="2" stroke="#8fbc5a" stroke-width="1.5"/></svg></div>
     <div class="subcat-label">Damecykel</div>
   </div>
-
-  <!-- Børnecykel - small wheels, training wheels suggestion -->
   <div class="subcat-item" onclick="selectSubcat('børnecykel',this)">
-    <div class="subcat-svg">
-      <svg width="36" height="36" viewBox="0 0 40 40" fill="none">
-        <circle cx="12" cy="28" r="6" stroke="#8fbc5a" stroke-width="2"/>
-        <circle cx="28" cy="28" r="6" stroke="#8fbc5a" stroke-width="2"/>
-        <path d="M12 28L17 16h8l3 9" stroke="#8fbc5a" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-        <path d="M17 16l11 12" stroke="#8fbc5a" stroke-width="2" stroke-linecap="round"/>
-        <circle cx="20" cy="10" r="3" stroke="#8fbc5a" stroke-width="1.5"/>
-        <path d="M8 32h4M28 32h4" stroke="#8fbc5a" stroke-width="1.5" stroke-linecap="round"/>
-      </svg>
-    </div>
+    <div class="subcat-svg"><svg width="24" height="24" viewBox="0 0 36 36" fill="none"><circle cx="11" cy="26" r="5" stroke="#8fbc5a" stroke-width="2"/><circle cx="25" cy="26" r="5" stroke="#8fbc5a" stroke-width="2"/><path d="M11 26L16 14h7l2 8M16 14l9 12" stroke="#8fbc5a" stroke-width="2" stroke-linecap="round"/><circle cx="18" cy="8" r="2.5" stroke="#8fbc5a" stroke-width="1.5"/></svg></div>
     <div class="subcat-label">Børnecykel</div>
   </div>
-
-  <!-- El-cykel - bike with lightning bolt battery -->
-  <div class="subcat-item" onclick="selectSubcat('elcykel',this)">
-    <div class="subcat-svg">
-      <svg width="36" height="36" viewBox="0 0 40 40" fill="none">
-        <circle cx="9" cy="28" r="7" stroke="#8fbc5a" stroke-width="2"/>
-        <circle cx="31" cy="28" r="7" stroke="#8fbc5a" stroke-width="2"/>
-        <path d="M9 28L15 13h9l4 12" stroke="#8fbc5a" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-        <path d="M15 13l14 15" stroke="#8fbc5a" stroke-width="2" stroke-linecap="round"/>
-        <path d="M24 6l-3 5h4l-3 5" stroke="#f0c040" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-      </svg>
-    </div>
-    <div class="subcat-label">El-cykel</div>
-  </div>
-
-  <!-- Ladcykel - cargo box at front/back -->
   <div class="subcat-item" onclick="selectSubcat('ladcykel',this)">
-    <div class="subcat-svg">
-      <svg width="36" height="36" viewBox="0 0 40 40" fill="none">
-        <circle cx="7" cy="30" r="5" stroke="#8fbc5a" stroke-width="2"/>
-        <circle cx="33" cy="30" r="5" stroke="#8fbc5a" stroke-width="2"/>
-        <rect x="9" y="14" width="20" height="12" rx="2" stroke="#8fbc5a" stroke-width="2"/>
-        <path d="M29 20l4 5M11 26l-4 4" stroke="#8fbc5a" stroke-width="1.5" stroke-linecap="round"/>
-        <path d="M13 14v-3h14v3" stroke="#8fbc5a" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-      </svg>
-    </div>
+    <div class="subcat-svg"><svg width="24" height="24" viewBox="0 0 36 36" fill="none"><circle cx="7" cy="27" r="5" stroke="#8fbc5a" stroke-width="2"/><circle cx="29" cy="27" r="5" stroke="#8fbc5a" stroke-width="2"/><rect x="9" y="12" width="18" height="11" rx="2" stroke="#8fbc5a" stroke-width="2"/><path d="M27 18l2 4M9 23l-2 4" stroke="#8fbc5a" stroke-width="1.5" stroke-linecap="round"/></svg></div>
     <div class="subcat-label">Ladcykel</div>
   </div>
-
+  <div class="subcat-item" onclick="selectSubcat('elladcykel',this)">
+    <div class="subcat-svg"><svg width="24" height="24" viewBox="0 0 36 36" fill="none"><circle cx="7" cy="27" r="5" stroke="#8fbc5a" stroke-width="2"/><circle cx="29" cy="27" r="5" stroke="#8fbc5a" stroke-width="2"/><rect x="9" y="13" width="18" height="10" rx="2" stroke="#8fbc5a" stroke-width="2"/><path d="M27 18l2 4M9 23l-2 4" stroke="#8fbc5a" stroke-width="1.5" stroke-linecap="round"/><path d="M20 8l-2 4h3l-2 4" stroke="#f0c040" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+    <div class="subcat-label">El-ladcykel</div>
+  </div>
 </div>
 
-active">
+<!-- HOME -->
+<div id="page-home" class="page active">
   <div class="section-title">Seneste annoncer</div>
   <div class="listings-grid" id="home-listings"></div>
 </div>
@@ -414,16 +333,8 @@ active">
     <div class="sell-picker-title">Hvad vil du sælge?</div>
     <div class="sell-picker-sub">Vælg kategori for at starte</div>
     <div class="sell-cat-grid">
-      <div class="sell-cat-btn" onclick="openSellForm('cykler')">
-        <div class="sell-cat-icon">🚲</div>
-        <div class="sell-cat-name">Cykel</div>
-        <div class="sell-cat-desc">Alle typer cykler</div>
-      </div>
-      <div class="sell-cat-btn" onclick="openSellForm('elcykler')">
-        <div class="sell-cat-icon">⚡</div>
-        <div class="sell-cat-name">El-cykel</div>
-        <div class="sell-cat-desc">Elektriske cykler</div>
-      </div>
+      <div class="sell-cat-btn" onclick="openSellForm('cykler')"><div class="sell-cat-icon">🚲</div><div class="sell-cat-name">Cykel</div><div class="sell-cat-desc">Alle typer cykler</div></div>
+      <div class="sell-cat-btn" onclick="openSellForm('elcykler')"><div class="sell-cat-icon">⚡</div><div class="sell-cat-name">El-cykel</div><div class="sell-cat-desc">Elektriske cykler</div></div>
     </div>
   </div>
 </div>
@@ -533,13 +444,11 @@ active">
     <div class="sell-cat-grid">
       <div class="sell-cat-btn" onclick="openBuyFilter('cykler')">
         <div class="sell-cat-icon"><svg width="52" height="40" viewBox="0 0 36 28" fill="none"><circle cx="7" cy="21" r="6" stroke="#8fbc5a" stroke-width="2"/><circle cx="29" cy="21" r="6" stroke="#8fbc5a" stroke-width="2"/><path d="M7 21L13 7h8l4 10M13 7l12 14M20 14h6" stroke="#8fbc5a" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
-        <div class="sell-cat-name">Cykler</div>
-        <div class="sell-cat-desc">Søg og filtrer cykler</div>
+        <div class="sell-cat-name">Cykler</div><div class="sell-cat-desc">Søg og filtrer cykler</div>
       </div>
       <div class="sell-cat-btn" onclick="openBuyFilter('elcykler')">
         <div class="sell-cat-icon"><svg width="52" height="40" viewBox="0 0 36 28" fill="none"><circle cx="7" cy="21" r="6" stroke="#8fbc5a" stroke-width="2"/><circle cx="29" cy="21" r="6" stroke="#8fbc5a" stroke-width="2"/><path d="M7 21L13 7h8l4 10M13 7l12 14" stroke="#8fbc5a" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><path d="M22 2l-3 5h4l-3 5" stroke="#f0c040" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
-        <div class="sell-cat-name">El-cykler</div>
-        <div class="sell-cat-desc">Søg og filtrer el-cykler</div>
+        <div class="sell-cat-name">El-cykler</div><div class="sell-cat-desc">Søg og filtrer el-cykler</div>
       </div>
     </div>
   </div>
@@ -673,12 +582,10 @@ active">
     <div style="font-size:12px;color:#999;margin-bottom:20px;">Sidst opdateret: 07-05-2026</div>
     <div style="font-weight:700;font-size:16px;margin-bottom:8px;">1. Hvem er vi?</div>
     <div style="font-size:14px;color:#bbb;line-height:1.7;margin-bottom:16px;">CykelHub er en dansk markedsplads for køb og salg af cykler og el-cykler.</div>
-    <div style="font-weight:700;font-size:16px;margin-bottom:8px;">2. Hvilke data indsamler vi?</div>
-    <div style="font-size:14px;color:#bbb;line-height:1.7;margin-bottom:16px;">• Navn og e-mailadresse<br>• Annonceinformation<br>• Beskeder via platformen<br>• Tekniske data (IP-adresse)</div>
-    <div style="font-weight:700;font-size:16px;margin-bottom:8px;">3. Dine rettigheder (GDPR)</div>
-    <div style="font-size:14px;color:#bbb;line-height:1.7;margin-bottom:16px;">• Indsigt i dine oplysninger<br>• Ret forkerte oplysninger<br>• Slet dine oplysninger<br>• Klage til Datatilsynet (datatilsynet.dk)</div>
-    <div style="font-weight:700;font-size:16px;margin-bottom:8px;">4. Kontakt</div>
-    <div style="font-size:14px;color:#bbb;line-height:1.7;margin-bottom:16px;">📧 malsayed516@gmail.com</div>
+    <div style="font-weight:700;font-size:16px;margin-bottom:8px;">2. Dine rettigheder (GDPR)</div>
+    <div style="font-size:14px;color:#bbb;line-height:1.7;margin-bottom:16px;">• Indsigt · Ret fejl · Slet oplysninger · Klage til Datatilsynet</div>
+    <div style="font-weight:700;font-size:16px;margin-bottom:8px;">3. Kontakt</div>
+    <div style="font-size:14px;color:#bbb;line-height:1.7;">📧 malsayed516@gmail.com</div>
   </div>
 </div>
 
@@ -687,12 +594,10 @@ active">
   <div class="profile-wrap">
     <div style="display:flex;align-items:center;gap:10px;margin-bottom:20px;"><button class="back-btn" onclick="goPage('settings')">←</button><div style="font-weight:800;font-size:20px;">Vilkår og betingelser</div></div>
     <div style="font-size:12px;color:#999;margin-bottom:20px;">Sidst opdateret: 07-05-2026</div>
-    <div style="font-weight:700;font-size:16px;margin-bottom:8px;">1. Brug af platformen</div>
-    <div style="font-size:14px;color:#bbb;line-height:1.7;margin-bottom:16px;">Det er ikke tilladt at sælge stjålne cykler, oprette falske annoncer eller chikanere andre brugere.</div>
-    <div style="font-weight:700;font-size:16px;margin-bottom:8px;">2. Priser og betaling</div>
-    <div style="font-size:14px;color:#bbb;line-height:1.7;margin-bottom:16px;">• Gratis: Op til 5 annoncer i 30 dage<br>• Premium boost: 49 kr. pr. annonce<br>• Lynhurtig Salg: 199 kr. pr. annonce<br>• CykelHub tager 3-5% commission ved salg</div>
-    <div style="font-weight:700;font-size:16px;margin-bottom:8px;">3. Kontakt</div>
-    <div style="font-size:14px;color:#bbb;line-height:1.7;margin-bottom:16px;">📧 malsayed516@gmail.com</div>
+    <div style="font-weight:700;font-size:16px;margin-bottom:8px;">Priser</div>
+    <div style="font-size:14px;color:#bbb;line-height:1.7;margin-bottom:16px;">Gratis: 5 annoncer · Premium: 49 kr. · Lynhurtig: 199 kr. · Commission: 3-5%</div>
+    <div style="font-weight:700;font-size:16px;margin-bottom:8px;">Kontakt</div>
+    <div style="font-size:14px;color:#bbb;line-height:1.7;">📧 malsayed516@gmail.com</div>
   </div>
 </div>
 
@@ -731,15 +636,9 @@ active">
 <div class="drawer-overlay" id="drawer-overlay" onclick="closeFilter()"></div>
 <div class="filter-drawer" id="filter-drawer">
   <div class="drawer-handle"></div>
-  <div class="drawer-head">
-    <div class="drawer-title" id="drawer-title">Filter</div>
-    <button onclick="closeFilter()" style="width:34px;height:34px;background:var(--bg3);border:none;border-radius:50%;display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:18px;color:#8fbc5a;">←</button>
-  </div>
+  <div class="drawer-head"><div class="drawer-title" id="drawer-title">Filter</div><button onclick="closeFilter()" style="width:34px;height:34px;background:var(--bg3);border:none;border-radius:50%;display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:18px;color:#8fbc5a;">←</button></div>
   <div class="drawer-body" id="drawer-body"></div>
-  <div class="drawer-footer">
-    <button class="btn-reset" onclick="resetFilters()">Nulstil</button>
-    <button class="btn-apply" onclick="applyFilters()">Vis resultater</button>
-  </div>
+  <div class="drawer-footer"><button class="btn-reset" onclick="resetFilters()">Nulstil</button><button class="btn-apply" onclick="applyFilters()">Vis resultater</button></div>
 </div>
 
 <!-- SHARE DRAWER -->
@@ -752,15 +651,10 @@ active">
     <div class="share-option" onclick="shareVia('whatsapp')"><div class="share-option-icon" style="background:#25D366;"><svg width="26" height="26" viewBox="0 0 24 24" fill="white"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 0 1-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 0 1-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 0 1 2.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0 0 12.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 0 0 5.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 0 0-3.48-8.413z"/></svg></div><div class="share-option-label">WhatsApp</div></div>
     <div class="share-option" onclick="shareVia('telegram')"><div class="share-option-icon" style="background:#0088cc;"><svg width="26" height="26" viewBox="0 0 24 24" fill="white"><path d="M11.944 0A12 12 0 0 0 0 12a12 12 0 0 0 12 12 12 12 0 0 0 12-12A12 12 0 0 0 12 0a12 12 0 0 0-.056 0zm4.962 7.224c.1-.002.321.023.465.14a.506.506 0 0 1 .171.325c.016.093.036.306.02.472-.18 1.898-.962 6.502-1.36 8.627-.168.9-.499 1.201-.82 1.23-.696.065-1.225-.46-1.9-.902-1.056-.693-1.653-1.124-2.678-1.8-1.185-.78-.417-1.21.258-1.91.177-.184 3.247-2.977 3.307-3.23.007-.032.014-.15-.056-.212s-.174-.041-.249-.024c-.106.024-1.793 1.14-5.061 3.345-.48.33-.913.49-1.302.48-.428-.008-1.252-.241-1.865-.44-.752-.245-1.349-.374-1.297-.789.027-.216.325-.437.893-.663 3.498-1.524 5.83-2.529 6.998-3.014 3.332-1.386 4.025-1.627 4.476-1.635z"/></svg></div><div class="share-option-label">Telegram</div></div>
     <div class="share-option" onclick="shareVia('facebook')"><div class="share-option-icon" style="background:#1877F2;"><svg width="26" height="26" viewBox="0 0 24 24" fill="white"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg></div><div class="share-option-label">Facebook</div></div>
-    <div class="share-option" onclick="shareVia('messenger')"><div class="share-option-icon" style="background:linear-gradient(135deg,#00B2FF,#006AFF,#7B2FBE);"><svg width="26" height="26" viewBox="0 0 24 24" fill="white"><path d="M12 0C5.373 0 0 4.975 0 11.111c0 3.497 1.745 6.616 4.472 8.652V24l4.086-2.242c1.09.301 2.246.464 3.442.464 6.627 0 12-4.975 12-11.111C24 4.975 18.627 0 12 0zm1.193 14.963l-3.056-3.259-5.963 3.259 6.559-6.963 3.13 3.259 5.889-3.259-6.559 6.963z"/></svg></div><div class="share-option-label">Messenger</div></div>
-    <div class="share-option" onclick="shareVia('snapchat')"><div class="share-option-icon" style="background:#FFFC00;"><svg width="26" height="26" viewBox="0 0 24 24" fill="black"><path d="M12.206.793c.99 0 4.347.276 5.93 3.821.529 1.193.403 3.219.299 4.847l-.003.06c-.012.18-.022.345-.03.51.075.045.203.09.401.09.3-.016.659-.12 1.033-.301.165-.088.344-.104.464-.104.182 0 .359.029.509.09.45.149.734.479.734.838.015.449-.39.839-1.213 1.168-.089.029-.209.075-.344.119-.45.135-1.139.36-1.333.81-.09.224-.061.524.12.868l.015.015c.06.136 1.526 3.475 4.791 4.014.255.044.435.27.42.509 0 .075-.015.149-.045.225-.24.569-1.273.988-3.146 1.271-.059.091-.12.375-.164.57-.029.179-.074.36-.134.553-.076.271-.27.405-.555.405h-.03c-.135 0-.313-.031-.538-.074-.36-.075-.765-.135-1.273-.135-.3 0-.599.015-.913.074-.6.104-1.123.464-1.723.884-.853.599-1.826 1.288-3.294 1.288-.06 0-.119-.015-.18-.015h-.149c-1.468 0-2.427-.675-3.279-1.288-.599-.42-1.107-.779-1.707-.884-.314-.045-.629-.074-.928-.074-.54 0-.958.089-1.272.149-.211.043-.391.074-.54.074-.374 0-.523-.224-.583-.42-.061-.192-.09-.389-.135-.567-.046-.181-.105-.494-.166-.57-1.918-.222-2.95-.642-3.189-1.226-.031-.075-.046-.15-.046-.225-.015-.243.165-.465.42-.509 3.264-.54 4.73-3.879 4.791-4.02l.016-.029c.18-.345.224-.645.119-.869-.195-.434-.884-.658-1.332-.809-.121-.029-.24-.074-.346-.119-1.107-.435-1.257-.93-1.197-1.273.09-.479.674-.793 1.168-.793.146 0 .27.029.383.074.42.194.789.3 1.104.3.234 0 .384-.06.465-.105l-.046-.569c-.098-1.626-.225-3.651.307-4.837C7.392 1.077 10.739.807 11.727.807l.419-.015h.06z"/></svg></div><div class="share-option-label">Snapchat</div></div>
     <div class="share-option" onclick="shareVia('email')"><div class="share-option-icon" style="background:#EA4335;"><svg width="26" height="26" viewBox="0 0 24 24" fill="white"><path d="M24 5.457v13.909c0 .904-.732 1.636-1.636 1.636h-3.819V11.73L12 16.64l-6.545-4.91v9.273H1.636A1.636 1.636 0 0 1 0 19.366V5.457c0-2.023 2.309-3.178 3.927-1.964L5.455 4.64 12 9.548l6.545-4.91 1.528-1.145C21.69 2.28 24 3.434 24 5.457z"/></svg></div><div class="share-option-label">E-mail</div></div>
     <div class="share-option" onclick="copyLink()"><div class="share-option-icon" style="background:#555;"><svg width="26" height="26" viewBox="0 0 24 24" fill="white"><path d="M16 1H4c-1.1 0-2 .9-2 2v14h2V3h12V1zm3 4H8c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h11c1.1 0 2-.9 2-2V7c0-1.1-.9-2-2-2zm0 16H8V7h11v14z"/></svg></div><div class="share-option-label">Kopiér link</div></div>
   </div>
-  <div class="share-copy-row">
-    <div class="share-copy-url" id="share-url"></div>
-    <button class="share-copy-btn" onclick="copyLink()">Kopiér</button>
-  </div>
+  <div class="share-copy-row"><div class="share-copy-url" id="share-url"></div><button class="share-copy-btn" onclick="copyLink()">Kopiér</button></div>
 </div>
 
 <div class="toast" id="toast"></div>
@@ -768,9 +662,7 @@ active">
 <script>
 const sb=supabase.createClient('https://bwrycgbkebrujcwyvtax.supabase.co','sb_publishable_3h4REcIB9w-AYGx3MgJx6w_k0iTJ5Tz');
 let me=null,chatId=null,activeCat='alle',activeFilters={},currentSellCat='',detailId=null,detailFrom='home',uploadedImgs=[],shareListingId=null,activeBuyCat='cykler';
-
 const photos={cykler:['https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=400&q=80','https://images.unsplash.com/photo-1507035895480-2b3156c31fc8?w=400&q=80','https://images.unsplash.com/photo-1571333250630-f0230c320b6d?w=400&q=80'],elcykler:['https://images.unsplash.com/photo-1571068316344-75bc76f77890?w=400&q=80','https://images.unsplash.com/photo-1616870370130-b82c4b5bade4?w=400&q=80','https://images.unsplash.com/photo-1619445787897-dbb8b021e0f4?w=400&q=80']};
-
 let allListings=[
   {id:1,title:'Trek Marlin 7',price:'3.500 kr.',city:'København',cat:'cykler',img:photos.cykler[0],stelnummer:'TK123456789',type:'Mountainbike',brand:'Trek',year:'2021',color:'Sort',condition:'God stand'},
   {id:2,title:'Giant Escape 3',price:'1.800 kr.',city:'Aarhus',cat:'cykler',img:photos.cykler[1],stelnummer:'GI987654321',type:'Hybrid',brand:'Giant',year:'2020',color:'Blå',condition:'God stand'},
@@ -778,109 +670,70 @@ let allListings=[
   {id:4,title:'Specialized Turbo Como',price:'12.000 kr.',city:'Aarhus',cat:'elcykler',img:photos.elcykler[0],stelnummer:'SP112233445',type:'City',brand:'Specialized',year:'2022',color:'Sort',condition:'God stand'},
   {id:5,title:'Winora Sinus N8f',price:'9.500 kr.',city:'Randers',cat:'elcykler',img:photos.elcykler[1],type:'City',brand:'Winora',year:'2021',color:'Grå',condition:'Brugt'},
 ];
-
 const sellFields={cykler:{title:'🚲 Sælg din cykel',fields:[{id:'type',label:'Type',type:'chips',opts:['Mountainbike','Racercykel','Damecykel','Herrecykel','Børnecykel','Hybrid','BMX','Gravel','Ladcykel','Anden']},{id:'brand',label:'Mærke',type:'brand'},{id:'model',label:'Model',type:'input',placeholder:'fx. Marlin 7'},{id:'year',label:'Årgang',type:'input',placeholder:'fx. 2021',inputType:'number'},{id:'color',label:'Farve',type:'chips',opts:['Sort','Hvid','Rød','Blå','Grøn','Grå','Orange','Gul','Lilla','Andet']},{id:'wheel',label:'Hjulstørrelse',type:'chips',opts:['20"','24"','26"','27.5"','28"','29"','700c']},{id:'frame',label:'Rammestørrelse',type:'chips',opts:['XS (≤48cm)','S (49-52cm)','M (53-56cm)','L (57-60cm)','XL (≥61cm)']},{id:'material',label:'Rammemateriale',type:'chips',opts:['Aluminium','Carbon','Stål','Titan']},{id:'gears',label:'Antal gear',type:'chips',opts:['1 gear','3 gear','7 gear','8 gear','11 gear','21 gear','27 gear']},{id:'condition',label:'Stand',type:'chips',opts:['Ny (ubrugt)','Som ny','God stand','Brugt','Til reparation']}]},elcykler:{title:'⚡ Sælg din el-cykel',fields:[{id:'type',label:'Type',type:'chips',opts:['City / Trekking','Mountainbike','Cargo','Folde','Speed Pedelec (45km/h)','Ladcykel','Anden']},{id:'brand',label:'Mærke',type:'brand'},{id:'model',label:'Model',type:'input',placeholder:'fx. Sinus N8f'},{id:'year',label:'Årgang',type:'input',placeholder:'fx. 2022',inputType:'number'},{id:'color',label:'Farve',type:'chips',opts:['Sort','Hvid','Grå','Blå','Grøn','Rød','Andet']},{id:'motor',label:'Motor mærke',type:'chips',opts:['Bosch','Shimano','Yamaha','Bafang','Panasonic','Andet']},{id:'battery',label:'Batteri',type:'chips',opts:['Under 300Wh','300-400Wh','400-500Wh','500-625Wh','625Wh+']},{id:'range',label:'Rækkevidde',type:'chips',opts:['Under 40 km','40-70 km','70-100 km','100+ km']},{id:'kmdriven',label:'Km kørt',type:'input',placeholder:'fx. 1500',inputType:'number'},{id:'condition',label:'Stand',type:'chips',opts:['Ny (ubrugt)','Som ny','God stand','Brugt']}]}};
-
-const cyklerBrands=['Trek','Giant','Specialized','Cannondale','Scott','Cube','Bianchi','Merida','Canyon','Focus','Orbea','Raleigh','Batavus','Gazelle','Sparta','Kildemoes','Pegasus','Winora','Kalkhoff','BMC','Felt','Fuji','GT','Kona','Marin','Santa Cruz','Yeti','Brompton','Tern','Dahon','Peugeot','Decathlon','Lapierre','Atala','Wilier','Eddy Merckx','Ridley','Cervelo','Nihola','Christiania','Bullitt','Anden'];
-const elCyklerBrands=['Specialized','Trek','Giant','Cube','Kalkhoff','Winora','Gazelle','Sparta','Raleigh','Cannondale','Scott','Merida','Focus','Haibike','Stromer','Riese & Müller','Tern','Bulls','KTM','Moustache','Stevens','Batavus','Cortina','Kildemoes','Pegasus','Decathlon','Anden'];
-
+const cyklerBrands=['Trek','Giant','Specialized','Cannondale','Scott','Cube','Bianchi','Merida','Canyon','Focus','Orbea','Raleigh','Batavus','Gazelle','Sparta','Kildemoes','Pegasus','Winora','Kalkhoff','BMC','Felt','Fuji','GT','Kona','Marin','Santa Cruz','Yeti','Brompton','Tern','Dahon','Peugeot','Decathlon','Lapierre','Eddy Merckx','Ridley','Cervelo','Nihola','Christiania','Bullitt','Anden'];
+const elCyklerBrands=['Specialized','Trek','Giant','Cube','Kalkhoff','Winora','Gazelle','Sparta','Raleigh','Cannondale','Scott','Merida','Focus','Haibike','Stromer','Riese & Müller','Tern','Bulls','KTM','Moustache','Batavus','Cortina','Kildemoes','Pegasus','Decathlon','Anden'];
 const filterDefs={cykler:{title:'🚲 Filter – Cykler',sections:[{id:'distance',type:'range',label:'Max afstand',unit:'km',min:1,max:400,default:50},{id:'type',type:'chips',label:'Type',opts:['Mountainbike','Racercykel','Damecykel','Herrecykel','Børnecykel','Hybrid','BMX','Gravel','Ladcykel','Anden']},{id:'price',type:'chips',label:'Pris',opts:['Under 1.000 kr.','1-3.000 kr.','3-7.000 kr.','7.000+ kr.']},{id:'wheel',type:'chips',label:'Hjulstørrelse',opts:['20"','24"','26"','27.5"','28"','29"','700c']},{id:'frame',type:'chips',label:'Rammestørrelse',opts:['XS','S','M','L','XL']},{id:'gears',type:'chips',label:'Antal gear',opts:['1 gear','3 gear','7 gear','21 gear','27 gear']},{id:'condition',type:'chips',label:'Stand',opts:['Ny','God stand','Brugt']},{id:'stelnummer',type:'toggle',label:'Kun med stelnummer'}]},elcykler:{title:'⚡ Filter – El-cykler',sections:[{id:'distance',type:'range',label:'Max afstand',unit:'km',min:1,max:400,default:50},{id:'type',type:'chips',label:'Type',opts:['City','MTB','Cargo','Folde','Speed Pedelec','Ladcykel','Anden']},{id:'price',type:'chips',label:'Pris',opts:['Under 5.000 kr.','5-10.000 kr.','10-20.000 kr.','20.000+ kr.']},{id:'motor',type:'chips',label:'Motor',opts:['Bosch','Shimano','Yamaha','Bafang']},{id:'battery',type:'chips',label:'Batteri',opts:['Under 400Wh','400-500Wh','500-625Wh','625Wh+']},{id:'condition',type:'chips',label:'Stand',opts:['Ny','God stand','Brugt']},{id:'stelnummer',type:'toggle',label:'Kun med stelnummer'}]}};
-
 const notifs=[{icon:'💬',title:'Besked fra Anders',sub:'Er cyklen stadig til salg?',unread:true}];
 const ads=[{logo:'🚲',brand:'Trek Danmark',desc:'Officiel Trek forhandler.',cta:'Se tilbud →',img:'https://images.unsplash.com/photo-1571333250630-f0230c320b6d?w=600&q=80'}];
-
-const danishCities=[{zip:'1000',city:'København K'},{zip:'1550',city:'København V'},{zip:'1800',city:'Frederiksberg C'},{zip:'2000',city:'Frederiksberg'},{zip:'2100',city:'København Ø'},{zip:'2200',city:'København N'},{zip:'2300',city:'København S'},{zip:'2400',city:'København NV'},{zip:'2450',city:'København SV'},{zip:'2500',city:'Valby'},{zip:'2600',city:'Glostrup'},{zip:'2605',city:'Brøndby'},{zip:'2610',city:'Rødovre'},{zip:'2620',city:'Albertslund'},{zip:'2630',city:'Taastrup'},{zip:'2635',city:'Ishøj'},{zip:'2650',city:'Hvidovre'},{zip:'2670',city:'Greve'},{zip:'2700',city:'Brønshøj'},{zip:'2720',city:'Vanløse'},{zip:'2730',city:'Herlev'},{zip:'2750',city:'Ballerup'},{zip:'2770',city:'Kastrup'},{zip:'2791',city:'Dragør'},{zip:'2800',city:'Kongens Lyngby'},{zip:'2820',city:'Gentofte'},{zip:'2830',city:'Virum'},{zip:'2840',city:'Holte'},{zip:'2860',city:'Søborg'},{zip:'2900',city:'Hellerup'},{zip:'2920',city:'Charlottenlund'},{zip:'2950',city:'Vedbæk'},{zip:'2970',city:'Hørsholm'},{zip:'2990',city:'Nivå'},{zip:'3000',city:'Helsingør'},{zip:'3050',city:'Humlebæk'},{zip:'3060',city:'Espergærde'},{zip:'3100',city:'Hornbæk'},{zip:'3200',city:'Helsinge'},{zip:'3250',city:'Gilleleje'},{zip:'3300',city:'Frederiksværk'},{zip:'3400',city:'Hillerød'},{zip:'3450',city:'Allerød'},{zip:'3460',city:'Birkerød'},{zip:'3480',city:'Fredensborg'},{zip:'3500',city:'Værløse'},{zip:'3520',city:'Farum'},{zip:'3550',city:'Slangerup'},{zip:'3600',city:'Frederikssund'},{zip:'3650',city:'Ølstykke'},{zip:'3700',city:'Rønne'},{zip:'3720',city:'Aakirkeby'},{zip:'3730',city:'Nexø'},{zip:'3770',city:'Allinge'},{zip:'4000',city:'Roskilde'},{zip:'4100',city:'Ringsted'},{zip:'4180',city:'Sorø'},{zip:'4200',city:'Slagelse'},{zip:'4220',city:'Korsør'},{zip:'4300',city:'Holbæk'},{zip:'4400',city:'Kalundborg'},{zip:'4500',city:'Nykøbing Sjælland'},{zip:'4600',city:'Køge'},{zip:'4640',city:'Faxe'},{zip:'4700',city:'Næstved'},{zip:'4760',city:'Vordingborg'},{zip:'4800',city:'Nykøbing F'},{zip:'4900',city:'Nakskov'},{zip:'4930',city:'Maribo'},{zip:'4970',city:'Rødby'},{zip:'4990',city:'Sakskøbing'},{zip:'5000',city:'Odense C'},{zip:'5200',city:'Odense V'},{zip:'5210',city:'Odense NV'},{zip:'5220',city:'Odense SØ'},{zip:'5230',city:'Odense M'},{zip:'5240',city:'Odense NØ'},{zip:'5250',city:'Odense SV'},{zip:'5260',city:'Odense S'},{zip:'5270',city:'Odense N'},{zip:'5300',city:'Kerteminde'},{zip:'5400',city:'Bogense'},{zip:'5450',city:'Otterup'},{zip:'5500',city:'Middelfart'},{zip:'5550',city:'Langeskov'},{zip:'5600',city:'Faaborg'},{zip:'5610',city:'Assens'},{zip:'5700',city:'Svendborg'},{zip:'5750',city:'Ringe'},{zip:'5800',city:'Nyborg'},{zip:'5900',city:'Rudkøbing'},{zip:'6000',city:'Kolding'},{zip:'6100',city:'Haderslev'},{zip:'6200',city:'Aabenraa'},{zip:'6400',city:'Sønderborg'},{zip:'6700',city:'Esbjerg'},{zip:'6760',city:'Ribe'},{zip:'6800',city:'Varde'},{zip:'6900',city:'Skjern'},{zip:'6950',city:'Ringkøbing'},{zip:'7000',city:'Fredericia'},{zip:'7100',city:'Vejle'},{zip:'7200',city:'Grindsted'},{zip:'7400',city:'Herning'},{zip:'7430',city:'Ikast'},{zip:'7500',city:'Holstebro'},{zip:'7600',city:'Struer'},{zip:'7620',city:'Lemvig'},{zip:'7700',city:'Thisted'},{zip:'7800',city:'Skive'},{zip:'7900',city:'Nykøbing M'},{zip:'8000',city:'Aarhus C'},{zip:'8200',city:'Aarhus N'},{zip:'8210',city:'Aarhus V'},{zip:'8220',city:'Brabrand'},{zip:'8230',city:'Åbyhøj'},{zip:'8240',city:'Risskov'},{zip:'8260',city:'Viby J'},{zip:'8270',city:'Højbjerg'},{zip:'8300',city:'Odder'},{zip:'8310',city:'Tranbjerg J'},{zip:'8362',city:'Hørning'},{zip:'8370',city:'Hadsten'},{zip:'8382',city:'Hinnerup'},{zip:'8400',city:'Ebeltoft'},{zip:'8410',city:'Rønde'},{zip:'8450',city:'Hammel'},{zip:'8500',city:'Grenaa'},{zip:'8520',city:'Lystrup'},{zip:'8543',city:'Hornslet'},{zip:'8600',city:'Silkeborg'},{zip:'8660',city:'Skanderborg'},{zip:'8680',city:'Ry'},{zip:'8700',city:'Horsens'},{zip:'8800',city:'Viborg'},{zip:'8850',city:'Bjerringbro'},{zip:'8900',city:'Randers C'},{zip:'8920',city:'Randers NV'},{zip:'9000',city:'Aalborg'},{zip:'9200',city:'Aalborg SV'},{zip:'9210',city:'Aalborg SØ'},{zip:'9220',city:'Aalborg Øst'},{zip:'9240',city:'Nibe'},{zip:'9300',city:'Sæby'},{zip:'9400',city:'Nørresundby'},{zip:'9440',city:'Aabybro'},{zip:'9500',city:'Hobro'},{zip:'9520',city:'Skørping'},{zip:'9530',city:'Støvring'},{zip:'9600',city:'Aars'},{zip:'9700',city:'Brønderslev'},{zip:'9800',city:'Hjørring'},{zip:'9850',city:'Hirtshals'},{zip:'9900',city:'Frederikshavn'},{zip:'9990',city:'Skagen'}];
+const danishCities=[{zip:'1000',city:'København K'},{zip:'1550',city:'København V'},{zip:'1800',city:'Frederiksberg C'},{zip:'2000',city:'Frederiksberg'},{zip:'2100',city:'København Ø'},{zip:'2200',city:'København N'},{zip:'2300',city:'København S'},{zip:'2400',city:'København NV'},{zip:'2450',city:'København SV'},{zip:'2500',city:'Valby'},{zip:'2600',city:'Glostrup'},{zip:'2605',city:'Brøndby'},{zip:'2610',city:'Rødovre'},{zip:'2620',city:'Albertslund'},{zip:'2630',city:'Taastrup'},{zip:'2650',city:'Hvidovre'},{zip:'2670',city:'Greve'},{zip:'2700',city:'Brønshøj'},{zip:'2720',city:'Vanløse'},{zip:'2730',city:'Herlev'},{zip:'2750',city:'Ballerup'},{zip:'2800',city:'Kongens Lyngby'},{zip:'2820',city:'Gentofte'},{zip:'2900',city:'Hellerup'},{zip:'3000',city:'Helsingør'},{zip:'3400',city:'Hillerød'},{zip:'3450',city:'Allerød'},{zip:'3460',city:'Birkerød'},{zip:'4000',city:'Roskilde'},{zip:'4100',city:'Ringsted'},{zip:'4200',city:'Slagelse'},{zip:'4300',city:'Holbæk'},{zip:'4600',city:'Køge'},{zip:'4700',city:'Næstved'},{zip:'5000',city:'Odense C'},{zip:'5200',city:'Odense V'},{zip:'5500',city:'Middelfart'},{zip:'5700',city:'Svendborg'},{zip:'6000',city:'Kolding'},{zip:'6100',city:'Haderslev'},{zip:'6200',city:'Aabenraa'},{zip:'6400',city:'Sønderborg'},{zip:'6700',city:'Esbjerg'},{zip:'7000',city:'Fredericia'},{zip:'7100',city:'Vejle'},{zip:'7400',city:'Herning'},{zip:'7500',city:'Holstebro'},{zip:'8000',city:'Aarhus C'},{zip:'8200',city:'Aarhus N'},{zip:'8210',city:'Aarhus V'},{zip:'8600',city:'Silkeborg'},{zip:'8700',city:'Horsens'},{zip:'8800',city:'Viborg'},{zip:'8900',city:'Randers C'},{zip:'9000',city:'Aalborg'},{zip:'9400',city:'Nørresundby'},{zip:'9800',city:'Hjørring'},{zip:'9900',city:'Frederikshavn'},{zip:'9990',city:'Skagen'}];
 
 function toggleTheme(){const b=document.body,t=document.getElementById('theme-toggle'),l=b.classList.toggle('light-mode');if(t)t.classList.toggle('on',l);localStorage.setItem('theme',l?'light':'dark');}
 function loadTheme(){const s=localStorage.getItem('theme');if(s==='light'){document.body.classList.add('light-mode');const t=document.getElementById('theme-toggle');if(t)t.classList.add('on');}}
-
 function filterEditCities(val){const dd=document.getElementById('edit-city-dropdown');if(!val||val.length<2){dd.style.display='none';return;}const f=danishCities.filter(c=>c.city.toLowerCase().includes(val.toLowerCase())||c.zip.startsWith(val)).slice(0,8);if(!f.length){dd.style.display='none';return;}dd.style.display='block';dd.innerHTML=f.map(c=>'<div class="city-option" onclick="selectEditCity(\''+c.zip+' '+c.city+'\')"><span style="color:#8fbc5a;font-weight:700;font-family:monospace;">'+c.zip+'</span> '+c.city+'</div>').join('');}
 function selectEditCity(val){document.getElementById('edit-city').value=val;document.getElementById('edit-city-dropdown').style.display='none';}
-
 function handleAvatarUpload(e){const file=e.target.files[0];if(!file)return;const r=new FileReader();r.onload=ev=>{const a=document.getElementById('edit-avatar');a.innerHTML='<img src="'+ev.target.result+'" style="width:100%;height:100%;object-fit:cover;">';localStorage.setItem('avatar',ev.target.result);};r.readAsDataURL(file);e.target.value='';}
-
 function saveProfile(){const fn=document.getElementById('edit-firstname').value.trim(),ln=document.getElementById('edit-lastname').value.trim(),city=document.getElementById('edit-city').value.trim(),phone=document.getElementById('edit-phone').value.trim();if(!fn||!ln){const el=document.getElementById('edit-profile-msg');el.textContent='Udfyld fornavn og efternavn';el.className='msg-box err';return;}localStorage.setItem('profile',JSON.stringify({firstname:fn,lastname:ln,city,phone}));document.getElementById('p-name').textContent=fn+' '+ln;toast('Profil gemt! ✅');goPage('profile','nav-prof');}
-
 function loadProfile(){const s=localStorage.getItem('profile');if(s){const p=JSON.parse(s);if(document.getElementById('edit-firstname'))document.getElementById('edit-firstname').value=p.firstname||'';if(document.getElementById('edit-lastname'))document.getElementById('edit-lastname').value=p.lastname||'';if(document.getElementById('edit-city'))document.getElementById('edit-city').value=p.city||'';if(document.getElementById('edit-phone'))document.getElementById('edit-phone').value=p.phone||'';}const av=localStorage.getItem('avatar');if(av){const el=document.getElementById('edit-avatar');if(el)el.innerHTML='<img src="'+av+'" style="width:100%;height:100%;object-fit:cover;">';}}
-
 async function init(){loadTheme();const{data:{session}}=await sb.auth.getSession();if(session)setUser(session.user);sb.auth.onAuthStateChange((_,s)=>s?setUser(s.user):clearUser());renderHome(allListings);updateBellDot();for(let i=0;i<6;i++){const s=document.getElementById('slot-'+i);if(s)s.onclick=()=>document.getElementById('file-input').click();}}
-
 function setUser(u){me=u;document.getElementById('p-name').textContent=u.user_metadata?.name||u.email.split('@')[0];document.getElementById('p-email').textContent=u.email;document.getElementById('auth-section').style.display='none';document.getElementById('profile-section').style.display='block';}
 function clearUser(){me=null;document.getElementById('auth-section').style.display='block';document.getElementById('profile-section').style.display='none';}
-
 function listingCard(l){return`<div class="listing-card" onclick="openListing(${l.id})">${l.img?`<img src="${l.img}" alt="${l.title}" loading="lazy">`:'<div class="listing-img-ph">🚲</div>'}${l.plan==='premium'?'<div class="premium-badge">⭐ Premium</div>':''}<button class="heart-btn" onclick="event.stopPropagation();this.classList.toggle('liked');this.textContent=this.classList.contains('liked')?'♥':'♡'">♡</button><div class="listing-info"><div class="listing-title">${l.title}</div><div class="listing-price">${l.price}</div><div class="listing-loc">📍 ${l.city}</div></div></div>`;}
-
 function adCard(a){return`<div class="ad-card"><div class="ad-badge">Sponsoreret</div><img class="ad-img" src="${a.img}"><div class="ad-inner"><div class="ad-logo">${a.logo}</div><div><div class="ad-brand">${a.brand}</div><div class="ad-desc">${a.desc}</div><div class="ad-cta">${a.cta}</div></div></div></div>`;}
-
 function renderHome(items){const el=document.getElementById('home-listings');if(!items.length){el.innerHTML='<div class="empty"><div class="e-icon">🚲</div><p>Ingen annoncer</p></div>';return;}let html='';items.forEach((l,i)=>{html+=listingCard(l);if((i+1)%10===0&&ads[Math.floor((i+1)/10)-1])html+=adCard(ads[Math.floor((i+1)/10)-1]);});el.innerHTML=html;}
-
 function handleSearch(val){renderHome(!val.trim()?allListings:allListings.filter(l=>l.title.toLowerCase().includes(val.toLowerCase())||l.city.toLowerCase().includes(val.toLowerCase())));}
-
 function selectCat(cat,el){document.querySelectorAll('.cat-icon-item').forEach(t=>t.classList.remove('active'));el.classList.add('active');renderHome(allListings);showPage('home');}
-
-function selectSubcat(subcat,el){document.querySelectorAll('.subcat-item').forEach(i=>i.classList.remove('active'));el.classList.add('active');if(subcat==='elcykel'){renderHome(allListings.filter(l=>l.cat==='elcykler'));}else{const map={bycykel:'Bycykel',mountainbike:'Mountainbike',racercykel:'Racercykel',damecykel:'Damecykel',børnecykel:'Børnecykel',ladcykel:'Ladcykel'};const t=map[subcat];if(t)renderHome(allListings.filter(l=>l.type===t));else renderHome(allListings);}showPage('home');}
-
+function selectSubcat(subcat,el){document.querySelectorAll('.subcat-item').forEach(i=>i.classList.remove('active'));el.classList.add('active');if(subcat==='elladcykel'){renderHome(allListings.filter(l=>l.cat==='elcykler'));}else{const map={bycykel:'Bycykel',mountainbike:'Mountainbike',racercykel:'Racercykel',damecykel:'Damecykel',børnecykel:'Børnecykel',ladcykel:'Ladcykel'};const t=map[subcat];if(t)renderHome(allListings.filter(l=>l.type===t));else renderHome(allListings);}showPage('home');}
 function openCatPage(cat){activeCat=cat;activeFilters={};const titles={cykler:'🚲 Cykler',elcykler:'⚡ El-cykler'};document.getElementById('cat-page-title').textContent=titles[cat];document.getElementById('filter-open-btn').classList.remove('has-filters');document.getElementById('filter-open-btn').textContent='⚙️ Filter';const items=allListings.filter(l=>l.cat===cat);document.getElementById('results-count').textContent=items.length+' annoncer';document.getElementById('cat-listings').innerHTML=items.length?items.map(l=>listingCard(l)).join(''):'<div class="empty"><div class="e-icon">🔍</div><p>Ingen annoncer</p></div>';showPage('cat');}
-
 function goBackHome(){document.getElementById('topbar').style.display='block';document.getElementById('subcat-bar').style.display='flex';showPage('home');document.querySelectorAll('.nav-item').forEach((i,idx)=>i.classList.toggle('active',idx===0));}
-
-function openListing(id){const l=allListings.find(x=>x.id===id);if(!l)return;detailId=id;detailFrom=document.querySelector('.page.active')?.id?.replace('page-','')||'home';document.getElementById('detail-header-title').textContent=l.title;document.getElementById('detail-title').textContent=l.title;document.getElementById('detail-price').textContent=l.price;document.getElementById('detail-loc').textContent='📍 '+l.city;document.getElementById('detail-img-wrap').innerHTML=l.img?`<img src="${l.img}" alt="${l.title}">`:'<div class="detail-img-ph">🚲</div>';const stelSec=document.getElementById('detail-stel-section');if(l.stelnummer){stelSec.style.display='block';document.getElementById('detail-stel-val').textContent=l.stelnummer;}else stelSec.style.display='none';const specs=[];if(l.type)specs.push(l.type);if(l.brand)specs.push(l.brand);if(l.model)specs.push(l.model);if(l.year)specs.push(l.year);if(l.color)specs.push(l.color);if(l.condition)specs.push(l.condition);const spSec=document.getElementById('detail-specs-section');if(specs.length){spSec.style.display='block';document.getElementById('detail-specs').innerHTML=specs.map(s=>`<div class="detail-tag">${s}</div>`).join('');}else spSec.style.display='none';const dSec=document.getElementById('detail-desc-section');if(l.desc){dSec.style.display='block';document.getElementById('detail-desc-txt').textContent=l.desc;}else dSec.style.display='none';document.getElementById('detail-seller').textContent=l.seller||'Privat sælger';const callBtn=document.getElementById('call-btn');if(callBtn)callBtn.style.display=l.phone?'flex':'none';const aid='#'+String(l.id).slice(-6).padStart(6,'0');document.getElementById('detail-annonce-id').textContent='Annonce ID: '+aid;showPage('detail');}
-
+function openListing(id){const l=allListings.find(x=>x.id===id);if(!l)return;detailId=id;detailFrom=document.querySelector('.page.active')?.id?.replace('page-','')||'home';document.getElementById('detail-header-title').textContent=l.title;document.getElementById('detail-title').textContent=l.title;document.getElementById('detail-price').textContent=l.price;document.getElementById('detail-loc').textContent='📍 '+l.city;document.getElementById('detail-img-wrap').innerHTML=l.img?`<img src="${l.img}" alt="${l.title}">`:'<div class="detail-img-ph">🚲</div>';const stelSec=document.getElementById('detail-stel-section');if(l.stelnummer){stelSec.style.display='block';document.getElementById('detail-stel-val').textContent=l.stelnummer;}else stelSec.style.display='none';const specs=[];if(l.type)specs.push(l.type);if(l.brand)specs.push(l.brand);if(l.year)specs.push(l.year);if(l.color)specs.push(l.color);if(l.condition)specs.push(l.condition);const spSec=document.getElementById('detail-specs-section');if(specs.length){spSec.style.display='block';document.getElementById('detail-specs').innerHTML=specs.map(s=>`<div class="detail-tag">${s}</div>`).join('');}else spSec.style.display='none';const dSec=document.getElementById('detail-desc-section');if(l.desc){dSec.style.display='block';document.getElementById('detail-desc-txt').textContent=l.desc;}else dSec.style.display='none';document.getElementById('detail-seller').textContent=l.seller||'Privat sælger';const callBtn=document.getElementById('call-btn');if(callBtn)callBtn.style.display=l.phone?'flex':'none';const aid='#'+String(l.id).slice(-6).padStart(6,'0');document.getElementById('detail-annonce-id').textContent='Annonce ID: '+aid;showPage('detail');}
 function goDetailBack(){showPage(detailFrom);if(detailFrom==='cat'){document.getElementById('topbar').style.display='none';document.getElementById('subcat-bar').style.display='none';}else{document.getElementById('topbar').style.display='block';document.getElementById('subcat-bar').style.display='flex';}}
-
 function callSeller(){const l=allListings.find(x=>x.id===detailId);if(!l||!l.phone)return;window.location.href='tel:'+l.phone;}
 function contactSeller(){if(!me){toast('Log ind for at kontakte sælger');goPage('profile','nav-prof');return;}const l=allListings.find(x=>x.id===detailId);document.getElementById('chat-name').textContent='Sælger';document.getElementById('chat-sub').textContent=l?'om: '+l.title:'';showPage('chat');loadChat('l'+detailId);}
-
-function openSellForm(cat){currentSellCat=cat;uploadedImgs=[];updateImgGrid();const def=sellFields[cat];document.getElementById('sell-form-title').textContent=def.title;document.getElementById('sf-stelnummer').value='';document.getElementById('sell-title').value='';document.getElementById('sell-price').value='';document.getElementById('sell-city').value='';document.getElementById('sell-desc').value='';let html='';def.fields.forEach(f=>{html+='<div class="form-group"><label class="form-label">'+f.label+'</label>';if(f.type==='brand'){html+='<div class="brand-wrap"><div class="brand-input-row"><input type="text" id="sf-brand-input" placeholder="Søg eller vælg mærke..."><div class="brand-arrow" id="sf-brand-arrow">▼</div></div><div class="brand-dropdown" id="sf-brand-dropdown"></div><input type="hidden" id="sf-brand"></div>';}else if(f.type==='input'){html+='<input class="form-input" type="'+(f.inputType||'text')+'" id="sf-'+f.id+'" placeholder="'+(f.placeholder||'')+'">';}else if(f.type==='chips'){const ch=f.opts.map(o=>'<div class="chip-opt" onclick="toggleChipOpt(this,\'sf-'+f.id+'\')">'+o+'</div>').join('');html+='<div class="chip-group">'+ch+'</div><input type="hidden" id="sf-'+f.id+'">';}html+='</div>';});document.getElementById('dynamic-fields').innerHTML=html;setTimeout(()=>initBrandDropdown('sf-brand',cat),50);showPage('sell-form');}
-
+function openSellForm(cat){currentSellCat=cat;uploadedImgs=[];updateImgGrid();const def=sellFields[cat];document.getElementById('sell-form-title').textContent=def.title;document.getElementById('sf-stelnummer').value='';document.getElementById('sell-title').value='';document.getElementById('sell-price').value='';document.getElementById('sell-city').value='';document.getElementById('sell-desc').value='';let html='';def.fields.forEach(f=>{html+='<div class="form-group"><label class="form-label">'+f.label+'</label>';if(f.type==='brand'){html+='<div class="brand-wrap"><div class="brand-input-row"><input type="text" id="sf-brand-input" placeholder="Søg eller vælg mærke..."><div class="brand-arrow" id="sf-brand-arrow">▼</div></div><div class="brand-dropdown" id="sf-brand-dropdown"></div><input type="hidden" id="sf-brand"></div>';}else if(f.type==='input'){html+='<input class="form-input" type="'+(f.inputType||'text')+'" id="sf-'+f.id+'" placeholder="'+(f.placeholder||'')+'">'; }else if(f.type==='chips'){const ch=f.opts.map(o=>'<div class="chip-opt" onclick="toggleChipOpt(this,\'sf-'+f.id+'\')">'+o+'</div>').join('');html+='<div class="chip-group">'+ch+'</div><input type="hidden" id="sf-'+f.id+'">';}html+='</div>';});document.getElementById('dynamic-fields').innerHTML=html;setTimeout(()=>initBrandDropdown('sf-brand',cat),50);showPage('sell-form');}
 function toggleChipOpt(el,inputId){el.parentElement.querySelectorAll('.chip-opt').forEach(c=>c.classList.remove('sel'));el.classList.add('sel');document.getElementById(inputId).value=el.textContent;}
-
 function initBrandDropdown(fieldId,cat){const brands=cat==='elcykler'?elCyklerBrands:cyklerBrands;const input=document.getElementById(fieldId+'-input');const dropdown=document.getElementById(fieldId+'-dropdown');const hidden=document.getElementById(fieldId);if(!input||!dropdown)return;function showDD(filter){const filtered=filter?brands.filter(b=>b.toLowerCase().includes(filter.toLowerCase())):brands;dropdown.innerHTML=filtered.map(b=>'<div class="brand-option'+(b==='Anden'?' highlight':'')+'" onclick="selectBrand(\''+fieldId+'\',\''+b+'\')">'+b+'</div>').join('');dropdown.style.display=filtered.length?'block':'none';}input.addEventListener('input',()=>{hidden.value=input.value;showDD(input.value);});input.addEventListener('focus',()=>showDD(input.value));document.addEventListener('click',e=>{if(!input.closest('.brand-wrap').contains(e.target))dropdown.style.display='none';});const arrow=document.getElementById(fieldId+'-arrow');if(arrow)arrow.addEventListener('click',()=>{dropdown.style.display=dropdown.style.display==='block'?'none':(showDD(input.value),'block');});}
-
 function selectBrand(fieldId,brand){document.getElementById(fieldId+'-input').value=brand;document.getElementById(fieldId).value=brand;document.getElementById(fieldId+'-dropdown').style.display='none';}
-
 function handleImgUpload(e){const file=e.target.files[0];if(!file)return;if(uploadedImgs.length>=6){toast('Max 6 billeder');return;}const r=new FileReader();r.onload=ev=>{uploadedImgs.push({file,url:ev.target.result});updateImgGrid();};r.readAsDataURL(file);e.target.value='';}
-
 function updateImgGrid(){for(let i=0;i<6;i++){const slot=document.getElementById('slot-'+i);if(!slot)continue;if(uploadedImgs[i]){slot.classList.add('filled');slot.innerHTML=`<img src="${uploadedImgs[i].url}"><button class="remove-img" onclick="event.stopPropagation();removeImg(${i})">✕</button>${i===0?'<div class="main-img-badge">Forside</div>':''}`;slot.onclick=null;}else{slot.classList.remove('filled');slot.innerHTML='<span class="plus">+</span>';slot.onclick=()=>document.getElementById('file-input').click();}}}
-
 function removeImg(i){uploadedImgs.splice(i,1);updateImgGrid();}
-
 function submitListing(){if(!me){toast('Log ind for at oprette annonce');goPage('profile','nav-prof');return;}const title=document.getElementById('sell-title').value.trim(),price=document.getElementById('sell-price').value,city=document.getElementById('sell-city').value.trim();if(!title||!price||!city){const el=document.getElementById('sell-msg');el.textContent='Udfyld titel, pris og by';el.className='msg-box err';return;}const img=uploadedImgs.length>0?uploadedImgs[0].url:(photos[currentSellCat]||photos.cykler)[Math.floor(Math.random()*3)];const stelnummer=document.getElementById('sf-stelnummer')?.value.trim()||'';const desc=document.getElementById('sell-desc')?.value.trim()||'';const brand=document.getElementById('sf-brand')?.value||'';const type=document.getElementById('sf-type')?.value||'';const savedProfile=JSON.parse(localStorage.getItem('profile')||'{}');allListings.unshift({id:Date.now(),title,price:price+' kr.',city,cat:currentSellCat,img,stelnummer,desc,brand,type,seller:me.user_metadata?.name||me.email.split('@')[0],phone:savedProfile.phone||''});renderHome(allListings);toast('Annonce oprettet! 🎉');goPage('home','nav-home');}
-
 function filterCities(val){const dd=document.getElementById('city-dropdown');if(!val||val.length<2){dd.style.display='none';return;}const f=danishCities.filter(c=>c.city.toLowerCase().includes(val.toLowerCase())||c.zip.startsWith(val)).slice(0,8);if(!f.length){dd.style.display='none';return;}dd.style.display='block';dd.innerHTML=f.map(c=>'<div class="city-option" onclick="selectCity(\''+c.zip+' '+c.city+'\')"><span style="color:#8fbc5a;font-weight:700;font-family:monospace;">'+c.zip+'</span> '+c.city+'</div>').join('');}
 function selectCity(val){document.getElementById('sell-city').value=val;document.getElementById('city-dropdown').style.display='none';}
-
 function filterSignupCities(val){const dd=document.getElementById('signup-city-dropdown');if(!val||val.length<2){dd.style.display='none';return;}const f=danishCities.filter(c=>c.city.toLowerCase().includes(val.toLowerCase())||c.zip.startsWith(val)).slice(0,8);if(!f.length){dd.style.display='none';return;}dd.style.display='block';dd.innerHTML=f.map(c=>'<div class="city-option" onclick="selectSignupCity(\''+c.zip+' '+c.city+'\')"><span style="color:#8fbc5a;font-weight:700;font-family:monospace;">'+c.zip+'</span> '+c.city+'</div>').join('');}
 function selectSignupCity(val){document.getElementById('s-city').value=val;document.getElementById('signup-city-dropdown').style.display='none';}
-
 function openBuyFilter(cat){activeBuyCat=cat;const titles={cykler:'🚲 Cykler',elcykler:'⚡ El-cykler'};document.getElementById('buy-results-title').textContent=titles[cat];document.getElementById('buy-filter-btn').textContent='⚙️ Filter';document.getElementById('buy-filter-btn').classList.remove('has-filters');renderBuyResults(allListings.filter(l=>l.cat===cat));showPage('buy-results');}
 function renderBuyResults(items){document.getElementById('buy-results-count').textContent=items.length+' annoncer';document.getElementById('buy-results-listings').innerHTML=items.length?items.map(l=>listingCard(l)).join(''):'<div class="empty"><div class="e-icon">🔍</div><p>Ingen annoncer</p></div>';}
 function openBuyFilterDrawer(){const def=filterDefs[activeBuyCat];if(!def)return;document.getElementById('drawer-title').textContent=def.title;document.getElementById('drawer-body').innerHTML=def.sections.map(s=>buildSection(s)).join('');document.querySelector('.btn-apply').onclick=applyBuyFilters;document.getElementById('filter-drawer').classList.add('open');document.getElementById('drawer-overlay').classList.add('open');}
-function applyBuyFilters(){closeFilter();const btn=document.getElementById('buy-filter-btn');btn.textContent='⚙️ Filter';renderBuyResults(allListings.filter(l=>l.cat===activeBuyCat));toast('Filter anvendt ✓');}
-
+function applyBuyFilters(){closeFilter();renderBuyResults(allListings.filter(l=>l.cat===activeBuyCat));toast('Filter anvendt ✓');}
 function openFilter(){const def=filterDefs[activeCat];if(!def)return;document.getElementById('drawer-title').textContent=def.title;document.getElementById('drawer-body').innerHTML=def.sections.map(s=>buildSection(s)).join('');document.querySelector('.btn-apply').onclick=applyFilters;document.getElementById('filter-drawer').classList.add('open');document.getElementById('drawer-overlay').classList.add('open');}
-
 function buildSection(s){if(s.type==='range'){const val=activeFilters[s.id]||s.default;return`<div class="fsection"><div class="fsection-title">${s.label}</div><div class="map-visual"><div class="map-ring" style="width:50px;height:50px;opacity:0.5"></div><div class="map-ring" style="width:100px;height:100px;opacity:0.3"></div><div class="map-ring" style="width:150px;height:150px;opacity:0.15"></div><div class="map-pin">📍</div></div><div class="range-cur" id="rv-${s.id}">${val} ${s.unit}</div><div class="range-labels"><span>${s.min} ${s.unit}</span><span>${s.max} ${s.unit}</span></div><input type="range" min="${s.min}" max="${s.max}" value="${val}" oninput="updRange('${s.id}',this.value,'${s.unit}')"></div>`;}if(s.type==='chips'){const sel=activeFilters[s.id]||[];return`<div class="fsection"><div class="fsection-title">${s.label}</div><div class="fchips">${s.opts.map(o=>`<div class="fchip ${sel.includes(o)?'sel':''}" onclick="togChip(this,'${s.id}')">${o}</div>`).join('')}</div></div>`;}if(s.type==='toggle'){const on=activeFilters[s.id]||false;return`<div class="fsection"><div class="ftoggle-row"><span class="ftoggle-label">${s.label}</span><div class="tgsw ${on?'on':''}" id="tg-${s.id}" onclick="togSw('${s.id}')"></div></div></div>`;}return'';}
-
 function updRange(id,val,unit){document.getElementById('rv-'+id).textContent=val+' '+unit;activeFilters[id]=parseInt(val);}
 function togChip(el,id){el.classList.toggle('sel');if(!activeFilters[id])activeFilters[id]=[];const v=el.textContent;activeFilters[id]=el.classList.contains('sel')?[...activeFilters[id],v]:activeFilters[id].filter(x=>x!==v);}
 function togSw(id){const el=document.getElementById('tg-'+id);el.classList.toggle('on');activeFilters[id]=el.classList.contains('on');}
 function closeFilter(){document.getElementById('filter-drawer').classList.remove('open');document.getElementById('drawer-overlay').classList.remove('open');}
-function resetFilters(){activeFilters={};openFilter();document.getElementById('filter-open-btn').classList.remove('has-filters');document.getElementById('filter-open-btn').textContent='⚙️ Filter';}
+function resetFilters(){activeFilters={};openFilter();}
 function applyFilters(){closeFilter();const hasAny=Object.values(activeFilters).some(v=>Array.isArray(v)?v.length>0:v!==false&&v!==undefined);const btn=document.getElementById('filter-open-btn');btn.classList.toggle('has-filters',hasAny);btn.textContent=hasAny?'✓ Filter':'⚙️ Filter';const items=allListings.filter(l=>l.cat===activeCat);document.getElementById('results-count').textContent=items.length+' annoncer';document.getElementById('cat-listings').innerHTML=items.map(l=>listingCard(l)).join('');toast('Filter anvendt ✓');}
-
 function openShareDrawer(){const l=allListings.find(x=>x.id===detailId);if(!l)return;shareListingId=detailId;const url='https://thunderous-bienenstitch-fd830e.netlify.app?annonce='+detailId;document.getElementById('share-url').textContent=url;document.getElementById('share-overlay').classList.add('open');document.getElementById('share-drawer').classList.add('open');}
 function closeShareDrawer(){document.getElementById('share-overlay').classList.remove('open');document.getElementById('share-drawer').classList.remove('open');}
-function shareVia(platform){const l=allListings.find(x=>x.id===shareListingId);if(!l)return;const url='https://thunderous-bienenstitch-fd830e.netlify.app?annonce='+shareListingId;const text=l.title+' - '+l.price+' - CykelHub';const links={sms:'sms:?body='+encodeURIComponent(text+' '+url),email:'mailto:?subject='+encodeURIComponent(l.title+' på CykelHub')+'&body='+encodeURIComponent(text+'\n\n'+url),facebook:'https://www.facebook.com/sharer/sharer.php?u='+encodeURIComponent(url),whatsapp:'https://api.whatsapp.com/send?text='+encodeURIComponent(text+' '+url),telegram:'https://t.me/share/url?url='+encodeURIComponent(url)+'&text='+encodeURIComponent(text),messenger:'fb-messenger://share/?link='+encodeURIComponent(url),snapchat:'https://www.snapchat.com/scan?attachmentUrl='+encodeURIComponent(url)};window.open(links[platform],'_blank');closeShareDrawer();}
+function shareVia(platform){const l=allListings.find(x=>x.id===shareListingId);if(!l)return;const url='https://thunderous-bienenstitch-fd830e.netlify.app?annonce='+shareListingId;const text=l.title+' - '+l.price+' - CykelHub';const links={sms:'sms:?body='+encodeURIComponent(text+' '+url),email:'mailto:?subject='+encodeURIComponent(l.title+' på CykelHub')+'&body='+encodeURIComponent(text+'\n\n'+url),facebook:'https://www.facebook.com/sharer/sharer.php?u='+encodeURIComponent(url),whatsapp:'https://api.whatsapp.com/send?text='+encodeURIComponent(text+' '+url),telegram:'https://t.me/share/url?url='+encodeURIComponent(url)+'&text='+encodeURIComponent(text)};window.open(links[platform],'_blank');closeShareDrawer();}
 function copyLink(){const url=document.getElementById('share-url').textContent;navigator.clipboard.writeText(url).then(()=>{toast('Link kopieret! 🔗');closeShareDrawer();}).catch(()=>toast('Link kopieret!'));}
-
 function loadChat(id){chatId=id;drawMsgs(JSON.parse(localStorage.getItem('ch_'+id)||'[]'));}
 function drawMsgs(msgs){const el=document.getElementById('chat-msgs');if(!msgs.length){el.innerHTML='<div style="text-align:center;padding:30px;color:#333;font-size:13px">Start samtalen 👇</div>';return;}el.innerHTML=msgs.map(m=>`<div style="display:flex;flex-direction:column;align-items:${m.s?'flex-end':'flex-start'}"><div class="bubble ${m.s?'sent':'recv'}">${m.t}</div><div class="btime" style="align-self:${m.s?'flex-end':'flex-start'}">${m.ts}</div></div>`).join('');el.scrollTop=el.scrollHeight;}
 function sendMsg(){const inp=document.getElementById('chat-inp'),t=inp.value.trim();if(!t||!chatId)return;const msgs=JSON.parse(localStorage.getItem('ch_'+chatId)||'[]');const ts=new Date().toLocaleTimeString('da',{hour:'2-digit',minute:'2-digit'});msgs.push({t,s:true,ts});localStorage.setItem('ch_'+chatId,JSON.stringify(msgs));inp.value='';drawMsgs(msgs);setTimeout(()=>{msgs.push({t:'Tak for din besked! Jeg vender tilbage hurtigst muligt 😊',s:false,ts});localStorage.setItem('ch_'+chatId,JSON.stringify(msgs));drawMsgs(msgs);notifs.unshift({icon:'💬',title:'Ny besked',sub:'Du har fået svar',unread:true});updateBellDot();},1200);}
 function loadConvs(){const el=document.getElementById('conv-list');if(!me){el.innerHTML='<div style="text-align:center;padding:40px;color:#333">Log ind for at se beskeder</div>';return;}el.innerHTML='<div class="conv-item" onclick="openConv(\'c1\',\'Anders Nielsen\')"><div class="conv-avatar">👤</div><div class="conv-info"><div class="conv-name">Anders Nielsen</div><div class="conv-preview">Er cyklen stadig til salg?</div></div><div style="display:flex;flex-direction:column;align-items:flex-end;gap:6px"><div class="conv-time">12:30</div><div class="unread-dot"></div></div></div>';}
 function openConv(id,name){document.getElementById('chat-name').textContent=name;document.getElementById('chat-sub').textContent='Privat besked';showPage('chat');loadChat(id);}
 function updateBellDot(){document.getElementById('bell-dot').classList.toggle('on',notifs.some(n=>n.unread));}
-
 function switchTab(tab){document.querySelectorAll('.auth-tab').forEach((t,i)=>t.classList.toggle('active',(i===0&&tab==='login')||(i===1&&tab==='signup')));document.getElementById('f-login').style.display=tab==='login'?'block':'none';document.getElementById('f-signup').style.display=tab==='signup'?'block':'none';document.getElementById('f-forgot').style.display='none';clearMsg();}
 function showForgot(){document.getElementById('f-login').style.display='none';document.getElementById('f-forgot').style.display='block';document.querySelectorAll('.auth-tab').forEach(t=>t.classList.remove('active'));}
 async function doLogin(){const email=document.getElementById('l-email').value.trim(),pass=document.getElementById('l-pass').value;if(!email||!pass){setMsg('Udfyld alle felter','err');return;}const{error}=await sb.auth.signInWithPassword({email,password:pass});if(error)setMsg(error.message,'err');else{toast('Velkommen tilbage! 👋');goPage('home','nav-home');}}
@@ -889,14 +742,11 @@ async function doReset(){const email=document.getElementById('r-email').value.tr
 async function doLogout(){await sb.auth.signOut();toast('Du er nu logget ud');goPage('home','nav-home');}
 function setMsg(m,type){const el=document.getElementById('auth-msg');el.textContent=m;el.className='msg-box '+type;}
 function clearMsg(){const el=document.getElementById('auth-msg');el.className='msg-box';el.textContent='';}
-
 function selectPlan(plan){if(!me){toast('Log ind for at vælge en plan');goPage('profile','nav-prof');return;}const msgs={gratis:'Du bruger Gratis planen ✓',premium:'Premium – 49 kr. (Stripe kommer snart) 🚀',elite:'Lynhurtig Salg – 199 kr. (Stripe kommer snart) ⚡'};toast(msgs[plan]);}
-
-function showPage(name){document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));document.getElementById('page-'+name).classList.add('active');const hideTop=['cat','chat','sell-picker','sell-form','detail'].includes(name);document.getElementById('topbar').style.display=hideTop?'none':'block';document.getElementById('subcat-bar').style.display=hideTop?'none':(['buy','buy-results'].includes(name)?'none':'flex');if(name==='messages')loadConvs();if(name==='edit-profile')loadProfile();if(name==='notifications'){notifs.forEach(n=>n.unread=false);updateBellDot();document.getElementById('notif-list').innerHTML=notifs.map(n=>`<div class="notif-item ${n.unread?'unread':''}"><div style="font-size:22px">${n.icon}</div><div><div style="font-weight:600;font-size:14px">${n.title}</div><div style="font-size:12px;color:#999;margin-top:2px">${n.sub}</div></div></div>`).join('');}}
+function showPage(name){document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));document.getElementById('page-'+name).classList.add('active');const hideTop=['cat','chat','sell-picker','sell-form','detail'].includes(name);document.getElementById('topbar').style.display=hideTop?'none':'block';document.getElementById('subcat-bar').style.display=hideTop?'none':'flex';if(name==='messages')loadConvs();if(name==='edit-profile')loadProfile();if(name==='notifications'){notifs.forEach(n=>n.unread=false);updateBellDot();document.getElementById('notif-list').innerHTML=notifs.map(n=>`<div class="notif-item ${n.unread?'unread':''}"><div style="font-size:22px">${n.icon}</div><div><div style="font-weight:600;font-size:14px">${n.title}</div><div style="font-size:12px;color:#999;margin-top:2px">${n.sub}</div></div></div>`).join('');}}
 function goPage(name,navId){showPage(name);document.querySelectorAll('.nav-item').forEach(i=>i.classList.remove('active'));if(navId)document.getElementById(navId)?.classList.add('active');}
 function requireAuth(page,navId){if(!me){toast('Log ind for at fortsætte');goPage('profile','nav-prof');return;}goPage(page,navId);}
 function toast(msg){const t=document.getElementById('toast');t.textContent=msg;t.classList.add('show');setTimeout(()=>t.classList.remove('show'),2500);}
-
 init();
 </script>
 </body>
