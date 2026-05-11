@@ -31,15 +31,15 @@
     .cat-icon-label{font-size:12px;font-weight:500;color:#666;white-space:nowrap;}
 
     /* IMAGE SUBCAT BAR */
-    .img-subcat-bar{display:flex;gap:10px;overflow-x:auto;scrollbar-width:none;padding:12px 16px;background:var(--bg);border-bottom:1px solid var(--border);}
-    .img-subcat-bar::-webkit-scrollbar{display:none;}
-    .img-subcat-card{flex-shrink:0;width:90px;border-radius:14px;overflow:hidden;cursor:pointer;position:relative;transition:transform 0.15s;border:2px solid transparent;}
-    .img-subcat-card:active{transform:scale(0.95);}
-    .img-subcat-card.active{border-color:#8fbc5a;}
-    .img-subcat-card img{width:90px;height:110px;object-fit:cover;display:block;}
-    .img-subcat-overlay{position:absolute;bottom:0;left:0;right:0;background:linear-gradient(transparent,rgba(0,0,0,0.8));padding:6px 6px 8px;}
-    .img-subcat-name{font-size:11px;font-weight:700;color:#fff;text-align:center;}
-    .img-subcat-card.active .img-subcat-name{color:#8fbc5a;}
+    /* SUBCAT BAR */
+    .subcat-bar{display:flex;flex-direction:row;flex-wrap:nowrap;overflow-x:auto;overflow-y:hidden;scrollbar-width:none;-webkit-overflow-scrolling:touch;background:var(--bg);border-bottom:1px solid var(--border);padding:6px 8px;}
+    .subcat-bar::-webkit-scrollbar{display:none;}
+    .subcat-item{display:flex;flex-direction:column;align-items:center;gap:5px;padding:8px 12px;cursor:pointer;flex-shrink:0;border-radius:12px;transition:all 0.2s;min-width:68px;}
+    .subcat-item.active{background:var(--bg2);}
+    .subcat-item.active .subcat-label{color:#8fbc5a;font-weight:700;}
+    .subcat-svg{width:44px;height:44px;background:var(--bg2);border-radius:50%;display:flex;align-items:center;justify-content:center;}
+    .subcat-item.active .subcat-svg{background:#1a2a1a;}
+    .subcat-label{font-size:10px;font-weight:500;color:#aaa;text-align:center;white-space:nowrap;}
 
     .page{display:none;}
     .page.active{display:block;animation:fadeUp 0.2s ease;}
@@ -281,39 +281,116 @@
 </div>
 
 <!-- SUBCAT BAR - IMAGE CARDS -->
-<div class="img-subcat-bar" id="subcat-bar">
-  <div class="img-subcat-card active" onclick="selectSubcat('bycykel',this)">
-    <img src="https://images.unsplash.com/photo-1502744688674-c619d1586c9e?w=200&q=80" alt="Bycykel">
-    <div class="img-subcat-overlay"><div class="img-subcat-name">Bycykel</div></div>
+<div class="<!-- SUBCAT BAR -->
+<div class="subcat-bar" id="subcat-bar">
+
+  <!-- Bycykel - upright city bike with fender/rack -->
+  <div class="subcat-item active" onclick="selectSubcat('bycykel',this)">
+    <div class="subcat-svg">
+      <svg width="36" height="36" viewBox="0 0 40 40" fill="none">
+        <circle cx="10" cy="28" r="7" stroke="#8fbc5a" stroke-width="2"/>
+        <circle cx="30" cy="28" r="7" stroke="#8fbc5a" stroke-width="2"/>
+        <path d="M10 28L16 14h10l4 10" stroke="#8fbc5a" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+        <path d="M16 14l12 14" stroke="#8fbc5a" stroke-width="2" stroke-linecap="round"/>
+        <path d="M7 14h8" stroke="#8fbc5a" stroke-width="2" stroke-linecap="round"/>
+        <path d="M14 10h6" stroke="#8fbc5a" stroke-width="2" stroke-linecap="round"/>
+        <path d="M8 20h6" stroke="#8fbc5a" stroke-width="1.5" stroke-linecap="round"/>
+      </svg>
+    </div>
+    <div class="subcat-label">Bycykel</div>
   </div>
-  <div class="img-subcat-card" onclick="selectSubcat('mountainbike',this)">
-    <img src="https://images.unsplash.com/photo-1576435728678-68d0fbf94946?w=200&q=80" alt="Mountainbike">
-    <div class="img-subcat-overlay"><div class="img-subcat-name">Mountainbike</div></div>
+
+  <!-- Mountainbike - knobby tires, suspension fork -->
+  <div class="subcat-item" onclick="selectSubcat('mountainbike',this)">
+    <div class="subcat-svg">
+      <svg width="36" height="36" viewBox="0 0 40 40" fill="none">
+        <circle cx="9" cy="28" r="7" stroke="#8fbc5a" stroke-width="2"/>
+        <circle cx="31" cy="28" r="7" stroke="#8fbc5a" stroke-width="2"/>
+        <path d="M9 28L15 12h8l4 12" stroke="#8fbc5a" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+        <path d="M15 12l14 16" stroke="#8fbc5a" stroke-width="2" stroke-linecap="round"/>
+        <path d="M4 23l5 2M36 23l-5 2" stroke="#8fbc5a" stroke-width="1.5" stroke-linecap="round"/>
+        <path d="M14 12l2-4h4" stroke="#8fbc5a" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+    </div>
+    <div class="subcat-label">Mountainbike</div>
   </div>
-  <div class="img-subcat-card" onclick="selectSubcat('racercykel',this)">
-    <img src="https://images.unsplash.com/photo-1571333250630-f0230c320b6d?w=200&q=80" alt="Racercykel">
-    <div class="img-subcat-overlay"><div class="img-subcat-name">Racercykel</div></div>
+
+  <!-- Racercykel - drop handlebars, slim tires -->
+  <div class="subcat-item" onclick="selectSubcat('racercykel',this)">
+    <div class="subcat-svg">
+      <svg width="36" height="36" viewBox="0 0 40 40" fill="none">
+        <circle cx="9" cy="28" r="6" stroke="#8fbc5a" stroke-width="2"/>
+        <circle cx="31" cy="28" r="6" stroke="#8fbc5a" stroke-width="2"/>
+        <path d="M9 28L15 13h9l4 11" stroke="#8fbc5a" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+        <path d="M15 13l14 15" stroke="#8fbc5a" stroke-width="2" stroke-linecap="round"/>
+        <path d="M13 13c2-3 6-4 9-2" stroke="#8fbc5a" stroke-width="2" stroke-linecap="round"/>
+        <path d="M12 11c0 0 1-3 3-3" stroke="#8fbc5a" stroke-width="1.5" stroke-linecap="round"/>
+      </svg>
+    </div>
+    <div class="subcat-label">Racercykel</div>
   </div>
-  <div class="img-subcat-card" onclick="selectSubcat('damecykel',this)">
-    <img src="https://images.unsplash.com/photo-1507035895480-2b3156c31fc8?w=200&q=80" alt="Damecykel">
-    <div class="img-subcat-overlay"><div class="img-subcat-name">Damecykel</div></div>
+
+  <!-- Damecykel - step-through frame (no top tube) -->
+  <div class="subcat-item" onclick="selectSubcat('damecykel',this)">
+    <div class="subcat-svg">
+      <svg width="36" height="36" viewBox="0 0 40 40" fill="none">
+        <circle cx="10" cy="28" r="7" stroke="#8fbc5a" stroke-width="2"/>
+        <circle cx="30" cy="28" r="7" stroke="#8fbc5a" stroke-width="2"/>
+        <path d="M10 28L16 16h14" stroke="#8fbc5a" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+        <path d="M16 16l14 12" stroke="#8fbc5a" stroke-width="2" stroke-linecap="round"/>
+        <path d="M10 28L20 16" stroke="#8fbc5a" stroke-width="1.5" stroke-linecap="round"/>
+        <circle cx="23" cy="11" r="2.5" stroke="#8fbc5a" stroke-width="1.5"/>
+      </svg>
+    </div>
+    <div class="subcat-label">Damecykel</div>
   </div>
-  <div class="img-subcat-card" onclick="selectSubcat('børnecykel',this)">
-    <img src="https://images.unsplash.com/photo-1505705694340-019e1e335916?w=200&q=80" alt="Børnecykel">
-    <div class="img-subcat-overlay"><div class="img-subcat-name">Børnecykel</div></div>
+
+  <!-- Børnecykel - small wheels, training wheels suggestion -->
+  <div class="subcat-item" onclick="selectSubcat('børnecykel',this)">
+    <div class="subcat-svg">
+      <svg width="36" height="36" viewBox="0 0 40 40" fill="none">
+        <circle cx="12" cy="28" r="6" stroke="#8fbc5a" stroke-width="2"/>
+        <circle cx="28" cy="28" r="6" stroke="#8fbc5a" stroke-width="2"/>
+        <path d="M12 28L17 16h8l3 9" stroke="#8fbc5a" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+        <path d="M17 16l11 12" stroke="#8fbc5a" stroke-width="2" stroke-linecap="round"/>
+        <circle cx="20" cy="10" r="3" stroke="#8fbc5a" stroke-width="1.5"/>
+        <path d="M8 32h4M28 32h4" stroke="#8fbc5a" stroke-width="1.5" stroke-linecap="round"/>
+      </svg>
+    </div>
+    <div class="subcat-label">Børnecykel</div>
   </div>
-  <div class="img-subcat-card" onclick="selectSubcat('elcykel',this)">
-    <img src="https://images.unsplash.com/photo-1571068316344-75bc76f77890?w=200&q=80" alt="El-cykel">
-    <div class="img-subcat-overlay"><div class="img-subcat-name">El-cykel</div></div>
+
+  <!-- El-cykel - bike with lightning bolt battery -->
+  <div class="subcat-item" onclick="selectSubcat('elcykel',this)">
+    <div class="subcat-svg">
+      <svg width="36" height="36" viewBox="0 0 40 40" fill="none">
+        <circle cx="9" cy="28" r="7" stroke="#8fbc5a" stroke-width="2"/>
+        <circle cx="31" cy="28" r="7" stroke="#8fbc5a" stroke-width="2"/>
+        <path d="M9 28L15 13h9l4 12" stroke="#8fbc5a" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+        <path d="M15 13l14 15" stroke="#8fbc5a" stroke-width="2" stroke-linecap="round"/>
+        <path d="M24 6l-3 5h4l-3 5" stroke="#f0c040" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+    </div>
+    <div class="subcat-label">El-cykel</div>
   </div>
-  <div class="img-subcat-card" onclick="selectSubcat('ladcykel',this)">
-    <img src="https://images.unsplash.com/photo-1532298229144-0ec0c57515c7?w=200&q=80" alt="Ladcykel">
-    <div class="img-subcat-overlay"><div class="img-subcat-name">Ladcykel</div></div>
+
+  <!-- Ladcykel - cargo box at front/back -->
+  <div class="subcat-item" onclick="selectSubcat('ladcykel',this)">
+    <div class="subcat-svg">
+      <svg width="36" height="36" viewBox="0 0 40 40" fill="none">
+        <circle cx="7" cy="30" r="5" stroke="#8fbc5a" stroke-width="2"/>
+        <circle cx="33" cy="30" r="5" stroke="#8fbc5a" stroke-width="2"/>
+        <rect x="9" y="14" width="20" height="12" rx="2" stroke="#8fbc5a" stroke-width="2"/>
+        <path d="M29 20l4 5M11 26l-4 4" stroke="#8fbc5a" stroke-width="1.5" stroke-linecap="round"/>
+        <path d="M13 14v-3h14v3" stroke="#8fbc5a" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+    </div>
+    <div class="subcat-label">Ladcykel</div>
   </div>
+
 </div>
 
-<!-- HOME -->
-<div id="page-home" class="page active">
+active">
   <div class="section-title">Seneste annoncer</div>
   <div class="listings-grid" id="home-listings"></div>
 </div>
@@ -741,7 +818,7 @@ function handleSearch(val){renderHome(!val.trim()?allListings:allListings.filter
 
 function selectCat(cat,el){document.querySelectorAll('.cat-icon-item').forEach(t=>t.classList.remove('active'));el.classList.add('active');renderHome(allListings);showPage('home');}
 
-function selectSubcat(subcat,el){document.querySelectorAll('.img-subcat-card').forEach(i=>i.classList.remove('active'));el.classList.add('active');if(subcat==='elcykel'){renderHome(allListings.filter(l=>l.cat==='elcykler'));}else{const map={bycykel:'Bycykel',mountainbike:'Mountainbike',racercykel:'Racercykel',damecykel:'Damecykel',børnecykel:'Børnecykel',ladcykel:'Ladcykel'};const t=map[subcat];if(t)renderHome(allListings.filter(l=>l.type===t));else renderHome(allListings);}showPage('home');}
+function selectSubcat(subcat,el){document.querySelectorAll('.subcat-item').forEach(i=>i.classList.remove('active'));el.classList.add('active');if(subcat==='elcykel'){renderHome(allListings.filter(l=>l.cat==='elcykler'));}else{const map={bycykel:'Bycykel',mountainbike:'Mountainbike',racercykel:'Racercykel',damecykel:'Damecykel',børnecykel:'Børnecykel',ladcykel:'Ladcykel'};const t=map[subcat];if(t)renderHome(allListings.filter(l=>l.type===t));else renderHome(allListings);}showPage('home');}
 
 function openCatPage(cat){activeCat=cat;activeFilters={};const titles={cykler:'🚲 Cykler',elcykler:'⚡ El-cykler'};document.getElementById('cat-page-title').textContent=titles[cat];document.getElementById('filter-open-btn').classList.remove('has-filters');document.getElementById('filter-open-btn').textContent='⚙️ Filter';const items=allListings.filter(l=>l.cat===cat);document.getElementById('results-count').textContent=items.length+' annoncer';document.getElementById('cat-listings').innerHTML=items.length?items.map(l=>listingCard(l)).join(''):'<div class="empty"><div class="e-icon">🔍</div><p>Ingen annoncer</p></div>';showPage('cat');}
 
@@ -815,7 +892,7 @@ function clearMsg(){const el=document.getElementById('auth-msg');el.className='m
 
 function selectPlan(plan){if(!me){toast('Log ind for at vælge en plan');goPage('profile','nav-prof');return;}const msgs={gratis:'Du bruger Gratis planen ✓',premium:'Premium – 49 kr. (Stripe kommer snart) 🚀',elite:'Lynhurtig Salg – 199 kr. (Stripe kommer snart) ⚡'};toast(msgs[plan]);}
 
-function showPage(name){document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));document.getElementById('page-'+name).classList.add('active');const hideTop=['cat','chat','sell-picker','sell-form','detail'].includes(name);document.getElementById('topbar').style.display=hideTop?'none':'block';document.getElementById('subcat-bar').style.display=hideTop?'none':'flex';if(name==='messages')loadConvs();if(name==='edit-profile')loadProfile();if(name==='notifications'){notifs.forEach(n=>n.unread=false);updateBellDot();document.getElementById('notif-list').innerHTML=notifs.map(n=>`<div class="notif-item ${n.unread?'unread':''}"><div style="font-size:22px">${n.icon}</div><div><div style="font-weight:600;font-size:14px">${n.title}</div><div style="font-size:12px;color:#999;margin-top:2px">${n.sub}</div></div></div>`).join('');}}
+function showPage(name){document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));document.getElementById('page-'+name).classList.add('active');const hideTop=['cat','chat','sell-picker','sell-form','detail'].includes(name);document.getElementById('topbar').style.display=hideTop?'none':'block';document.getElementById('subcat-bar').style.display=hideTop?'none':(['buy','buy-results'].includes(name)?'none':'flex');if(name==='messages')loadConvs();if(name==='edit-profile')loadProfile();if(name==='notifications'){notifs.forEach(n=>n.unread=false);updateBellDot();document.getElementById('notif-list').innerHTML=notifs.map(n=>`<div class="notif-item ${n.unread?'unread':''}"><div style="font-size:22px">${n.icon}</div><div><div style="font-weight:600;font-size:14px">${n.title}</div><div style="font-size:12px;color:#999;margin-top:2px">${n.sub}</div></div></div>`).join('');}}
 function goPage(name,navId){showPage(name);document.querySelectorAll('.nav-item').forEach(i=>i.classList.remove('active'));if(navId)document.getElementById(navId)?.classList.add('active');}
 function requireAuth(page,navId){if(!me){toast('Log ind for at fortsætte');goPage('profile','nav-prof');return;}goPage(page,navId);}
 function toast(msg){const t=document.getElementById('toast');t.textContent=msg;t.classList.add('show');setTimeout(()=>t.classList.remove('show'),2500);}
