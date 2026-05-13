@@ -909,7 +909,17 @@
         <input class="admin-input" id="af-desc" placeholder="Beskrivelse (max 60 tegn)">
         <input class="admin-input" id="af-cta" placeholder="Knaptekst (fx. Se tilbud →)">
         <input class="admin-input" id="af-url" placeholder="Link URL (https://...)">
-        <input class="admin-input" id="af-img" placeholder="Billedlink URL (https://...)">
+        <div style="margin-bottom:8px;">
+  <div style="display:flex;gap:8px;align-items:center;">
+    <input class="admin-input" id="af-img" placeholder="Billedlink URL (https://...)" style="margin-bottom:0;flex:1;">
+    <label for="af-img-upload" style="background:#1a2a1a;color:#8fbc5a;border:1.5px solid #8fbc5a;border-radius:10px;padding:10px 12px;font-size:12px;font-weight:700;cursor:pointer;white-space:nowrap;flex-shrink:0;">📷 Upload</label>
+    <input type="file" id="af-img-upload" accept="image/*" style="display:none;" onchange="uploadAdImage(event)">
+  </div>
+  <div id="af-img-preview" style="display:none;margin-top:8px;border-radius:10px;overflow:hidden;height:100px;background:#1a1a1a;">
+    <img id="af-img-preview-img" src="" style="width:100%;height:100%;object-fit:cover;">
+  </div>
+  <div id="af-img-upload-progress" style="display:none;font-size:11px;color:#8fbc5a;margin-top:4px;text-align:center;">⏳ Uploader...</div>
+</div>
         <input class="admin-input" id="af-price" placeholder="Månedspris (kr.)" type="number">
         <select class="admin-select" id="af-position">
           <option value="both">Banner + kort (begge)</option>
@@ -1874,6 +1884,15 @@ async function showAdForm(id){
     document.getElementById('af-cta').value = a.cta;
     document.getElementById('af-url').value = a.url||'';
     document.getElementById('af-img').value = a.img||'';
+    // Show preview if image exists
+    const preview = document.getElementById('af-img-preview');
+    const previewImg = document.getElementById('af-img-preview-img');
+    if(a.img && preview && previewImg){
+      preview.style.display = 'block';
+      previewImg.src = a.img;
+    } else if(preview){
+      preview.style.display = 'none';
+    }
     document.getElementById('af-price').value = a.price||'';
     document.getElementById('af-position').value = a.position||'both';
   } else {
@@ -1884,6 +1903,8 @@ async function showAdForm(id){
     document.getElementById('af-cta').value = 'Se mere →';
     document.getElementById('af-url').value = '';
     document.getElementById('af-img').value = '';
+    const prevEl = document.getElementById('af-img-preview');
+    if(prevEl) prevEl.style.display = 'none';
     document.getElementById('af-price').value = '';
     document.getElementById('af-position').value = 'both';
   }
@@ -1994,6 +2015,64 @@ async function markRequestDone(id){
   await sb.from('ad_requests').update({ status: 'done' }).eq('id', id);
   loadAdRequests();
   toast('✓ Markeret som håndteret');
+}
+
+async function uploadAdImage(event){
+  const file = event.target.files[0];
+  if(!file) return;
+
+  // Show preview immediately
+  const reader = new FileReader();
+  reader.onload = ev => {
+    const preview = document.getElementById('af-img-preview');
+    const previewImg = document.getElementById('af-img-preview-img');
+    if(preview) preview.style.display = 'block';
+    if(previewImg) previewImg.src = ev.target.result;
+  };
+  reader.readAsDataURL(file);
+
+  // Show progress
+  const progress = document.getElementById('af-img-upload-progress');
+  if(progress) progress.style.display = 'block';
+
+  try {
+    // Create unique filename
+    const ext = file.name.split('.').pop();
+    const filename = 'ad_' + Date.now() + '.' + ext;
+
+    // Upload to Supabase Storage
+    const { data, error } = await sb.storage
+      .from('ads-images')
+      .upload(filename, file, {
+        cacheControl: '3600',
+        upsert: false
+      });
+
+    if(error) throw error;
+
+    // Get public URL
+    const { data: urlData } = sb.storage
+      .from('ads-images')
+      .getPublicUrl(filename);
+
+    const publicUrl = urlData.publicUrl;
+
+    // Set URL in input
+    const imgInput = document.getElementById('af-img');
+    if(imgInput) imgInput.value = publicUrl;
+
+    if(progress) progress.textContent = '✅ Billede uploadet!';
+    setTimeout(() => { if(progress) progress.style.display = 'none'; }, 2000);
+
+    toast('✅ Billede uploadet!');
+  } catch(e) {
+    console.error('Upload error:', e);
+    if(progress) progress.textContent = '❌ Fejl: ' + (e.message || 'Upload fejlede');
+    if(progress) progress.style.color = '#e03030';
+    toast('❌ Upload fejlede: ' + (e.message || ''));
+  }
+
+  event.target.value = '';
 }
 
 async function submitAdRequest(){
