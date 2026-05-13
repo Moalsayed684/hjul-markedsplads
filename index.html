@@ -277,6 +277,44 @@
     .city-filter-option:hover{background:var(--bg3);}
     .city-filter-tag{display:inline-flex;align-items:center;gap:6px;background:#1a2a1a;border:1px solid #8fbc5a;color:#8fbc5a;border-radius:50px;padding:5px 12px;font-size:12px;font-weight:600;margin-top:8px;}
     .city-filter-tag button{background:none;border:none;cursor:pointer;color:#8fbc5a;font-size:14px;padding:0;line-height:1;}
+
+    /* ===== ADMIN PANEL ===== */
+    .admin-overlay{position:fixed;inset:0;background:rgba(0,0,0,0.85);z-index:1000;display:none;align-items:center;justify-content:center;}
+    .admin-overlay.open{display:flex;}
+    .admin-panel{background:#111;border:1.5px solid #8fbc5a;border-radius:20px;width:calc(100% - 32px);max-width:400px;max-height:90vh;overflow-y:auto;padding:0;}
+    .admin-header{padding:16px 20px;border-bottom:1px solid #222;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;background:#111;z-index:2;border-radius:20px 20px 0 0;}
+    .admin-title{font-weight:800;font-size:17px;color:#8fbc5a;}
+    .admin-close{width:32px;height:32px;background:#1c1c1c;border:none;border-radius:50%;cursor:pointer;font-size:16px;color:#fff;display:flex;align-items:center;justify-content:center;}
+    .admin-section{padding:14px 20px;border-bottom:1px solid #1a1a1a;}
+    .admin-section-title{font-size:10px;font-weight:700;color:#555;letter-spacing:1px;text-transform:uppercase;margin-bottom:10px;}
+    .ad-item{background:#1a1a1a;border-radius:12px;padding:12px;margin-bottom:8px;border:1px solid #222;position:relative;}
+    .ad-item.active-ad{border-color:#8fbc5a;}
+    .ad-item-header{display:flex;align-items:center;gap:10px;margin-bottom:8px;}
+    .ad-item-logo{font-size:22px;flex-shrink:0;}
+    .ad-item-name{font-weight:700;font-size:13px;flex:1;}
+    .ad-item-status{font-size:10px;font-weight:700;padding:3px 8px;border-radius:50px;}
+    .ad-item-status.on{background:#1a2a1a;color:#8fbc5a;}
+    .ad-item-status.off{background:#2a1a1a;color:#e03030;}
+    .ad-item-actions{display:flex;gap:6px;margin-top:8px;}
+    .ad-btn{flex:1;padding:7px;border-radius:8px;border:none;cursor:pointer;font-size:11px;font-weight:700;font-family:'Inter',sans-serif;}
+    .ad-btn.edit{background:#1c2a1c;color:#8fbc5a;border:1px solid #2a3a2a;}
+    .ad-btn.toggle-on{background:#2a1a1a;color:#e03030;border:1px solid #3a2020;}
+    .ad-btn.toggle-off{background:#1a2a1a;color:#8fbc5a;border:1px solid #2a3a2a;}
+    .ad-btn.del{background:#2a1a1a;color:#e03030;border:1px solid #3a2020;}
+    .ad-form{background:#1a1a1a;border-radius:12px;padding:14px;margin-top:10px;border:1.5px solid #8fbc5a;}
+    .ad-form-title{font-weight:700;font-size:13px;color:#8fbc5a;margin-bottom:12px;}
+    .admin-input{width:100%;background:#111;border:1.5px solid #252525;border-radius:10px;padding:10px 12px;color:#f0f0f0;font-family:'Inter',sans-serif;font-size:13px;outline:none;margin-bottom:8px;transition:border-color 0.2s;}
+    .admin-input:focus{border-color:#8fbc5a;}
+    .admin-input::placeholder{color:#444;}
+    .admin-select{width:100%;background:#111;border:1.5px solid #252525;border-radius:10px;padding:10px 12px;color:#f0f0f0;font-family:'Inter',sans-serif;font-size:13px;outline:none;margin-bottom:8px;}
+    .admin-save-btn{width:100%;background:#8fbc5a;color:#111;border:none;border-radius:10px;padding:11px;font-weight:700;font-size:13px;cursor:pointer;font-family:'Inter',sans-serif;margin-top:4px;}
+    .admin-cancel-btn{width:100%;background:#1c1c1c;color:#888;border:1px solid #252525;border-radius:10px;padding:10px;font-weight:600;font-size:13px;cursor:pointer;font-family:'Inter',sans-serif;margin-top:6px;}
+    .stats-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;}
+    .stat-card{background:#1a1a1a;border-radius:10px;padding:12px;text-align:center;border:1px solid #222;}
+    .stat-num{font-weight:800;font-size:22px;color:#8fbc5a;}
+    .stat-label{font-size:10px;color:#555;margin-top:3px;}
+    .admin-fab{position:fixed;bottom:90px;right:16px;width:44px;height:44px;background:#8fbc5a;border-radius:50%;border:none;cursor:pointer;font-size:20px;color:#111;display:none;align-items:center;justify-content:center;z-index:500;box-shadow:0 4px 14px rgba(143,188,90,0.5);}
+    .admin-fab.show{display:flex;}
   </style>
 </head>
 <body>
@@ -301,6 +339,23 @@
     <div class="cat-icon-item" onclick="openCatPage('elcykler')">
       <svg width="36" height="28" viewBox="0 0 36 28" fill="none"><circle cx="7" cy="21" r="6" stroke="#8fbc5a" stroke-width="2"/><circle cx="29" cy="21" r="6" stroke="#8fbc5a" stroke-width="2"/><path d="M7 21L13 7h8l4 10M13 7l12 14" stroke="#8fbc5a" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><path d="M22 2l-3 5h4l-3 5" stroke="#f0c040" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
       <div class="cat-icon-label">El-cykler</div>
+    </div>
+    <div class="cat-icon-item" onclick="openCatPage('tilbehor')">
+      <svg width="32" height="32" viewBox="0 0 32 32" fill="none">
+        <circle cx="16" cy="10" r="4" stroke="#8fbc5a" stroke-width="2"/>
+        <path d="M8 26c0-4.418 3.582-8 8-8s8 3.582 8 8" stroke="#8fbc5a" stroke-width="2" stroke-linecap="round"/>
+        <path d="M22 6l2-2M10 6L8 4M16 4V2" stroke="#8fbc5a" stroke-width="1.5" stroke-linecap="round"/>
+        <rect x="4" y="20" width="6" height="4" rx="1" stroke="#8fbc5a" stroke-width="1.5"/>
+        <rect x="22" y="20" width="6" height="4" rx="1" stroke="#8fbc5a" stroke-width="1.5"/>
+      </svg>
+      <div class="cat-icon-label">Tilbehør</div>
+    </div>
+    <div class="cat-icon-item" onclick="showPage('vaerksted')">
+      <svg width="32" height="32" viewBox="0 0 32 32" fill="none">
+        <path d="M20 4a6 6 0 0 1 0 12 5.9 5.9 0 0 1-2.5-.55l-3 3H13v2h-2v2H7v-4l6.55-6.55A6 6 0 0 1 20 4z" stroke="#8fbc5a" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+        <circle cx="20" cy="10" r="1.5" fill="#8fbc5a"/>
+      </svg>
+      <div class="cat-icon-label">Værksted</div>
     </div>
   </div>
 </div>
@@ -337,6 +392,28 @@
 </div>
 
 <div id="page-home" class="page active">
+  <!-- TOP BANNER AD -->
+  <div id="top-banner-ad" style="margin:10px 12px 0;border-radius:16px;overflow:hidden;position:relative;cursor:pointer;" onclick="openBannerAd()">
+    <div id="banner-bg" style="width:100%;height:170px;background:linear-gradient(135deg,#1a2a1a,#0d1a0d);position:relative;overflow:hidden;transition:opacity 0.4s;">
+      <img id="banner-img" src="" alt="" style="width:100%;height:100%;object-fit:cover;display:none;opacity:0.6;">
+      <div style="position:absolute;inset:0;background:linear-gradient(to bottom,rgba(0,0,0,0.05) 20%,rgba(0,0,0,0.72) 100%);"></div>
+      <div style="position:absolute;top:10px;left:10px;background:rgba(0,0,0,0.6);color:#bbb;font-size:10px;font-weight:600;padding:3px 10px;border-radius:50px;">Sponsoreret</div>
+      <div style="position:absolute;bottom:0;left:0;right:0;padding:14px 16px;">
+        <div style="display:flex;align-items:flex-end;justify-content:space-between;gap:12px;">
+          <div style="flex:1;min-width:0;">
+            <div style="display:flex;align-items:center;gap:8px;margin-bottom:4px;">
+              <span id="banner-logo" style="font-size:24px;line-height:1;"></span>
+              <span id="banner-brand" style="font-weight:800;font-size:18px;color:#fff;text-shadow:0 1px 4px rgba(0,0,0,0.9);"></span>
+            </div>
+            <div id="banner-desc" style="font-size:13px;color:rgba(255,255,255,0.85);text-shadow:0 1px 3px rgba(0,0,0,0.8);line-height:1.4;"></div>
+          </div>
+          <div id="banner-cta" style="background:#8fbc5a;color:#111;font-size:13px;font-weight:800;padding:10px 18px;border-radius:50px;flex-shrink:0;white-space:nowrap;box-shadow:0 2px 8px rgba(143,188,90,0.5);"></div>
+        </div>
+      </div>
+    </div>
+    <!-- Dot indicators -->
+    <div id="banner-dots" style="display:flex;justify-content:center;gap:5px;padding:7px 0 2px;background:var(--bg);"></div>
+  </div>
   <div class="section-title">Seneste annoncer</div>
   <div class="listings-grid" id="home-listings"></div>
 </div>
@@ -367,6 +444,11 @@
         <div class="sell-cat-icon">⚡</div>
         <div class="sell-cat-name">El-cykel</div>
         <div class="sell-cat-desc">Elektriske cykler</div>
+      </div>
+      <div class="sell-cat-btn" onclick="openSellForm('tilbehor')">
+        <div class="sell-cat-icon">🔧</div>
+        <div class="sell-cat-name">Tilbehør</div>
+        <div class="sell-cat-desc">Hjelme, lygter, lås...</div>
       </div>
     </div>
   </div>
@@ -490,6 +572,11 @@
         <div class="sell-cat-name">El-cykler</div>
         <div class="sell-cat-desc">Elektriske cykler</div>
       </div>
+      <div class="sell-cat-btn" onclick="openBuyDirect('tilbehor')">
+        <div class="sell-cat-icon">🔧</div>
+        <div class="sell-cat-name">Tilbehør</div>
+        <div class="sell-cat-desc">Hjelme, lygter, lås...</div>
+      </div>
     </div>
   </div>
 </div>
@@ -534,30 +621,78 @@
       <div class="auth-logo">CykelHub</div>
       <div class="auth-sub">Log ind for at sælge og chatte</div>
       <div id="auth-msg" class="msg-box"></div>
+
+      <!-- LOG IND / OPRET TABS -->
       <div class="auth-tabs">
         <div class="auth-tab active" onclick="switchTab('login')">Log ind</div>
         <div class="auth-tab" onclick="switchTab('signup')">Opret konto</div>
       </div>
+
+      <!-- LOG IND -->
       <div id="f-login">
         <div class="form-group"><label class="form-label">E-mail</label><input class="form-input" type="email" id="l-email" placeholder="din@email.dk"></div>
         <div class="form-group"><label class="form-label">Adgangskode</label><input class="form-input" type="password" id="l-pass" placeholder="••••••••" onkeydown="if(event.key==='Enter')doLogin()"></div>
         <button class="btn-primary" onclick="doLogin()">Log ind</button>
         <div class="forgot-link" onclick="showForgot()">Glemt adgangskode?</div>
       </div>
+
+      <!-- OPRET KONTO - TYPE VALG -->
       <div id="f-signup" style="display:none">
-        <div class="form-group"><label class="form-label">Fornavn</label><input class="form-input" type="text" id="s-firstname" placeholder="Dit fornavn"></div>
-        <div class="form-group"><label class="form-label">Efternavn</label><input class="form-input" type="text" id="s-lastname" placeholder="Dit efternavn"></div>
-        <div class="form-group">
-          <label class="form-label">By</label>
-          <input class="form-input" type="text" id="s-city" placeholder="Søg by eller postnummer..." oninput="filterSignupCities(this.value)" autocomplete="off">
-          <div class="city-dropdown" id="signup-city-dropdown"></div>
+        <!-- Privat / Erhverv switcher -->
+        <div style="display:flex;gap:10px;margin-bottom:20px;">
+          <div id="signup-type-privat" onclick="setSignupType('privat')" style="flex:1;background:#1a2a1a;border:2px solid #8fbc5a;border-radius:14px;padding:14px 10px;text-align:center;cursor:pointer;transition:all 0.2s;">
+            <div style="font-size:26px;margin-bottom:6px;">🧑</div>
+            <div style="font-weight:700;font-size:13px;color:#8fbc5a;">Privat</div>
+            <div style="font-size:10px;color:#666;margin-top:3px;">Privat sælger</div>
+          </div>
+          <div id="signup-type-erhverv" onclick="setSignupType('erhverv')" style="flex:1;background:var(--bg2);border:2px solid var(--border2);border-radius:14px;padding:14px 10px;text-align:center;cursor:pointer;transition:all 0.2s;">
+            <div style="font-size:26px;margin-bottom:6px;">🏪</div>
+            <div style="font-weight:700;font-size:13px;color:#888;">Erhverv</div>
+            <div style="font-size:10px;color:#666;margin-top:3px;">Butik / Virksomhed</div>
+          </div>
         </div>
-        <div class="form-group"><label class="form-label">Telefon <span style="color:#666;font-weight:400;">(valgfrit)</span></label><input class="form-input" type="tel" id="s-phone" placeholder="+45 12 34 56 78"></div>
+
+        <!-- PRIVAT FELTER -->
+        <div id="signup-privat-fields">
+          <div class="form-group"><label class="form-label">Fornavn</label><input class="form-input" type="text" id="s-firstname" placeholder="Dit fornavn"></div>
+          <div class="form-group"><label class="form-label">Efternavn</label><input class="form-input" type="text" id="s-lastname" placeholder="Dit efternavn"></div>
+          <div class="form-group">
+            <label class="form-label">By</label>
+            <input class="form-input" type="text" id="s-city" placeholder="Søg by eller postnummer..." oninput="filterSignupCities(this.value)" autocomplete="off">
+            <div class="city-dropdown" id="signup-city-dropdown"></div>
+          </div>
+          <div class="form-group"><label class="form-label">Telefon <span style="color:#666;font-weight:400;">(valgfrit)</span></label><input class="form-input" type="tel" id="s-phone" placeholder="+45 12 34 56 78"></div>
+        </div>
+
+        <!-- ERHVERV FELTER -->
+        <div id="signup-erhverv-fields" style="display:none">
+          <div style="background:#1a2200;border:1px solid #f0c040;border-radius:12px;padding:12px 14px;margin-bottom:14px;font-size:12px;color:#f0c040;line-height:1.6;">
+            🏪 <strong>Erhvervskonto</strong><br>
+            Fremtidig plan: 350 kr./måned – ubegrænsede annoncer + butiksprofil
+          </div>
+          <div class="form-group"><label class="form-label">Virksomhedsnavn *</label><input class="form-input" type="text" id="s-virksomhed" placeholder="fx. Pedal Power ApS"></div>
+          <div class="form-group">
+            <label class="form-label">CVR-nummer *</label>
+            <input class="form-input" type="text" id="s-cvr" placeholder="8 cifre, fx. 12345678" maxlength="8" oninput="this.value=this.value.replace(/[^0-9]/g,'')" style="font-family:monospace;letter-spacing:2px;font-size:16px;">
+            <div style="font-size:11px;color:#555;margin-top:4px;">Find dit CVR på <span style="color:#8fbc5a;cursor:pointer;" onclick="window.open('https://cvr.dk','_blank')">cvr.dk →</span></div>
+          </div>
+          <div class="form-group"><label class="form-label">Kontaktperson *</label><input class="form-input" type="text" id="s-kontakt" placeholder="Fulde navn"></div>
+          <div class="form-group">
+            <label class="form-label">By</label>
+            <input class="form-input" type="text" id="s-city-erh" placeholder="Søg by eller postnummer..." oninput="filterSignupCitiesErh(this.value)" autocomplete="off">
+            <div class="city-dropdown" id="signup-city-erh-dropdown"></div>
+          </div>
+          <div class="form-group"><label class="form-label">Telefon *</label><input class="form-input" type="tel" id="s-phone-erh" placeholder="+45 12 34 56 78"></div>
+        </div>
+
+        <!-- FÆLLES FELTER -->
         <div class="form-group"><label class="form-label">E-mail</label><input class="form-input" type="email" id="s-email" placeholder="din@email.dk"></div>
         <div class="form-group"><label class="form-label">Gentag e-mail</label><input class="form-input" type="email" id="s-email2" placeholder="din@email.dk igen"></div>
         <div class="form-group"><label class="form-label">Adgangskode</label><input class="form-input" type="password" id="s-pass" placeholder="Min. 6 tegn" onkeydown="if(event.key==='Enter')doSignup()"></div>
         <button class="btn-primary" onclick="doSignup()">Opret konto</button>
       </div>
+
+      <!-- GLEMT ADGANGSKODE -->
       <div id="f-forgot" style="display:none">
         <div class="form-group"><label class="form-label">E-mail</label><input class="form-input" type="email" id="r-email" placeholder="din@email.dk"></div>
         <button class="btn-primary" onclick="doReset()">Send nulstillingslink</button>
@@ -567,9 +702,17 @@
   </div>
   <div id="profile-section" style="display:none">
     <div class="profile-wrap">
-      <div class="p-avatar">👤</div>
-      <div class="p-name" id="p-name"></div>
-      <div class="p-email" id="p-email"></div>
+      <div style="display:flex;align-items:center;gap:14px;margin-bottom:18px;">
+        <div class="p-avatar" id="p-avatar-icon" style="margin-bottom:0;flex-shrink:0;">👤</div>
+        <div>
+          <div class="p-name" id="p-name" style="margin-bottom:2px;"></div>
+          <div class="p-email" id="p-email" style="margin-bottom:6px;"></div>
+          <div id="p-account-badge"></div>
+        </div>
+      </div>
+      <div id="p-erhverv-info" style="display:none;background:#2a1a00;border:1px solid #f0c040;border-radius:12px;padding:12px 14px;margin-bottom:16px;font-size:13px;color:#f0c040;line-height:1.7;">
+        <div id="p-cvr-info"></div>
+      </div>
       <div class="menu-row">📝 Mine annoncer <span>→</span></div>
       <div class="menu-row" onclick="goPage('messages','nav-msgs')">💬 Beskeder <span>→</span></div>
       <div class="menu-row" onclick="goPage('pricing')">💎 Opgrader plan <span>→</span></div>
@@ -694,8 +837,188 @@
   </div>
 </div>
 
+
+<!-- FIND VÆRKSTED PAGE -->
+<div id="page-vaerksted" class="page" style="padding:0">
+  <div style="background:var(--bg);padding:14px 16px;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:10px;position:sticky;top:0;z-index:50;">
+    <button class="back-btn" onclick="goPage('home','nav-home')">←</button>
+    <div style="font-weight:800;font-size:18px;flex:1;">🔧 Find Værksted</div>
+  </div>
+
+  <!-- MAP AREA -->
+  <div id="vaerksted-map" style="width:100%;height:280px;background:linear-gradient(135deg,#0d1f0d,#0a1a0a);position:relative;overflow:hidden;display:flex;align-items:center;justify-content:center;">
+    <!-- Animated map grid -->
+    <div style="position:absolute;inset:0;opacity:0.15;">
+      <svg width="100%" height="100%"><defs><pattern id="grid" width="30" height="30" patternUnits="userSpaceOnUse"><path d="M 30 0 L 0 0 0 30" fill="none" stroke="#8fbc5a" stroke-width="0.5"/></pattern></defs><rect width="100%" height="100%" fill="url(#grid)"/></svg>
+    </div>
+    <!-- Map pins for workshops -->
+    <div id="map-pins" style="position:absolute;inset:0;"></div>
+    <div style="text-align:center;z-index:2;">
+      <div style="font-size:40px;margin-bottom:8px;">🗺️</div>
+      <div style="color:#8fbc5a;font-weight:700;font-size:14px;">Cykelværksteder i Danmark</div>
+      <div style="color:#666;font-size:12px;margin-top:4px;" id="map-count">Indlæser...</div>
+    </div>
+  </div>
+
+  <!-- SEARCH BAR -->
+  <div style="padding:12px 16px;background:var(--bg);border-bottom:1px solid var(--border);">
+    <div style="background:var(--bg2);border-radius:12px;display:flex;align-items:center;padding:10px 14px;gap:10px;border:1.5px solid var(--border2);" id="vaerksted-search-wrap">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#8fbc5a" stroke-width="2.5" stroke-linecap="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+      <input type="text" id="vaerksted-search" placeholder="Søg by eller postnummer..." style="background:none;border:none;outline:none;font-size:14px;width:100%;color:var(--text);font-family:'Inter',sans-serif;" oninput="searchVaerksted(this.value)">
+      <button onclick="clearVaerkstedSearch()" style="background:none;border:none;cursor:pointer;color:#555;font-size:16px;" id="vaerksted-clear" style="display:none">✕</button>
+    </div>
+  </div>
+
+  <!-- RESULTS LIST -->
+  <div id="vaerksted-list" style="padding:12px 16px;"></div>
+</div>
+
+
+<!-- ===== ADMIN PANEL OVERLAY ===== -->
+<div class="admin-overlay" id="admin-overlay">
+  <div class="admin-panel">
+    <div class="admin-header">
+      <div class="admin-title">⚙️ Annonce Admin</div>
+      <button class="admin-close" onclick="closeAdmin()">✕</button>
+    </div>
+
+    <!-- STATS -->
+    <div class="admin-section">
+      <div class="admin-section-title">📊 Statistik</div>
+      <div class="stats-grid">
+        <div class="stat-card"><div class="stat-num" id="stat-total">0</div><div class="stat-label">Aktive annoncer</div></div>
+        <div class="stat-card"><div class="stat-num" id="stat-banner">0</div><div class="stat-label">Banner visninger</div></div>
+        <div class="stat-card"><div class="stat-num" id="stat-clicks">0</div><div class="stat-label">Klik i dag</div></div>
+        <div class="stat-card"><div class="stat-num" id="stat-revenue">0</div><div class="stat-label">kr. / md</div></div>
+      </div>
+    </div>
+
+    <!-- AD LIST -->
+    <div class="admin-section">
+      <div class="admin-section-title">📢 Annoncer</div>
+      <div id="admin-ad-list"></div>
+      <button onclick="showAdForm(null)" style="width:100%;background:#1a2a1a;color:#8fbc5a;border:1.5px dashed #8fbc5a;border-radius:12px;padding:11px;font-weight:700;font-size:13px;cursor:pointer;font-family:'Inter',sans-serif;margin-top:4px;">+ Tilføj ny annonce</button>
+    </div>
+
+    <!-- AD FORM -->
+    <div class="admin-section" id="admin-form-section" style="display:none;">
+      <div class="ad-form">
+        <div class="ad-form-title" id="ad-form-title">✏️ Ny annonce</div>
+        <input class="admin-input" id="af-brand" placeholder="Virksomhedsnavn (fx. Telia)">
+        <input class="admin-input" id="af-logo" placeholder="Emoji logo (fx. 📱)">
+        <input class="admin-input" id="af-desc" placeholder="Beskrivelse (max 60 tegn)">
+        <input class="admin-input" id="af-cta" placeholder="Knaptekst (fx. Se tilbud →)">
+        <input class="admin-input" id="af-url" placeholder="Link URL (https://...)">
+        <input class="admin-input" id="af-img" placeholder="Billedlink URL (https://...)">
+        <input class="admin-input" id="af-price" placeholder="Månedspris (kr.)" type="number">
+        <select class="admin-select" id="af-position">
+          <option value="both">Banner + kort (begge)</option>
+          <option value="banner">Kun top banner</option>
+          <option value="card">Kun kort i listen</option>
+        </select>
+        <input type="hidden" id="af-edit-id">
+        <button class="admin-save-btn" onclick="saveAd()">💾 Gem annonce</button>
+        <button class="admin-cancel-btn" onclick="hideAdForm()">Annuller</button>
+      </div>
+    </div>
+
+    <!-- SETTINGS -->
+    <div class="admin-section">
+      <div class="admin-section-title">⚙️ Indstillinger</div>
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px;">
+        <span style="font-size:13px;color:#aaa;">Rotér banner hvert</span>
+        <select class="admin-select" id="rotate-interval" style="width:120px;margin-bottom:0;" onchange="updateRotateInterval()">
+          <option value="4000">4 sek.</option>
+          <option value="6000" selected>6 sek.</option>
+          <option value="10000">10 sek.</option>
+          <option value="15000">15 sek.</option>
+        </select>
+      </div>
+      <div style="display:flex;align-items:center;justify-content:space-between;">
+        <span style="font-size:13px;color:#aaa;">Annonce hver X opslag</span>
+        <select class="admin-select" id="ad-frequency" style="width:120px;margin-bottom:0;" onchange="updateAdFrequency()">
+          <option value="5">Hver 5.</option>
+          <option value="8">Hver 8.</option>
+          <option value="10">Hver 10.</option>
+          <option value="15" selected>Hver 15.</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="admin-section">
+      <div class="admin-section-title">📥 Nye forespørgsler</div>
+      <div id="admin-requests-list"><div style="font-size:12px;color:#444;text-align:center;padding:10px;">Indlæser...</div></div>
+    </div>
+    <div style="padding:14px 20px 24px;text-align:center;">
+      <div style="font-size:11px;color:#333;">CykelHub Admin · Kun synlig for dig</div>
+    </div>
+  </div>
+</div>
+
+<!-- Admin FAB button (kun synlig for admin) -->
+<button class="admin-fab" id="admin-fab" onclick="openAdmin()">⚙️</button>
+
+
+<!-- ANNONCÉR MED OS PAGE -->
+<div id="page-advertise" class="page">
+  <div style="padding:20px 16px 30px;">
+    <div style="display:flex;align-items:center;gap:10px;margin-bottom:24px;">
+      <button class="back-btn" onclick="goPage('home','nav-home')">←</button>
+      <div style="font-weight:800;font-size:20px;">📢 Annoncér med os</div>
+    </div>
+
+    <!-- Priser -->
+    <div style="font-weight:700;font-size:16px;margin-bottom:14px;">Vores pakker</div>
+    <div style="display:flex;flex-direction:column;gap:10px;margin-bottom:24px;">
+      <div style="background:var(--bg2);border-radius:14px;padding:14px 16px;border:1px solid var(--border2);display:flex;align-items:center;gap:14px;">
+        <div style="font-size:28px;">🌱</div>
+        <div style="flex:1;">
+          <div style="font-weight:700;font-size:14px;">Starter</div>
+          <div style="font-size:12px;color:#888;margin-top:2px;">Banner + kort · 30 dage</div>
+        </div>
+        <div style="font-weight:800;font-size:16px;color:#8fbc5a;">500 kr.</div>
+      </div>
+      <div style="background:var(--bg2);border-radius:14px;padding:14px 16px;border:1.5px solid #8fbc5a;display:flex;align-items:center;gap:14px;position:relative;">
+        <div style="position:absolute;top:-10px;left:50%;transform:translateX(-50%);background:#8fbc5a;color:#111;font-size:10px;font-weight:700;padding:2px 12px;border-radius:50px;white-space:nowrap;">⭐ Mest populær</div>
+        <div style="font-size:28px;">🚀</div>
+        <div style="flex:1;">
+          <div style="font-weight:700;font-size:14px;">Pro</div>
+          <div style="font-size:12px;color:#888;margin-top:2px;">Banner + kort · 3 måneder</div>
+        </div>
+        <div style="font-weight:800;font-size:16px;color:#8fbc5a;">1.000 kr.</div>
+      </div>
+      <div style="background:var(--bg2);border-radius:14px;padding:14px 16px;border:1px solid #f0c040;display:flex;align-items:center;gap:14px;">
+        <div style="font-size:28px;">💎</div>
+        <div style="flex:1;">
+          <div style="font-weight:700;font-size:14px;">Premium</div>
+          <div style="font-size:12px;color:#888;margin-top:2px;">Banner + kort · 6 måneder</div>
+        </div>
+        <div style="font-weight:800;font-size:16px;color:#f0c040;">2.000 kr.</div>
+      </div>
+    </div>
+
+    <!-- Kontaktformular -->
+    <div style="font-weight:700;font-size:16px;margin-bottom:14px;">Kontakt os</div>
+    <div id="ad-request-msg" class="msg-box"></div>
+    <div class="form-group"><label class="form-label">Virksomhedsnavn *</label><input class="form-input" type="text" id="ar-company" placeholder="fx. Telia Danmark"></div>
+    <div class="form-group"><label class="form-label">E-mail *</label><input class="form-input" type="email" id="ar-email" placeholder="kontakt@virksomhed.dk"></div>
+    <div class="form-group"><label class="form-label">Telefon</label><input class="form-input" type="tel" id="ar-phone" placeholder="+45 12 34 56 78"></div>
+    <div class="form-group">
+      <label class="form-label">Pakke</label>
+      <select class="form-input" id="ar-budget">
+        <option value="500 kr. - Starter">🌱 Starter – 500 kr./md</option>
+        <option value="1000 kr. - Pro" selected>🚀 Pro – 1.000 kr./md</option>
+        <option value="2000 kr. - Premium">💎 Premium – 2.000 kr./md</option>
+        <option value="Vil diskutere">💬 Vil gerne diskutere</option>
+      </select>
+    </div>
+    <div class="form-group"><label class="form-label">Besked</label><textarea class="form-input" rows="3" id="ar-message" placeholder="Fortæl os lidt om din virksomhed og hvad du ønsker at annoncere..."></textarea></div>
+    <button class="btn-primary" onclick="submitAdRequest()">📨 Send forespørgsel</button>
+    <div style="text-align:center;margin-top:14px;font-size:12px;color:#555;">Vi vender tilbage inden for 24 timer · malsayed516@gmail.com</div>
+  </div>
+</div>
 <nav class="bottom-nav">
-  <div class="nav-item active" id="nav-home" onclick="goPage('home','nav-home')"><div class="nav-icon">🏠</div><div class="nav-label">Forside</div></div>
+  <div class="nav-item active" id="nav-home" onclick="goPage('home','nav-home')"><div class="nav-icon">🏠</div><div class="nav-label">Hjem</div></div>
   <div class="nav-item" id="nav-buy" onclick="goPage('buy','nav-buy')"><div class="nav-icon">🔍</div><div class="nav-label">Vil du købe</div></div>
   <div class="nav-center" onclick="requireAuth('sell-picker')"><div class="nav-plus">+</div><div class="nav-label">Vil du sælge</div></div>
   <div class="nav-item" id="nav-msgs" onclick="requireAuth('messages','nav-msgs')"><div class="nav-icon">💬</div><div class="nav-label">Beskeder</div></div>
@@ -706,8 +1029,9 @@
 <div class="filter-drawer" id="filter-drawer">
   <div class="drawer-handle"></div>
   <div class="drawer-head">
-    <div class="drawer-title" id="drawer-title">Filter</div>
     <button onclick="closeFilter()" style="width:34px;height:34px;background:var(--bg3);border:none;border-radius:50%;display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:18px;color:#8fbc5a;">←</button>
+    <div class="drawer-title" id="drawer-title">Filter</div>
+    <div style="width:34px;"></div>
   </div>
   <div class="drawer-body" id="drawer-body"></div>
   <div class="drawer-footer">
@@ -775,6 +1099,13 @@ const sellFields={
     {id:'kmdriven',label:'Km kørt',type:'input',placeholder:'fx. 1500',inputType:'number'},
     {id:'condition',label:'Stand',type:'chips',opts:['Ny (ubrugt)','Som ny','God stand','Brugt']},
   ]},
+  tilbehor:{title:'🔧 Sælg tilbehør',fields:[
+    {id:'type',label:'Type',type:'chips',opts:['Hjelm','Lygter','Lås','Taske','Pumpe','Fælge','Dæk','Bremser','Gear','Sadel','Styr','Skærme','Klokke','Cykelcomputer','Reservedele','Andet']},
+    {id:'brand',label:'Mærke',type:'input',placeholder:'fx. Abus, Topeak, Shimano'},
+    {id:'model',label:'Model / navn',type:'input',placeholder:'fx. Bordo 6000'},
+    {id:'color',label:'Farve',type:'chips',opts:['Sort','Hvid','Grå','Rød','Blå','Gul','Andet']},
+    {id:'condition',label:'Stand',type:'chips',opts:['Ny (ubrugt)','Som ny','God stand','Brugt']},
+  ]},
 };
 
 const cyklerBrands=['Trek','Giant','Specialized','Cannondale','Scott','Cube','Bianchi','Merida','Canyon','Focus','Orbea','Raleigh','Batavus','Gazelle','Sparta','Kildemoes','Pegasus','Winora','Kalkhoff','Rabeneick','BMC','Felt','Fuji','GT','Kona','Marin','Santa Cruz','Yeti','Brompton','Tern','Dahon','Peugeot','Decathlon','BTwin','Lapierre','Atala','Wilier','Eddy Merckx','Ridley','Argon 18','Cervelo','Nihola','Christiania','Bullitt','Anden'];
@@ -802,10 +1133,107 @@ const filterDefs={
     {id:'condition',type:'chips',label:'Stand',opts:['Ny','God stand','Brugt']},
     {id:'stelnummer',type:'toggle',label:'Kun med stelnummer'},
   ]},
+  tilbehor:{title:'🔧 Filter – Tilbehør',sections:[
+    {id:'distance',type:'range',label:'Max afstand',unit:'km',min:1,max:400,default:50},
+    {id:'city',type:'cityfilter',label:'By'},
+    {id:'type',type:'chips',label:'Type',opts:['Hjelm','Lygter','Lås','Taske','Pumpe','Fælge','Dæk','Bremser','Gear','Sadel','Styr','Skærme','Klokke','Cykelcomputer','Reservedele','Andet']},
+    {id:'price',type:'pricerange',label:'Pris',min:0,max:100000,default_min:0,default_max:100000},
+    {id:'condition',type:'chips',label:'Stand',opts:['Ny (ubrugt)','God stand','Brugt']},
+  ]},
 };
 
 const notifs=[{icon:'💬',title:'Besked fra Anders',sub:'Er cyklen stadig til salg?',unread:true},{icon:'❤️',title:'Nogen har liket din annonce',sub:'Trek Marlin 7 fik et like',unread:true}];
-const ads=[{logo:'🚲',brand:'Trek Danmark',desc:'Officiel Trek forhandler.',cta:'Se tilbud →',img:'https://images.unsplash.com/photo-1571333250630-f0230c320b6d?w=600&q=80'}];
+// ===== AD MANAGEMENT SYSTEM - SUPABASE =====
+const ADMIN_EMAIL = 'malsayed516@gmail.com';
+let adRotateInterval = 6000;
+let adFrequency = 15;
+let bannerClicks = parseInt(localStorage.getItem('bannerClicks') || '0');
+let bannerViews = parseInt(localStorage.getItem('bannerViews') || '0');
+let ads = [];
+let adIndex = 0;
+
+const fallbackAds = [
+  {id:'f1',logo:'🚲',brand:'Trek Danmark',description:'Officiel Trek forhandler – find din næste cykel hos os.',desc:'Officiel Trek forhandler – find din næste cykel hos os.',cta:'Se tilbud →',url:'https://www.trek.com/da-dk/',img:'https://images.unsplash.com/photo-1571333250630-f0230c320b6d?w=600&q=80',position:'both',active:true,price:1500},
+  {id:'f2',logo:'⚡',brand:'Elcykel.dk',description:'Danmarks største udvalg af el-cykler. Prøv 14 dage gratis!',desc:'Danmarks største udvalg af el-cykler. Prøv 14 dage gratis!',cta:'Se el-cykler →',url:'https://www.elcykel.dk/',img:'https://images.unsplash.com/photo-1571068316344-75bc76f77890?w=600&q=80',position:'both',active:true,price:1200},
+  {id:'f3',logo:'🛡️',brand:'Abus Sikkerhed',description:'Beskyt din cykel med Danmarks bedste låse og hjelme.',desc:'Beskyt din cykel med Danmarks bedste låse og hjelme.',cta:'Shop nu →',url:'https://www.abus.com/dk/',img:'https://images.unsplash.com/photo-1507035895480-2b3156c31fc8?w=600&q=80',position:'both',active:true,price:1000},
+];
+
+async function loadAds(){
+  try {
+    const { data, error } = await sb.from('ads').select('*').eq('active', true).order('created_at', {ascending:false});
+    if(error) throw error;
+    ads = (data && data.length) ? data.map(a=>({...a,desc:a.description})) : fallbackAds;
+  } catch(e) {
+    console.warn('Supabase ads unavailable, using fallback');
+    ads = fallbackAds;
+  }
+  rotateBannerAd();
+  renderHome(allListings);
+}
+
+async function loadAllAds(){
+  try {
+    const { data, error } = await sb.from('ads').select('*').order('created_at', {ascending:false});
+    if(error) throw error;
+    return (data && data.length) ? data.map(a=>({...a,desc:a.description})) : fallbackAds;
+  } catch(e) {
+    return fallbackAds;
+  }
+}
+
+async function saveAdToDb(adData){
+  try {
+    const isEdit = adData.id && adData.id.length > 10 && !adData.id.startsWith('f');
+    if(isEdit){
+      const { error } = await sb.from('ads').update({
+        brand: adData.brand, logo: adData.logo, description: adData.desc,
+        cta: adData.cta, url: adData.url, img: adData.img,
+        price: adData.price, position: adData.position, active: adData.active ?? true
+      }).eq('id', adData.id);
+      if(error) throw error;
+    } else {
+      const { error } = await sb.from('ads').insert({
+        brand: adData.brand, logo: adData.logo, description: adData.desc,
+        cta: adData.cta, url: adData.url, img: adData.img,
+        price: adData.price || 0, position: adData.position || 'both', active: true
+      });
+      if(error) throw error;
+    }
+    await loadAds();
+    toast('✅ Gemt i Supabase!');
+  } catch(e) {
+    console.error('saveAdToDb error:', e);
+    // Fallback: save locally
+    const existing = fallbackAds.findIndex(x=>x.id===adData.id);
+    if(existing>=0) fallbackAds[existing]={...fallbackAds[existing],...adData,desc:adData.desc};
+    else fallbackAds.push({...adData,id:'f'+Date.now(),active:true,desc:adData.desc,description:adData.desc});
+    ads = [...fallbackAds];
+    rotateBannerAd();
+    renderHome(allListings);
+    toast('✅ Gemt lokalt (Supabase offline)');
+  }
+}
+
+async function deleteAdFromDb(id){
+  try {
+    const { error } = await sb.from('ads').delete().eq('id', id);
+    if(error) throw error;
+    await loadAds();
+  } catch(e) {
+    toast('❌ Fejl: ' + e.message);
+  }
+}
+
+async function toggleAdInDb(id, currentActive){
+  try {
+    const { error } = await sb.from('ads').update({ active: !currentActive }).eq('id', id);
+    if(error) throw error;
+    await loadAds();
+  } catch(e) {
+    toast('❌ Fejl: ' + e.message);
+  }
+}
+
 
 const danishCities=[{zip:'1000',city:'København K'},{zip:'1550',city:'København V'},{zip:'1800',city:'Frederiksberg C'},{zip:'2000',city:'Frederiksberg'},{zip:'2100',city:'København Ø'},{zip:'2200',city:'København N'},{zip:'2300',city:'København S'},{zip:'2400',city:'København NV'},{zip:'2450',city:'København SV'},{zip:'2500',city:'Valby'},{zip:'2600',city:'Glostrup'},{zip:'2605',city:'Brøndby'},{zip:'2610',city:'Rødovre'},{zip:'2620',city:'Albertslund'},{zip:'2630',city:'Taastrup'},{zip:'2635',city:'Ishøj'},{zip:'2650',city:'Hvidovre'},{zip:'2670',city:'Greve'},{zip:'2700',city:'Brønshøj'},{zip:'2720',city:'Vanløse'},{zip:'2730',city:'Herlev'},{zip:'2750',city:'Ballerup'},{zip:'2770',city:'Kastrup'},{zip:'2791',city:'Dragør'},{zip:'2800',city:'Kongens Lyngby'},{zip:'2820',city:'Gentofte'},{zip:'2830',city:'Virum'},{zip:'2840',city:'Holte'},{zip:'2860',city:'Søborg'},{zip:'2900',city:'Hellerup'},{zip:'2920',city:'Charlottenlund'},{zip:'2950',city:'Vedbæk'},{zip:'2970',city:'Hørsholm'},{zip:'2990',city:'Nivå'},{zip:'3000',city:'Helsingør'},{zip:'3050',city:'Humlebæk'},{zip:'3060',city:'Espergærde'},{zip:'3100',city:'Hornbæk'},{zip:'3200',city:'Helsinge'},{zip:'3250',city:'Gilleleje'},{zip:'3300',city:'Frederiksværk'},{zip:'3400',city:'Hillerød'},{zip:'3450',city:'Allerød'},{zip:'3460',city:'Birkerød'},{zip:'3480',city:'Fredensborg'},{zip:'3500',city:'Værløse'},{zip:'3520',city:'Farum'},{zip:'3550',city:'Slangerup'},{zip:'3600',city:'Frederikssund'},{zip:'3650',city:'Ølstykke'},{zip:'4000',city:'Roskilde'},{zip:'4100',city:'Ringsted'},{zip:'4200',city:'Slagelse'},{zip:'4300',city:'Holbæk'},{zip:'4400',city:'Kalundborg'},{zip:'4600',city:'Køge'},{zip:'4700',city:'Næstved'},{zip:'4800',city:'Nykøbing F'},{zip:'5000',city:'Odense C'},{zip:'5200',city:'Odense V'},{zip:'5500',city:'Middelfart'},{zip:'5700',city:'Svendborg'},{zip:'5800',city:'Nyborg'},{zip:'6000',city:'Kolding'},{zip:'6100',city:'Haderslev'},{zip:'6200',city:'Aabenraa'},{zip:'6400',city:'Sønderborg'},{zip:'6700',city:'Esbjerg'},{zip:'6800',city:'Varde'},{zip:'6950',city:'Ringkøbing'},{zip:'7000',city:'Fredericia'},{zip:'7100',city:'Vejle'},{zip:'7400',city:'Herning'},{zip:'7500',city:'Holstebro'},{zip:'7700',city:'Thisted'},{zip:'7800',city:'Skive'},{zip:'8000',city:'Aarhus C'},{zip:'8200',city:'Aarhus N'},{zip:'8210',city:'Aarhus V'},{zip:'8600',city:'Silkeborg'},{zip:'8660',city:'Skanderborg'},{zip:'8700',city:'Horsens'},{zip:'8800',city:'Viborg'},{zip:'8900',city:'Randers C'},{zip:'9000',city:'Aalborg'},{zip:'9200',city:'Aalborg SV'},{zip:'9400',city:'Nørresundby'},{zip:'9500',city:'Hobro'},{zip:'9700',city:'Brønderslev'},{zip:'9800',city:'Hjørring'},{zip:'9900',city:'Frederikshavn'},{zip:'9990',city:'Skagen'}];
 
@@ -816,22 +1244,162 @@ function selectEditCity(val){document.getElementById('edit-city').value=val;docu
 function handleAvatarUpload(e){const file=e.target.files[0];if(!file)return;const reader=new FileReader();reader.onload=ev=>{const avatar=document.getElementById('edit-avatar');avatar.innerHTML='<img src="'+ev.target.result+'" style="width:100%;height:100%;object-fit:cover;">';localStorage.setItem('avatar',ev.target.result);};reader.readAsDataURL(file);e.target.value='';}
 function saveProfile(){const firstname=document.getElementById('edit-firstname').value.trim();const lastname=document.getElementById('edit-lastname').value.trim();const city=document.getElementById('edit-city').value.trim();const phone=document.getElementById('edit-phone').value.trim();if(!firstname||!lastname){const el=document.getElementById('edit-profile-msg');el.textContent='Udfyld fornavn og efternavn';el.className='msg-box err';return;}localStorage.setItem('profile',JSON.stringify({firstname,lastname,city,phone}));document.getElementById('p-name').textContent=firstname+' '+lastname;toast('Profil gemt! ✅');goPage('profile','nav-prof');}
 function loadProfile(){const saved=localStorage.getItem('profile');if(saved){const p=JSON.parse(saved);if(document.getElementById('edit-firstname'))document.getElementById('edit-firstname').value=p.firstname||'';if(document.getElementById('edit-lastname'))document.getElementById('edit-lastname').value=p.lastname||'';if(document.getElementById('edit-city'))document.getElementById('edit-city').value=p.city||'';if(document.getElementById('edit-phone'))document.getElementById('edit-phone').value=p.phone||'';}const avatar=localStorage.getItem('avatar');if(avatar){const el=document.getElementById('edit-avatar');if(el)el.innerHTML='<img src="'+avatar+'" style="width:100%;height:100%;object-fit:cover;">';}}
-async function init(){loadTheme();const{data:{session}}=await sb.auth.getSession();if(session)setUser(session.user);sb.auth.onAuthStateChange((_,s)=>s?setUser(s.user):clearUser());renderHome(allListings);updateBellDot();for(let i=0;i<6;i++){const s=document.getElementById('slot-'+i);if(s)s.onclick=()=>document.getElementById('file-input').click();}}
-function setUser(u){me=u;document.getElementById('p-name').textContent=u.user_metadata?.name||u.email.split('@')[0];document.getElementById('p-email').textContent=u.email;document.getElementById('auth-section').style.display='none';document.getElementById('profile-section').style.display='block';}
-function clearUser(){me=null;document.getElementById('auth-section').style.display='block';document.getElementById('profile-section').style.display='none';}
+async function init(){
+  loadTheme();
+  const{data:{session}}=await sb.auth.getSession();
+  if(session)setUser(session.user);
+  sb.auth.onAuthStateChange((_,s)=>s?setUser(s.user):clearUser());
+  renderHome(allListings);
+  updateBellDot();
+  // Load ads from Supabase
+  await loadAds();
+  window._adTimer = setInterval(rotateBannerAd, adRotateInterval);for(let i=0;i<6;i++){const s=document.getElementById('slot-'+i);if(s)s.onclick=()=>document.getElementById('file-input').click();}}
+function setUser(u){
+  me=u;
+  const meta = u.user_metadata || {};
+  document.getElementById('p-name').textContent = meta.name || u.email.split('@')[0];
+  document.getElementById('p-email').textContent = u.email;
+  document.getElementById('auth-section').style.display='none';
+  document.getElementById('profile-section').style.display='block';
+  checkAdminAccess();
+
+  // Account type badge
+  const badge = document.getElementById('p-account-badge');
+  const isErhverv = meta.accountType === 'erhverv';
+  if(badge){
+    if(isErhverv){
+      badge.innerHTML = '<span style="background:#2a1a00;color:#f0c040;border:1px solid #f0c040;border-radius:50px;padding:3px 10px;font-size:11px;font-weight:700;">🏪 Erhverv</span>';
+    } else {
+      badge.innerHTML = '<span style="background:#1a2a1a;color:#8fbc5a;border:1px solid #8fbc5a;border-radius:50px;padding:3px 10px;font-size:11px;font-weight:700;">🧑 Privat</span>';
+    }
+  }
+
+  // Erhverv info box
+  const erhBox = document.getElementById('p-erhverv-info');
+  const cvrInfo = document.getElementById('p-cvr-info');
+  if(erhBox && cvrInfo){
+    if(isErhverv){
+      erhBox.style.display = 'block';
+      cvrInfo.innerHTML = '🏪 <strong>' + (meta.virksomhed||'') + '</strong><br>CVR: ' + (meta.cvr||'') + '<br>Plan: <span style="color:#aaa;">Gratis (maks 5 annoncer)</span><br><span style="font-size:11px;color:#aaa;">Opgrader til 350 kr./md for ubegrænsede annoncer</span>';
+    } else {
+      erhBox.style.display = 'none';
+    }
+  }
+}
+function clearUser(){me=null;document.getElementById('auth-section').style.display='block';document.getElementById('profile-section').style.display='none';checkAdminAccess();}
 function listingCard(l){return`<div class="listing-card" onclick="openListing(${l.id})">${l.img?`<img src="${l.img}" alt="${l.title}" loading="lazy">`:'<div class="listing-img-ph">🚲</div>'}${l.plan==='premium'?'<div class="premium-badge">⭐ Premium</div>':''}<button class="heart-btn" onclick="event.stopPropagation();this.classList.toggle('liked');this.textContent=this.classList.contains('liked')?'♥':'♡'">♡</button><div class="listing-info"><div class="listing-title">${l.title}</div><div class="listing-price">${l.price}</div><div class="listing-loc">📍 ${l.city}</div></div></div>`;}
-function adCard(a){return`<div class="ad-card"><div class="ad-badge">Sponsoreret</div><img class="ad-img" src="${a.img}"><div class="ad-inner"><div class="ad-logo">${a.logo}</div><div><div class="ad-brand">${a.brand}</div><div class="ad-desc">${a.desc}</div><div class="ad-cta">${a.cta}</div></div></div></div>`;}
-function renderHome(items){const el=document.getElementById('home-listings');if(!items.length){el.innerHTML='<div class="empty"><div class="e-icon">🚲</div><p>Ingen annoncer</p></div>';return;}let html='';items.forEach((l,i)=>{html+=listingCard(l);if((i+1)%10===0&&ads[Math.floor((i+1)/10)-1])html+=adCard(ads[Math.floor((i+1)/10)-1]);});el.innerHTML=html;}
+function adCard(a){
+  if(!a) return '';
+  return `<div style="grid-column:span 2;border-radius:16px;overflow:hidden;cursor:pointer;position:relative;margin:2px 0;" onclick="trackAdClick('${a.id||''}','${a.url||''}')">
+    <img src="${a.img||''}" loading="lazy" onerror="this.style.display='none'"
+      style="width:100%;height:160px;object-fit:cover;display:block;">
+    <div style="position:absolute;inset:0;background:linear-gradient(to bottom,rgba(0,0,0,0.05) 30%,rgba(0,0,0,0.75) 100%);"></div>
+    <div style="position:absolute;top:10px;left:10px;background:rgba(0,0,0,0.6);color:#bbb;font-size:10px;font-weight:600;padding:3px 10px;border-radius:50px;">Sponsoreret</div>
+    <div style="position:absolute;bottom:0;left:0;right:0;padding:12px 14px;display:flex;align-items:flex-end;justify-content:space-between;gap:10px;">
+      <div>
+        <div style="display:flex;align-items:center;gap:6px;margin-bottom:3px;">
+          <span style="font-size:20px;">${a.logo}</span>
+          <span style="font-weight:800;font-size:16px;color:#fff;text-shadow:0 1px 4px rgba(0,0,0,0.9);">${a.brand}</span>
+        </div>
+        <div style="font-size:12px;color:rgba(255,255,255,0.85);text-shadow:0 1px 3px rgba(0,0,0,0.8);">${a.desc}</div>
+      </div>
+      <div style="background:#8fbc5a;color:#111;font-size:12px;font-weight:800;padding:9px 16px;border-radius:50px;white-space:nowrap;flex-shrink:0;box-shadow:0 2px 8px rgba(143,188,90,0.5);">${a.cta}</div>
+    </div>
+  </div>`;
+}
+
+function trackAdClick(id, url){
+  bannerClicks++;
+  localStorage.setItem('bannerClicks', bannerClicks);
+  if(url) window.open(url, '_blank');
+}
+
+function openBannerAd(){
+  const activeAds = ads.filter(a=>a.active && (a.position==='both'||a.position==='banner'));
+  if(!activeAds.length) return;
+  const a = activeAds[adIndex % activeAds.length];
+  trackAdClick(a.id||'', a.url||'');
+}
+
+function rotateBannerAd(){
+  const activeAds = ads.filter(a=>a.active && (a.position==='both'||a.position==='banner'));
+  if(!activeAds.length){
+    const banner = document.getElementById('top-banner-ad');
+    if(banner) banner.style.display='none';
+    return;
+  }
+  const banner = document.getElementById('top-banner-ad');
+  if(banner) banner.style.display='block';
+
+  const curIdx = adIndex % activeAds.length;
+  const a = activeAds[curIdx];
+  bannerViews++;
+  localStorage.setItem('bannerViews', bannerViews);
+
+  // Update content with fade
+  const bg = document.getElementById('banner-bg');
+  if(bg) bg.style.opacity='0.4';
+
+  setTimeout(()=>{
+    const logo  = document.getElementById('banner-logo');
+    const brand = document.getElementById('banner-brand');
+    const desc  = document.getElementById('banner-desc');
+    const cta   = document.getElementById('banner-cta');
+    const img   = document.getElementById('banner-img');
+
+    if(logo)  logo.textContent  = a.logo;
+    if(brand) brand.textContent = a.brand;
+    if(desc)  desc.textContent  = a.desc;
+    if(cta)   cta.textContent   = a.cta;
+
+    // Show image if available
+    if(img){
+      if(a.img){
+        img.src = a.img;
+        img.style.display = 'block';
+      } else {
+        img.style.display = 'none';
+      }
+    }
+
+    // Update dots
+    const dotsEl = document.getElementById('banner-dots');
+    if(dotsEl){
+      dotsEl.innerHTML = activeAds.map((_,i) =>
+        `<div style="width:${i===curIdx?'18px':'6px'};height:6px;border-radius:3px;background:${i===curIdx?'#8fbc5a':'#333'};transition:all 0.3s;"></div>`
+      ).join('');
+    }
+
+    if(bg){ bg.style.transition='opacity 0.4s'; bg.style.opacity='1'; }
+  }, 200);
+
+  adIndex = (adIndex+1) % activeAds.length;
+}
+function renderHome(items){
+  const el=document.getElementById('home-listings');
+  if(!items.length){el.innerHTML='<div class="empty"><div class="e-icon">🚲</div><p>Ingen annoncer</p></div>';return;}
+  const cardAds = ads.filter(a=>a.active && (a.position==='both'||a.position==='card'));
+  let h='';
+  let adCount=0;
+  items.forEach((l,i)=>{
+    h+=listingCard(l);
+    if((i+1)%adFrequency===0 && cardAds.length){
+      h+=adCard(cardAds[adCount%cardAds.length]);
+      adCount++;
+    }
+  });
+  el.innerHTML=h;
+}
 function handleSearch(val){renderHome(!val.trim()?allListings:allListings.filter(l=>l.title.toLowerCase().includes(val.toLowerCase())||l.city.toLowerCase().includes(val.toLowerCase())));}
 function selectCat(cat,el){document.querySelectorAll('.cat-icon-item').forEach(t=>t.classList.remove('active'));el.classList.add('active');renderHome(allListings);showPage('home');}
 function selectSubcat(subcat,el){document.querySelectorAll('.subcat-item').forEach(i=>i.classList.remove('active'));el.classList.add('active');const map={bycykel:'Bycykel',mountainbike:'Mountainbike',racercykel:'Racercykel',damecykel:'Damecykel',bornecykel:'Børnecykel',ladcykel:'Ladcykel'};const t=map[subcat];let items;if(subcat==='elladcykel')items=allListings.filter(l=>l.cat==='elcykler');else if(t)items=allListings.filter(l=>l.type===t);else items=allListings;renderHome(items);showPage('home');}
-function openCatPage(cat){activeCat=cat;activeFilters={};const titles={cykler:'🚲 Cykler',elcykler:'⚡ El-cykler'};document.getElementById('cat-page-title').textContent=titles[cat];document.getElementById('filter-open-btn').classList.remove('has-filters');document.getElementById('filter-open-btn').textContent='⚙️ Filter';const items=allListings.filter(l=>l.cat===cat);document.getElementById('results-count').textContent=items.length+' annoncer';document.getElementById('cat-listings').innerHTML=items.length?items.map(l=>listingCard(l)).join(''):'<div class="empty"><div class="e-icon">🔍</div><p>Ingen annoncer</p></div>';showPage('cat');}
+function openCatPage(cat){if(cat==='tilbehor'){activeCat='tilbehor';activeFilters={};document.getElementById('cat-page-title').textContent='🔧 Tilbehør';document.getElementById('filter-open-btn').classList.remove('has-filters');document.getElementById('filter-open-btn').textContent='⚙️ Filter';const items=allListings.filter(l=>l.cat==='tilbehor');document.getElementById('results-count').textContent=items.length+' annoncer';document.getElementById('cat-listings').innerHTML=items.length?items.map(l=>listingCard(l)).join(''):'<div class="empty"><div class="e-icon">🔧</div><p>Ingen tilbehør endnu</p><p style="font-size:12px;color:#333;margin-top:6px;">Vær den første til at sælge!</p></div>';showPage('cat');return;}activeCat=cat;activeFilters={};const titles={cykler:'🚲 Cykler',elcykler:'⚡ El-cykler'};document.getElementById('cat-page-title').textContent=titles[cat];document.getElementById('filter-open-btn').classList.remove('has-filters');document.getElementById('filter-open-btn').textContent='⚙️ Filter';const items=allListings.filter(l=>l.cat===cat);document.getElementById('results-count').textContent=items.length+' annoncer';document.getElementById('cat-listings').innerHTML=items.length?items.map(l=>listingCard(l)).join(''):'<div class="empty"><div class="e-icon">🔍</div><p>Ingen annoncer</p></div>';showPage('cat');}
 function goBackHome(){document.getElementById('topbar').style.display='block';document.getElementById('subcat-bar').style.display='flex';showPage('home');document.querySelectorAll('.nav-item').forEach((i,idx)=>i.classList.toggle('active',idx===0));}
 function openListing(id){const l=allListings.find(x=>x.id===id);if(!l)return;detailId=id;detailFrom=document.querySelector('.page.active')?.id?.replace('page-','')||'home';document.getElementById('detail-header-title').textContent=l.title;document.getElementById('detail-title').textContent=l.title;document.getElementById('detail-price').textContent=l.price;document.getElementById('detail-loc').textContent='📍 '+l.city;document.getElementById('detail-img-wrap').innerHTML=l.img?`<img src="${l.img}" alt="${l.title}">`:'<div class="detail-img-ph">🚲</div>';const stelSec=document.getElementById('detail-stel-section');if(l.stelnummer){stelSec.style.display='block';document.getElementById('detail-stel-val').textContent=l.stelnummer;}else stelSec.style.display='none';const specs=[];if(l.type)specs.push(l.type);if(l.brand)specs.push(l.brand);if(l.year)specs.push(l.year);if(l.color)specs.push(l.color);if(l.condition)specs.push(l.condition);const spSec=document.getElementById('detail-specs-section');if(specs.length){spSec.style.display='block';document.getElementById('detail-specs').innerHTML=specs.map(s=>`<div class="detail-tag">${s}</div>`).join('');}else spSec.style.display='none';const dSec=document.getElementById('detail-desc-section');if(l.desc){dSec.style.display='block';document.getElementById('detail-desc-txt').textContent=l.desc;}else dSec.style.display='none';document.getElementById('detail-seller').textContent=l.seller||'Privat sælger';const callBtn=document.getElementById('call-btn');if(callBtn){callBtn.style.display=l.phone?'flex':'none';}document.getElementById('detail-annonce-id').textContent='Annonce ID: #'+String(l.id).padStart(6,'0');showPage('detail');}
 function goDetailBack(){showPage(detailFrom);if(detailFrom==='cat'){document.getElementById('topbar').style.display='none';document.getElementById('subcat-bar').style.display='none';}else{document.getElementById('topbar').style.display='block';document.getElementById('subcat-bar').style.display='flex';}}
 function callSeller(){const l=allListings.find(x=>x.id===detailId);if(!l||!l.phone)return;window.location.href='tel:'+l.phone;}
 function contactSeller(){if(!me){toast('Log ind for at kontakte sælger');goPage('profile','nav-prof');return;}const l=allListings.find(x=>x.id===detailId);document.getElementById('chat-name').textContent='Sælger';document.getElementById('chat-sub').textContent=l?'om: '+l.title:'';showPage('chat');loadChat('l'+detailId);}
-function openSellForm(cat){currentSellCat=cat;uploadedImgs=[];updateImgGrid();const def=sellFields[cat];document.getElementById('sell-form-title').textContent=def.title;document.getElementById('sf-stelnummer').value='';document.getElementById('sell-title').value='';document.getElementById('sell-price').value='';document.getElementById('sell-city').value='';document.getElementById('sell-desc').value='';let html='';def.fields.forEach(f=>{html+='<div class="form-group"><label class="form-label">'+f.label+'</label>';if(f.type==='brand'){html+='<div class="brand-wrap"><div class="brand-input-row"><input type="text" id="sf-brand-input" placeholder="Søg eller vælg mærke..."><div class="brand-arrow" id="sf-brand-arrow">▼</div></div><div class="brand-dropdown" id="sf-brand-dropdown"></div><input type="hidden" id="sf-brand"></div>';}else if(f.type==='input'){html+='<input class="form-input" type="'+(f.inputType||'text')+'" id="sf-'+f.id+'" placeholder="'+(f.placeholder||'')+'">';}else if(f.type==='chips'){const ch=f.opts.map(o=>'<div class="chip-opt" onclick="toggleChipOpt(this,\'sf-'+f.id+'\')">'+o+'</div>').join('');html+='<div class="chip-group">'+ch+'</div><input type="hidden" id="sf-'+f.id+'">';}html+='</div>';});document.getElementById('dynamic-fields').innerHTML=html;setTimeout(()=>initBrandDropdown('sf-brand',cat),50);showPage('sell-form');}
+function openSellForm(cat){currentSellCat=cat;uploadedImgs=[];updateImgGrid();const def=sellFields[cat];document.getElementById('sell-form-title').textContent=def.title;document.getElementById('sf-stelnummer').value='';document.getElementById('sell-title').value='';document.getElementById('sell-price').value='';document.getElementById('sell-city').value='';document.getElementById('sell-desc').value='';let html='';def.fields.forEach(f=>{html+='<div class="form-group"><label class="form-label">'+f.label+'</label>';if(f.type==='brand'){if(currentSellCat==='tilbehor'){html+='<input class="form-input" type="text" id="sf-brand" placeholder="fx. Abus, Shimano, Topeak">';}else{html+='<div class="brand-wrap"><div class="brand-input-row"><input type="text" id="sf-brand-input" placeholder="Søg eller vælg mærke..."><div class="brand-arrow" id="sf-brand-arrow">▼</div></div><div class="brand-dropdown" id="sf-brand-dropdown"></div><input type="hidden" id="sf-brand"></div>';}}else if(f.type==='input'){html+='<input class="form-input" type="'+(f.inputType||'text')+'" id="sf-'+f.id+'" placeholder="'+(f.placeholder||'')+'">';}else if(f.type==='chips'){const ch=f.opts.map(o=>'<div class="chip-opt" onclick="toggleChipOpt(this,\'sf-'+f.id+'\')">'+o+'</div>').join('');html+='<div class="chip-group">'+ch+'</div><input type="hidden" id="sf-'+f.id+'">';}html+='</div>';});document.getElementById('dynamic-fields').innerHTML=html;setTimeout(()=>initBrandDropdown('sf-brand',cat),50);showPage('sell-form');}
 function toggleChipOpt(el,inputId){el.parentElement.querySelectorAll('.chip-opt').forEach(c=>c.classList.remove('sel'));el.classList.add('sel');document.getElementById(inputId).value=el.textContent;}
 function initBrandDropdown(fieldId,cat){const brands=cat==='elcykler'?elCyklerBrands:cyklerBrands;const input=document.getElementById(fieldId+'-input');const dropdown=document.getElementById(fieldId+'-dropdown');const hidden=document.getElementById(fieldId);if(!input||!dropdown)return;function showDD(filter){const filtered=filter?brands.filter(b=>b.toLowerCase().includes(filter.toLowerCase())):brands;dropdown.innerHTML=filtered.map(b=>'<div class="brand-option'+(b==='Anden'?' highlight':'')+'" onclick="selectBrand(\''+fieldId+'\',\''+b+'\')">'+b+'</div>').join('');dropdown.style.display=filtered.length?'block':'none';}input.addEventListener('input',()=>{hidden.value=input.value;showDD(input.value);});input.addEventListener('focus',()=>showDD(input.value));document.addEventListener('click',e=>{if(!input.closest('.brand-wrap').contains(e.target))dropdown.style.display='none';});const arrow=document.getElementById(fieldId+'-arrow');if(arrow)arrow.addEventListener('click',()=>{dropdown.style.display=dropdown.style.display==='block'?'none':(showDD(input.value),'block');});}
 function selectBrand(fieldId,brand){document.getElementById(fieldId+'-input').value=brand;document.getElementById(fieldId).value=brand;document.getElementById(fieldId+'-dropdown').style.display='none';}
@@ -849,8 +1417,8 @@ function openBuyDirect(cat){
   activeBuyCat=cat;
   buyActiveFilters={};
   filterMode='buy';
-  const titles={cykler:'🚲 Cykler',elcykler:'⚡ El-cykler'};
-  document.getElementById('buy-results-title').textContent=titles[cat];
+  const titles={cykler:'🚲 Cykler',elcykler:'⚡ El-cykler',tilbehor:'🔧 Tilbehør'};
+  document.getElementById('buy-results-title').textContent=titles[cat]||cat;
   document.getElementById('buy-filter-btn').textContent='⚙️ Filter';
   document.getElementById('buy-filter-btn').classList.remove('has-filters');
   renderBuyResults(allListings.filter(l=>l.cat===cat));
@@ -929,16 +1497,95 @@ function sendMsg(){const inp=document.getElementById('chat-inp'),t=inp.value.tri
 function loadConvs(){const el=document.getElementById('conv-list');if(!me){el.innerHTML='<div style="text-align:center;padding:40px;color:#333">Log ind for at se beskeder</div>';return;}el.innerHTML='<div class="conv-item" onclick="openConv(\'c1\',\'Anders Nielsen\')"><div class="conv-avatar">👤</div><div class="conv-info"><div class="conv-name">Anders Nielsen</div><div class="conv-preview">Er cyklen stadig til salg?</div></div><div style="display:flex;flex-direction:column;align-items:flex-end;gap:6px"><div class="conv-time">12:30</div><div class="unread-dot"></div></div></div>';}
 function openConv(id,name){document.getElementById('chat-name').textContent=name;document.getElementById('chat-sub').textContent='Privat besked';showPage('chat');loadChat(id);}
 function updateBellDot(){document.getElementById('bell-dot').classList.toggle('on',notifs.some(n=>n.unread));}
-function switchTab(tab){document.querySelectorAll('.auth-tab').forEach((t,i)=>t.classList.toggle('active',(i===0&&tab==='login')||(i===1&&tab==='signup')));document.getElementById('f-login').style.display=tab==='login'?'block':'none';document.getElementById('f-signup').style.display=tab==='signup'?'block':'none';document.getElementById('f-forgot').style.display='none';clearMsg();}
+let currentSignupType = 'privat';
+
+function switchTab(tab){
+  document.querySelectorAll('.auth-tab').forEach((t,i)=>t.classList.toggle('active',(i===0&&tab==='login')||(i===1&&tab==='signup')));
+  document.getElementById('f-login').style.display=tab==='login'?'block':'none';
+  document.getElementById('f-signup').style.display=tab==='signup'?'block':'none';
+  document.getElementById('f-forgot').style.display='none';
+  clearMsg();
+}
+
+function setSignupType(type){
+  currentSignupType = type;
+  const privCard = document.getElementById('signup-type-privat');
+  const erhCard = document.getElementById('signup-type-erhverv');
+  const privatFields = document.getElementById('signup-privat-fields');
+  const erhFields = document.getElementById('signup-erhverv-fields');
+  if(type === 'privat'){
+    privCard.style.background = '#1a2a1a';
+    privCard.style.borderColor = '#8fbc5a';
+    privCard.querySelector('div:nth-child(2)').style.color = '#8fbc5a';
+    erhCard.style.background = 'var(--bg2)';
+    erhCard.style.borderColor = 'var(--border2)';
+    erhCard.querySelector('div:nth-child(2)').style.color = '#888';
+    privatFields.style.display = 'block';
+    erhFields.style.display = 'none';
+  } else {
+    erhCard.style.background = '#2a1a00';
+    erhCard.style.borderColor = '#f0c040';
+    erhCard.querySelector('div:nth-child(2)').style.color = '#f0c040';
+    privCard.style.background = 'var(--bg2)';
+    privCard.style.borderColor = 'var(--border2)';
+    privCard.querySelector('div:nth-child(2)').style.color = '#888';
+    privatFields.style.display = 'none';
+    erhFields.style.display = 'block';
+  }
+}
+
+function filterSignupCitiesErh(val){
+  const dd=document.getElementById('signup-city-erh-dropdown');
+  if(!val||val.length<2){dd.style.display='none';return;}
+  const filtered=danishCities.filter(c=>c.city.toLowerCase().includes(val.toLowerCase())||c.zip.startsWith(val)).slice(0,8);
+  if(!filtered.length){dd.style.display='none';return;}
+  dd.style.display='block';
+  dd.innerHTML=filtered.map(c=>'<div class="city-option" onclick="selectSignupCityErh(\''+c.zip+' '+c.city+'\')"><span style="color:#8fbc5a;font-weight:700;font-family:monospace;">'+c.zip+'</span> '+c.city+'</div>').join('');
+}
+function selectSignupCityErh(val){
+  document.getElementById('s-city-erh').value=val;
+  document.getElementById('signup-city-erh-dropdown').style.display='none';
+}
 function showForgot(){document.getElementById('f-login').style.display='none';document.getElementById('f-forgot').style.display='block';document.querySelectorAll('.auth-tab').forEach(t=>t.classList.remove('active'));}
 async function doLogin(){const email=document.getElementById('l-email').value.trim(),pass=document.getElementById('l-pass').value;if(!email||!pass){setMsg('Udfyld alle felter','err');return;}const{error}=await sb.auth.signInWithPassword({email,password:pass});if(error)setMsg(error.message,'err');else{toast('Velkommen tilbage! 👋');goPage('home','nav-home');}}
-async function doSignup(){const firstname=document.getElementById('s-firstname').value.trim();const lastname=document.getElementById('s-lastname').value.trim();const city=document.getElementById('s-city').value.trim();const email=document.getElementById('s-email').value.trim();const email2=document.getElementById('s-email2').value.trim();const pass=document.getElementById('s-pass').value;const phone=document.getElementById('s-phone').value.trim();if(!firstname||!lastname||!city||!email||!email2||!pass){setMsg('Udfyld alle påkrævede felter','err');return;}if(email!==email2){setMsg('E-mails stemmer ikke overens','err');return;}if(pass.length<6){setMsg('Adgangskode skal være mindst 6 tegn','err');return;}const name=firstname+' '+lastname;const{error}=await sb.auth.signUp({email,password:pass,options:{data:{name,firstname,lastname,city,phone}}});if(error)setMsg(error.message,'err');else setMsg('Tjek din e-mail for bekræftelse ✉️','ok');}
+async function doSignup(){
+  const email=document.getElementById('s-email').value.trim();
+  const email2=document.getElementById('s-email2').value.trim();
+  const pass=document.getElementById('s-pass').value;
+  if(!email||!email2||!pass){setMsg('Udfyld e-mail og adgangskode','err');return;}
+  if(email!==email2){setMsg('E-mails stemmer ikke overens','err');return;}
+  if(pass.length<6){setMsg('Adgangskode skal være mindst 6 tegn','err');return;}
+
+  let metadata = {accountType: currentSignupType};
+
+  if(currentSignupType === 'privat'){
+    const firstname=document.getElementById('s-firstname').value.trim();
+    const lastname=document.getElementById('s-lastname').value.trim();
+    const city=document.getElementById('s-city').value.trim();
+    const phone=document.getElementById('s-phone').value.trim();
+    if(!firstname||!lastname||!city){setMsg('Udfyld fornavn, efternavn og by','err');return;}
+    metadata = {...metadata, name:firstname+' '+lastname, firstname, lastname, city, phone, accountType:'privat'};
+  } else {
+    const virksomhed=document.getElementById('s-virksomhed').value.trim();
+    const cvr=document.getElementById('s-cvr').value.trim();
+    const kontakt=document.getElementById('s-kontakt').value.trim();
+    const city=document.getElementById('s-city-erh').value.trim();
+    const phone=document.getElementById('s-phone-erh').value.trim();
+    if(!virksomhed||!cvr||!kontakt||!city||!phone){setMsg('Udfyld alle erhvervsfelter','err');return;}
+    if(cvr.length!==8){setMsg('CVR-nummer skal være 8 cifre','err');return;}
+    metadata = {...metadata, name:virksomhed, virksomhed, cvr, kontakt, city, phone, accountType:'erhverv', plan:'gratis', planExpiry:null};
+  }
+
+  const{error}=await sb.auth.signUp({email,password:pass,options:{data:metadata}});
+  if(error)setMsg(error.message,'err');
+  else setMsg('Tjek din e-mail for bekræftelse ✉️','ok');
+}
 async function doReset(){const email=document.getElementById('r-email').value.trim();if(!email){setMsg('Indtast din e-mail','err');return;}const{error}=await sb.auth.resetPasswordForEmail(email,{redirectTo:window.location.href});if(error)setMsg(error.message,'err');else setMsg('Nulstillingslink sendt ✉️','ok');}
 async function doLogout(){await sb.auth.signOut();toast('Du er nu logget ud');goPage('home','nav-home');}
 function setMsg(m,type){const el=document.getElementById('auth-msg');el.textContent=m;el.className='msg-box '+type;}
 function clearMsg(){const el=document.getElementById('auth-msg');el.className='msg-box';el.textContent='';}
 function selectPlan(plan){if(!me){toast('Log ind for at vælge en plan');goPage('profile','nav-prof');return;}const msgs={gratis:'Gratis plan valgt ✓',premium:'Premium – 49 kr. (Stripe kommer snart) 🚀',elite:'Lynhurtig Salg – 199 kr. (Stripe kommer snart) ⚡'};toast(msgs[plan]);}
-function showPage(name){document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));document.getElementById('page-'+name).classList.add('active');const hideTop=['cat','chat','sell-picker','sell-form','detail'].includes(name);document.getElementById('topbar').style.display=hideTop?'none':'block';document.getElementById('subcat-bar').style.display=hideTop?'none':'flex';if(name==='messages')loadConvs();if(name==='edit-profile')loadProfile();if(name==='notifications'){notifs.forEach(n=>n.unread=false);updateBellDot();document.getElementById('notif-list').innerHTML=notifs.map(n=>`<div class="notif-item ${n.unread?'unread':''}"><div style="font-size:22px">${n.icon}</div><div><div style="font-weight:600;font-size:14px">${n.title}</div><div style="font-size:12px;color:#999;margin-top:2px">${n.sub}</div></div></div>`).join('');}}
+function showPage(name){document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));document.getElementById('page-'+name).classList.add('active');const hideTop=['cat','chat','sell-picker','sell-form','detail','vaerksted','buy-results'].includes(name);document.getElementById('topbar').style.display=hideTop?'none':'block';document.getElementById('subcat-bar').style.display=hideTop?'none':'flex';if(name==='messages')loadConvs();if(name==='edit-profile')loadProfile();if(name==='vaerksted'){filteredVaerksteder=[...vaerksteder];renderVaerksted();}if(name==='notifications'){notifs.forEach(n=>n.unread=false);updateBellDot();document.getElementById('notif-list').innerHTML=notifs.map(n=>`<div class="notif-item ${n.unread?'unread':''}"><div style="font-size:22px">${n.icon}</div><div><div style="font-weight:600;font-size:14px">${n.title}</div><div style="font-size:12px;color:#999;margin-top:2px">${n.sub}</div></div></div>`).join('');}}
 function goPage(name,navId){showPage(name);document.querySelectorAll('.nav-item').forEach(i=>i.classList.remove('active'));if(navId)document.getElementById(navId)?.classList.add('active');}
 function requireAuth(page,navId){if(!me){toast('Log ind for at fortsætte');goPage('profile','nav-prof');return;}goPage(page,navId);}
 function toast(msg){const t=document.getElementById('toast');t.textContent=msg;t.classList.add('show');setTimeout(()=>t.classList.remove('show'),2500);}
@@ -1002,6 +1649,385 @@ function updPriceRange(){
   const pct2=(pmax/100000)*100;
   const track=document.getElementById('price-track');
   if(track)track.style.cssText=`left:${pct1}%;width:${pct2-pct1}%;position:absolute;height:100%;background:#8fbc5a;border-radius:6px;pointer-events:none;`;
+}
+
+// ==========================================
+// DANSKE CYKELVÆRKSTEDER DATA
+// ==========================================
+const vaerksteder = [
+  // København
+  {id:1,name:'Christiania Cykler',addr:'Refshalevej 2, 1432 København K',city:'København',zip:'1432',phone:'+45 32 54 58 85',hours:'Man-Fre 9-17',type:'Specialiseret',x:52,y:38},
+  {id:2,name:'Cykelkælderen',addr:'Nørrebrogade 157, 2200 København N',city:'København',zip:'2200',phone:'+45 35 37 13 00',hours:'Man-Lør 10-18',type:'Generel',x:45,y:32},
+  {id:3,name:'BaisikEli Cykelværksted',addr:'Blågårdsgade 17, 2200 København N',city:'København',zip:'2200',phone:'+45 35 35 10 00',hours:'Man-Fre 10-17',type:'Generel',x:47,y:33},
+  {id:4,name:'Bike Copenhagen',addr:'Gothersgade 157, 1123 København K',city:'København',zip:'1123',phone:'+45 33 14 07 17',hours:'Man-Fre 9-18, Lør 10-15',type:'Generel',x:50,y:36},
+  {id:5,name:'Pedal Power',addr:'Vesterbrogade 97, 1620 København V',city:'København',zip:'1620',phone:'+45 33 25 11 55',hours:'Man-Fre 9-18',type:'El-cykel',x:48,y:37},
+  {id:6,name:'Urban Cycling',addr:'Istedgade 40, 1650 København V',city:'København',zip:'1650',phone:'+45 33 21 80 80',hours:'Man-Lør 10-18',type:'Generel',x:46,y:38},
+  // Frederiksberg
+  {id:7,name:'Frederiksberg Cykelcenter',addr:'Falkoner Alle 32, 2000 Frederiksberg',city:'Frederiksberg',zip:'2000',phone:'+45 38 87 10 20',hours:'Man-Fre 9-17, Lør 10-14',type:'Generel',x:44,y:36},
+  // Aarhus
+  {id:8,name:'Aarhus Cykelcenter',addr:'Frederiksallé 62, 8000 Aarhus C',city:'Aarhus',zip:'8000',phone:'+45 86 19 55 11',hours:'Man-Fre 9-17:30, Lør 9-14',type:'Generel',x:28,y:42},
+  {id:9,name:'Cykelspecialisten Aarhus',addr:'Silkeborgvej 37, 8000 Aarhus C',city:'Aarhus',zip:'8000',phone:'+45 86 14 22 44',hours:'Man-Fre 9-18, Lør 10-14',type:'Specialiseret',x:27,y:43},
+  {id:10,name:'Trek Aarhus',addr:'Søndergade 14, 8000 Aarhus C',city:'Aarhus',zip:'8000',phone:'+45 86 12 34 56',hours:'Man-Fre 10-18, Lør 10-15',type:'El-cykel',x:29,y:42},
+  {id:11,name:'Bike House Aarhus',addr:'Jægergårdsgade 87, 8000 Aarhus C',city:'Aarhus',zip:'8000',phone:'+45 86 18 77 44',hours:'Man-Fre 9-17',type:'Generel',x:28,y:44},
+  // Odense
+  {id:12,name:'Odense Cykelværksted',addr:'Vestergade 80, 5000 Odense C',city:'Odense',zip:'5000',phone:'+45 66 12 03 45',hours:'Man-Fre 9-17, Lør 9-13',type:'Generel',x:32,y:55},
+  {id:13,name:'Fyn Cykel & Sport',addr:'Kongensgade 40, 5000 Odense C',city:'Odense',zip:'5000',phone:'+45 65 91 41 41',hours:'Man-Fre 9-17:30',type:'Generel',x:33,y:55},
+  // Aalborg
+  {id:14,name:'Aalborg Cykler',addr:'Bispensgade 12, 9000 Aalborg',city:'Aalborg',zip:'9000',phone:'+45 98 12 08 55',hours:'Man-Fre 9-17:30, Lør 9-13',type:'Generel',x:25,y:22},
+  {id:15,name:'El-Cykel Nord',addr:'Vesterbro 44, 9000 Aalborg',city:'Aalborg',zip:'9000',phone:'+45 98 13 77 20',hours:'Man-Fre 10-18',type:'El-cykel',x:26,y:22},
+  // Vejle
+  {id:16,name:'Vejle Cykelcenter',addr:'Søndergade 18, 7100 Vejle',city:'Vejle',zip:'7100',phone:'+45 75 82 11 42',hours:'Man-Fre 9-17',type:'Generel',x:30,y:50},
+  // Horsens
+  {id:17,name:'Horsens Cykler',addr:'Søndergade 26, 8700 Horsens',city:'Horsens',zip:'8700',phone:'+45 75 62 55 44',hours:'Man-Fre 9-17, Lør 9-13',type:'Generel',x:30,y:47},
+  // Randers
+  {id:18,name:'Randers Cykelhandel',addr:'Storegade 9, 8900 Randers',city:'Randers',zip:'8900',phone:'+45 86 41 23 55',hours:'Man-Fre 9-17:30',type:'Generel',x:27,y:38},
+  // Silkeborg
+  {id:19,name:'Silkeborg Cykelcenter',addr:'Vestergade 38, 8600 Silkeborg',city:'Silkeborg',zip:'8600',phone:'+45 86 82 04 22',hours:'Man-Fre 9-17',type:'Generel',x:26,y:43},
+  // Herning
+  {id:20,name:'Herning Cykler',addr:'Østergade 14, 7400 Herning',city:'Herning',zip:'7400',phone:'+45 97 12 16 66',hours:'Man-Fre 9-17',type:'Generel',x:22,y:45},
+  // Kolding
+  {id:21,name:'Kolding Cykelcenter',addr:'Akseltorv 6, 6000 Kolding',city:'Kolding',zip:'6000',phone:'+45 75 52 46 66',hours:'Man-Fre 9-17:30, Lør 9-13',type:'Generel',x:28,y:53},
+  // Esbjerg
+  {id:22,name:'Esbjerg Cykler',addr:'Kongensgade 28, 6700 Esbjerg',city:'Esbjerg',zip:'6700',phone:'+45 75 12 26 22',hours:'Man-Fre 9-17',type:'Generel',x:20,y:53},
+  // Sønderborg
+  {id:23,name:'Sønderborg Cykelhandel',addr:'Perlegade 50, 6400 Sønderborg',city:'Sønderborg',zip:'6400',phone:'+45 74 42 27 52',hours:'Man-Fre 9-17',type:'Generel',x:26,y:60},
+  // Næstved
+  {id:24,name:'Næstved Cykelcenter',addr:'Ringstedgade 14, 4700 Næstved',city:'Næstved',zip:'4700',phone:'+45 55 72 23 55',hours:'Man-Fre 9-17, Lør 9-13',type:'Generel',x:48,y:62},
+  // Roskilde
+  {id:25,name:'Roskilde Cykler',addr:'Skomagergade 14, 4000 Roskilde',city:'Roskilde',zip:'4000',phone:'+45 46 35 31 25',hours:'Man-Fre 9-17:30',type:'Generel',x:46,y:57},
+  // Hillerød
+  {id:26,name:'Hillerød Cykelcenter',addr:'Helsingørsgade 18, 3400 Hillerød',city:'Hillerød',zip:'3400',phone:'+45 48 24 14 14',hours:'Man-Fre 9-17',type:'Generel',x:49,y:44},
+  // Helsingør
+  {id:27,name:'Helsingør Cykler',addr:'Stengade 30, 3000 Helsingør',city:'Helsingør',zip:'3000',phone:'+45 49 21 05 95',hours:'Man-Fre 9-17',type:'Generel',x:52,y:41},
+  // Slagelse
+  {id:28,name:'Slagelse Cykelhandel',addr:'Nørregade 24, 4200 Slagelse',city:'Slagelse',zip:'4200',phone:'+45 58 52 26 22',hours:'Man-Fre 9-17',type:'Generel',x:42,y:58},
+  // Holbæk
+  {id:29,name:'Holbæk Cykler',addr:'Ahlgade 22, 4300 Holbæk',city:'Holbæk',zip:'4300',phone:'+45 59 43 20 20',hours:'Man-Fre 9-17',type:'Generel',x:44,y:55},
+  // Køge
+  {id:30,name:'Køge Cykelcenter',addr:'Nørregade 16, 4600 Køge',city:'Køge',zip:'4600',phone:'+45 56 65 30 30',hours:'Man-Fre 9-17:30, Lør 9-13',type:'Generel',x:50,y:59},
+  // Fredericia
+  {id:31,name:'Fredericia Cykler',addr:'Vendersgade 28, 7000 Fredericia',city:'Fredericia',zip:'7000',phone:'+45 75 92 05 22',hours:'Man-Fre 9-17',type:'Generel',x:29,y:52},
+  // Viborg
+  {id:32,name:'Viborg Cykelcenter',addr:'Gravene 14, 8800 Viborg',city:'Viborg',zip:'8800',phone:'+45 86 62 11 44',hours:'Man-Fre 9-17',type:'Generel',x:24,y:38},
+  // Frederikshavn
+  {id:33,name:'Frederikshavn Cykler',addr:'Danmarksgade 40, 9900 Frederikshavn',city:'Frederikshavn',zip:'9900',phone:'+45 98 42 26 22',hours:'Man-Fre 9-17',type:'Generel',x:30,y:14},
+  // Hjørring
+  {id:34,name:'Hjørring Cykelhandel',addr:'Østergade 24, 9800 Hjørring',city:'Hjørring',zip:'9800',phone:'+45 98 92 36 66',hours:'Man-Fre 9-17',type:'Generel',x:24,y:16},
+  // Skive
+  {id:35,name:'Skive Cykler',addr:'Adelgade 22, 7800 Skive',city:'Skive',zip:'7800',phone:'+45 97 52 15 44',hours:'Man-Fre 9-17',type:'Generel',x:23,y:36},
+  // Holstebro
+  {id:36,name:'Holstebro Cykelcenter',addr:'Østergade 16, 7500 Holstebro',city:'Holstebro',zip:'7500',phone:'+45 97 42 12 55',hours:'Man-Fre 9-17',type:'Generel',x:20,y:38},
+  // Thisted
+  {id:37,name:'Thisted Cykler',addr:'Storegade 20, 7700 Thisted',city:'Thisted',zip:'7700',phone:'+45 97 92 16 33',hours:'Man-Fre 9-17',type:'Generel',x:18,y:28},
+  // Nørresundby
+  {id:38,name:'Nørresundby Cykelhandel',addr:'Vestergade 14, 9400 Nørresundby',city:'Nørresundby',zip:'9400',phone:'+45 98 17 11 55',hours:'Man-Fre 9-17',type:'Generel',x:25,y:23},
+  // El-cykel specialister
+  {id:39,name:'eBike Denmark',addr:'Lyngbyvej 30, 2100 København Ø',city:'København',zip:'2100',phone:'+45 70 22 88 99',hours:'Man-Fre 10-18, Lør 10-15',type:'El-cykel',x:53,y:34},
+  {id:40,name:'Elcykelhuset',addr:'Søndervang 5, 8700 Horsens',city:'Horsens',zip:'8700',phone:'+45 75 61 44 22',hours:'Man-Fre 9-17',type:'El-cykel',x:31,y:47},
+];
+
+let filteredVaerksteder = [...vaerksteder];
+
+function renderVaerksted(){
+  const list = document.getElementById('vaerksted-list');
+  const count = document.getElementById('map-count');
+  if(count) count.textContent = filteredVaerksteder.length + ' værksteder fundet';
+  
+  // Render map pins
+  const pinsEl = document.getElementById('map-pins');
+  if(pinsEl){
+    pinsEl.innerHTML = filteredVaerksteder.map(v => {
+      const color = v.type==='El-cykel'?'#f0c040':v.type==='Specialiseret'?'#8fbc5a':'#aaa';
+      return `<div onclick="scrollToVaerksted(${v.id})" style="position:absolute;left:${v.x}%;top:${v.y}%;transform:translate(-50%,-100%);cursor:pointer;z-index:10;">
+        <div style="background:${color};width:12px;height:12px;border-radius:50%;border:2px solid #111;box-shadow:0 0 6px ${color}80;"></div>
+      </div>`;
+    }).join('');
+  }
+  
+  if(!list) return;
+  
+  if(!filteredVaerksteder.length){
+    list.innerHTML = '<div style="text-align:center;padding:40px;color:#444;"><div style="font-size:36px;margin-bottom:10px;">🔍</div><div>Ingen værksteder fundet</div><div style="font-size:12px;color:#333;margin-top:6px;">Prøv en anden by eller postnummer</div></div>';
+    return;
+  }
+  
+  list.innerHTML = filteredVaerksteder.map(v => {
+    const typeColor = v.type==='El-cykel'?'#f0c040':v.type==='Specialiseret'?'#8fbc5a':'#666';
+    const typeBg = v.type==='El-cykel'?'#2a2200':v.type==='Specialiseret'?'#1a2a1a':'#222';
+    return `<div id="vk-${v.id}" style="background:var(--bg2);border-radius:14px;padding:14px;margin-bottom:10px;border:1px solid var(--border2);cursor:pointer;transition:border-color 0.2s;" onclick="this.style.borderColor='#8fbc5a'">
+      <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:8px;margin-bottom:8px;">
+        <div style="font-weight:700;font-size:14px;flex:1;">${v.name}</div>
+        <div style="background:${typeBg};color:${typeColor};font-size:10px;font-weight:700;padding:3px 8px;border-radius:50px;white-space:nowrap;flex-shrink:0;">${v.type}</div>
+      </div>
+      <div style="font-size:12px;color:#888;margin-bottom:6px;">📍 ${v.addr}</div>
+      <div style="font-size:12px;color:#666;margin-bottom:8px;">🕐 ${v.hours}</div>
+      <div style="display:flex;gap:8px;">
+        <a href="tel:${v.phone}" style="flex:1;background:var(--bg3);border:1px solid #333;border-radius:50px;padding:8px;text-align:center;font-size:12px;font-weight:600;color:#8fbc5a;text-decoration:none;display:flex;align-items:center;justify-content:center;gap:4px;">📞 Ring op</a>
+        <a href="https://maps.google.com/?q=${encodeURIComponent(v.addr)}" target="_blank" style="flex:1;background:#8fbc5a;border-radius:50px;padding:8px;text-align:center;font-size:12px;font-weight:700;color:#111;text-decoration:none;display:flex;align-items:center;justify-content:center;gap:4px;">🗺️ Google Maps</a>
+      </div>
+    </div>`;
+  }).join('');
+}
+
+function searchVaerksted(val){
+  const clearBtn = document.getElementById('vaerksted-clear');
+  if(clearBtn) clearBtn.style.display = val ? 'block' : 'none';
+  if(!val || val.length < 2){
+    filteredVaerksteder = [...vaerksteder];
+  } else {
+    const q = val.toLowerCase();
+    filteredVaerksteder = vaerksteder.filter(v =>
+      v.city.toLowerCase().includes(q) ||
+      v.zip.startsWith(val) ||
+      v.name.toLowerCase().includes(q) ||
+      v.addr.toLowerCase().includes(q)
+    );
+  }
+  renderVaerksted();
+}
+
+function clearVaerkstedSearch(){
+  const inp = document.getElementById('vaerksted-search');
+  if(inp) inp.value = '';
+  filteredVaerksteder = [...vaerksteder];
+  renderVaerksted();
+  const clearBtn = document.getElementById('vaerksted-clear');
+  if(clearBtn) clearBtn.style.display = 'none';
+}
+
+function scrollToVaerksted(id){
+  const el = document.getElementById('vk-' + id);
+  if(el){
+    el.scrollIntoView({behavior:'smooth', block:'center'});
+    el.style.borderColor = '#8fbc5a';
+    setTimeout(() => el.style.borderColor = 'var(--border2)', 2000);
+  }
+}
+
+// ===== ADMIN PANEL FUNCTIONS =====
+function openAdmin(){
+  document.getElementById('admin-overlay').classList.add('open');
+  renderAdminList();
+  loadAdRequests();
+}
+function closeAdmin(){
+  document.getElementById('admin-overlay').classList.remove('open');
+  hideAdForm();
+}
+
+async function renderAdminList(){
+  const el = document.getElementById('admin-ad-list');
+  if(!el) return;
+  el.innerHTML = '<div style="text-align:center;padding:20px;color:#555;">⏳ Indlæser...</div>';
+  const all = await loadAllAds();
+  if(!all.length){
+    el.innerHTML = '<div style="text-align:center;padding:20px;color:#444;">Ingen annoncer endnu</div>';
+    updateAdminStats(all);
+    return;
+  }
+  el.innerHTML = all.map(a => `
+    <div class="ad-item ${a.active?'active-ad':''}" id="aditem-${a.id}">
+      <div class="ad-item-header">
+        <div class="ad-item-logo">${a.logo}</div>
+        <div>
+          <div class="ad-item-name">${a.brand}</div>
+          <div style="font-size:11px;color:#555;">${a.price ? a.price+' kr./md' : ''} · ${a.position==='both'?'Banner+kort':a.position==='banner'?'Kun banner':'Kun kort'}</div>
+        </div>
+        <span class="ad-item-status ${a.active?'on':'off'}">${a.active?'AKTIV':'PAUSE'}</span>
+      </div>
+      <div style="font-size:11px;color:#555;margin-bottom:8px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">${a.desc||''}</div>
+      <div class="ad-item-actions">
+        <button class="ad-btn edit" onclick="showAdForm('${a.id}')">✏️ Rediger</button>
+        <button class="ad-btn ${a.active?'toggle-on':'toggle-off'}" onclick="toggleAd('${a.id}',${a.active})">${a.active?'⏸ Pause':'▶ Aktiver'}</button>
+        <button class="ad-btn del" onclick="deleteAd('${a.id}')">🗑️</button>
+      </div>
+    </div>
+  `).join('');
+  updateAdminStats(all);
+}
+
+function updateAdminStats(all){
+  all = all || ads;
+  const active = all.filter(a=>a.active).length;
+  const revenue = all.filter(a=>a.active).reduce((s,a)=>s+(a.price||0),0);
+  const el1 = document.getElementById('stat-total');
+  const el2 = document.getElementById('stat-banner');
+  const el3 = document.getElementById('stat-clicks');
+  const el4 = document.getElementById('stat-revenue');
+  if(el1) el1.textContent = active;
+  if(el2) el2.textContent = bannerViews;
+  if(el3) el3.textContent = bannerClicks;
+  if(el4) el4.textContent = revenue.toLocaleString('da-DK');
+}
+
+async function showAdForm(id){
+  document.getElementById('admin-form-section').style.display = 'block';
+  document.getElementById('af-edit-id').value = id || '';
+  if(id){
+    const all = await loadAllAds();
+    const a = all.find(x=>x.id===id);
+    if(!a) return;
+    document.getElementById('ad-form-title').textContent = '✏️ Rediger: '+a.brand;
+    document.getElementById('af-brand').value = a.brand;
+    document.getElementById('af-logo').value = a.logo;
+    document.getElementById('af-desc').value = a.desc||a.description||'';
+    document.getElementById('af-cta').value = a.cta;
+    document.getElementById('af-url').value = a.url||'';
+    document.getElementById('af-img').value = a.img||'';
+    document.getElementById('af-price').value = a.price||'';
+    document.getElementById('af-position').value = a.position||'both';
+  } else {
+    document.getElementById('ad-form-title').textContent = '✨ Ny annonce';
+    document.getElementById('af-brand').value = '';
+    document.getElementById('af-logo').value = '📢';
+    document.getElementById('af-desc').value = '';
+    document.getElementById('af-cta').value = 'Se mere →';
+    document.getElementById('af-url').value = '';
+    document.getElementById('af-img').value = '';
+    document.getElementById('af-price').value = '';
+    document.getElementById('af-position').value = 'both';
+  }
+  document.getElementById('admin-form-section').scrollIntoView({behavior:'smooth'});
+}
+
+function hideAdForm(){
+  document.getElementById('admin-form-section').style.display = 'none';
+}
+
+async function saveAd(){
+  const brand = document.getElementById('af-brand').value.trim();
+  const logo = document.getElementById('af-logo').value.trim();
+  const desc = document.getElementById('af-desc').value.trim();
+  const cta = document.getElementById('af-cta').value.trim();
+  const url = document.getElementById('af-url').value.trim();
+  const img = document.getElementById('af-img').value.trim();
+  const price = parseInt(document.getElementById('af-price').value)||0;
+  const position = document.getElementById('af-position').value;
+  const editId = document.getElementById('af-edit-id').value;
+
+  if(!brand||!logo||!desc||!cta){
+    toast('Udfyld virksomhedsnavn, emoji, beskrivelse og knap ⚠️');
+    return;
+  }
+
+  toast('💾 Gemmer...');
+  await saveAdToDb({id: editId||null, brand, logo, desc, cta, url, img, price, position});
+  hideAdForm();
+  renderAdminList();
+  toast('✅ Annonce gemt i Supabase!');
+}
+
+async function toggleAd(id, currentActive){
+  toast('⏳ Opdaterer...');
+  await toggleAdInDb(id, currentActive);
+  renderAdminList();
+  toast(currentActive ? '⏸ Annonce sat på pause' : '▶ Annonce aktiveret');
+}
+
+async function deleteAd(id){
+  if(!confirm('Er du sikker på, at du vil slette denne annonce?')) return;
+  toast('🗑️ Sletter...');
+  await deleteAdFromDb(id);
+  renderAdminList();
+  toast('🗑️ Annonce slettet');
+}
+
+function updateRotateInterval(){
+  const sel = document.getElementById('rotate-interval');
+  if(sel){
+    adRotateInterval = parseInt(sel.value);
+    clearInterval(window._adTimer);
+    window._adTimer = setInterval(rotateBannerAd, adRotateInterval);
+    toast('⏱️ Interval opdateret');
+  }
+}
+function updateAdFrequency(){
+  const sel = document.getElementById('ad-frequency');
+  if(sel){
+    adFrequency = parseInt(sel.value);
+    renderHome(allListings);
+    toast('📢 Frekvens opdateret');
+  }
+}
+
+// Check if current user is admin
+function checkAdminAccess(){
+  if(me && me.email === ADMIN_EMAIL){
+    const fab = document.getElementById('admin-fab');
+    if(fab) fab.classList.add('show');
+  } else {
+    const fab = document.getElementById('admin-fab');
+    if(fab) fab.classList.remove('show');
+  }
+}
+
+async function loadAdRequests(){
+  const el = document.getElementById('admin-requests-list');
+  if(!el) return;
+  try {
+    const { data, error } = await sb.from('ad_requests').select('*').order('created_at', { ascending: false }).limit(10);
+    if(error) throw error;
+    if(!data || !data.length){
+      el.innerHTML = '<div style="font-size:12px;color:#444;text-align:center;padding:10px;">Ingen forespørgsler endnu</div>';
+      return;
+    }
+    el.innerHTML = data.map(r => `
+      <div style="background:#1a1a1a;border-radius:10px;padding:10px 12px;margin-bottom:6px;border:1px solid ${r.status==='ny'?'#8fbc5a':'#222'};">
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:4px;">
+          <div style="font-weight:700;font-size:13px;">${r.company}</div>
+          <span style="font-size:9px;font-weight:700;padding:2px 8px;border-radius:50px;background:${r.status==='ny'?'#1a2a1a':'#222'};color:${r.status==='ny'?'#8fbc5a':'#555'};">${r.status.toUpperCase()}</span>
+        </div>
+        <div style="font-size:11px;color:#666;">${r.email} · ${r.budget}</div>
+        ${r.message?`<div style="font-size:11px;color:#555;margin-top:4px;">${r.message.substring(0,60)}...</div>`:''}
+        <div style="display:flex;gap:6px;margin-top:8px;">
+          <a href="mailto:${r.email}?subject=Re: Annonce på CykelHub&body=Hej ${r.company}," style="flex:1;background:#1a2a1a;color:#8fbc5a;border:1px solid #2a3a2a;border-radius:8px;padding:6px;text-align:center;font-size:11px;font-weight:700;text-decoration:none;">📧 Svar</a>
+          <button onclick="markRequestDone('${r.id}')" style="flex:1;background:#252525;color:#666;border:1px solid #333;border-radius:8px;padding:6px;font-size:11px;font-weight:700;cursor:pointer;font-family:'Inter',sans-serif;">✓ Håndteret</button>
+        </div>
+      </div>
+    `).join('');
+  } catch(e) {
+    el.innerHTML = '<div style="font-size:12px;color:#e03030;padding:10px;">Fejl ved indlæsning</div>';
+  }
+}
+
+async function markRequestDone(id){
+  await sb.from('ad_requests').update({ status: 'done' }).eq('id', id);
+  loadAdRequests();
+  toast('✓ Markeret som håndteret');
+}
+
+async function submitAdRequest(){
+  const company = document.getElementById('ar-company').value.trim();
+  const email = document.getElementById('ar-email').value.trim();
+  const phone = document.getElementById('ar-phone').value.trim();
+  const budget = document.getElementById('ar-budget').value;
+  const message = document.getElementById('ar-message').value.trim();
+  const msgEl = document.getElementById('ad-request-msg');
+
+  if(!company || !email){
+    msgEl.textContent = 'Udfyld virksomhedsnavn og e-mail';
+    msgEl.className = 'msg-box err';
+    return;
+  }
+
+  msgEl.textContent = '⏳ Sender...';
+  msgEl.className = 'msg-box ok';
+
+  try {
+    const { error } = await sb.from('ad_requests').insert({
+      company, email, phone, budget, message, status: 'ny'
+    });
+    if(error) throw error;
+    msgEl.textContent = '✅ Tak! Vi vender tilbage inden for 24 timer.';
+    msgEl.className = 'msg-box ok';
+    document.getElementById('ar-company').value = '';
+    document.getElementById('ar-email').value = '';
+    document.getElementById('ar-phone').value = '';
+    document.getElementById('ar-message').value = '';
+  } catch(e) {
+    msgEl.textContent = '❌ Fejl: ' + e.message;
+    msgEl.className = 'msg-box err';
+  }
 }
 
 init();
