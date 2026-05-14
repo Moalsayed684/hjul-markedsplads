@@ -34,7 +34,7 @@
     .subcat-item{display:flex;flex-direction:column;align-items:center;gap:5px;padding:8px 12px;cursor:pointer;flex-shrink:0;border-radius:12px;transition:all 0.2s;min-width:68px;}
     .subcat-item.active{background:var(--bg2);}
     .subcat-item.active .subcat-label{color:#8fbc5a;font-weight:700;}
-    .subcat-svg{width:40px;height:40px;background:var(--bg2);border-radius:50%;display:flex;align-items:center;justify-content:center;}
+    .subcat-svg{width:40px;height:40px;background:var(--bg2);border-radius:50%;display:flex;align-items:center;justify-content:center;border:1px solid var(--border2);}
     .subcat-item.active .subcat-svg{background:#1a2a1a;}
     .subcat-label{font-size:10px;font-weight:600;color:#ccc;text-align:center;white-space:nowrap;} body.light-mode .subcat-label{color:#222;}
     .page{display:none;}
@@ -247,7 +247,7 @@
     .empty .e-icon{font-size:40px;margin-bottom:10px;}
     .toast{position:fixed;bottom:86px;left:50%;transform:translateX(-50%);background:var(--bg2);color:var(--text);border:1px solid #333;padding:11px 20px;border-radius:50px;font-size:13px;font-weight:600;z-index:999;opacity:0;transition:opacity 0.3s;white-space:nowrap;pointer-events:none;}
     .toast.show{opacity:1;}
-    .img-subcat-bar{display:flex;gap:10px;overflow-x:auto;scrollbar-width:none;padding:12px 16px;background:#111;}
+    .img-subcat-bar{display:flex;gap:10px;overflow-x:auto;scrollbar-width:none;padding:12px 16px;background:var(--bg);}
     .img-subcat-bar::-webkit-scrollbar{display:none;}
     .img-subcat-card{flex-shrink:0;width:100px;border-radius:14px;overflow:hidden;cursor:pointer;position:relative;transition:transform 0.15s;}
     .img-subcat-card:active{transform:scale(0.95);}
@@ -550,26 +550,13 @@
     <div class="sell-picker-sub">Vælg kategori for at søge og filtrere</div>
     <div class="sell-cat-grid">
       <div class="sell-cat-btn" onclick="openBuyDirect('cykler')">
-        <div class="sell-cat-icon">
-          <svg width="52" height="40" viewBox="0 0 36 28" fill="none">
-            <circle cx="7" cy="21" r="6" stroke="#8fbc5a" stroke-width="2"/>
-            <circle cx="29" cy="21" r="6" stroke="#8fbc5a" stroke-width="2"/>
-            <path d="M7 21L13 7h8l4 10M13 7l12 14M20 14h6" stroke="#8fbc5a" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-          </svg>
-        </div>
-        <div class="sell-cat-name">Cykler</div>
+        <div class="sell-cat-icon">🚲</div>
+        <div class="sell-cat-name">Cykel</div>
         <div class="sell-cat-desc">Alle typer cykler</div>
       </div>
       <div class="sell-cat-btn" onclick="openBuyDirect('elcykler')">
-        <div class="sell-cat-icon">
-          <svg width="52" height="40" viewBox="0 0 36 28" fill="none">
-            <circle cx="7" cy="21" r="6" stroke="#8fbc5a" stroke-width="2"/>
-            <circle cx="29" cy="21" r="6" stroke="#8fbc5a" stroke-width="2"/>
-            <path d="M7 21L13 7h8l4 10M13 7l12 14" stroke="#8fbc5a" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-            <path d="M22 2l-3 5h4l-3 5" stroke="#f0c040" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-          </svg>
-        </div>
-        <div class="sell-cat-name">El-cykler</div>
+        <div class="sell-cat-icon">⚡</div>
+        <div class="sell-cat-name">El-cykel</div>
         <div class="sell-cat-desc">Elektriske cykler</div>
       </div>
       <div class="sell-cat-btn" onclick="openBuyDirect('tilbehor')">
@@ -1595,7 +1582,7 @@ async function doLogout(){await sb.auth.signOut();toast('Du er nu logget ud');go
 function setMsg(m,type){const el=document.getElementById('auth-msg');el.textContent=m;el.className='msg-box '+type;}
 function clearMsg(){const el=document.getElementById('auth-msg');el.className='msg-box';el.textContent='';}
 function selectPlan(plan){if(!me){toast('Log ind for at vælge en plan');goPage('profile','nav-prof');return;}const msgs={gratis:'Gratis plan valgt ✓',premium:'Premium – 49 kr. (Stripe kommer snart) 🚀',elite:'Lynhurtig Salg – 199 kr. (Stripe kommer snart) ⚡'};toast(msgs[plan]);}
-function showPage(name){document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));document.getElementById('page-'+name).classList.add('active');const hideTop=['cat','chat','sell-picker','sell-form','detail','vaerksted','buy-results'].includes(name);document.getElementById('topbar').style.display=hideTop?'none':'block';document.getElementById('subcat-bar').style.display=hideTop?'none':'flex';if(name==='messages')loadConvs();if(name==='edit-profile')loadProfile();if(name==='vaerksted'){filteredVaerksteder=[...vaerksteder];renderVaerksted();}if(name==='notifications'){notifs.forEach(n=>n.unread=false);updateBellDot();document.getElementById('notif-list').innerHTML=notifs.map(n=>`<div class="notif-item ${n.unread?'unread':''}"><div style="font-size:22px">${n.icon}</div><div><div style="font-weight:600;font-size:14px">${n.title}</div><div style="font-size:12px;color:#999;margin-top:2px">${n.sub}</div></div></div>`).join('');}}
+function showPage(name){document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));document.getElementById('page-'+name).classList.add('active');const hideTop=['cat','chat','sell-picker','sell-form','detail','vaerksted','buy-results','buy'].includes(name);document.getElementById('topbar').style.display=hideTop?'none':'block';document.getElementById('subcat-bar').style.display=hideTop?'none':'flex';if(name==='messages')loadConvs();if(name==='edit-profile')loadProfile();if(name==='vaerksted'){filteredVaerksteder=[...vaerksteder];renderVaerksted();}if(name==='notifications'){notifs.forEach(n=>n.unread=false);updateBellDot();document.getElementById('notif-list').innerHTML=notifs.map(n=>`<div class="notif-item ${n.unread?'unread':''}"><div style="font-size:22px">${n.icon}</div><div><div style="font-weight:600;font-size:14px">${n.title}</div><div style="font-size:12px;color:#999;margin-top:2px">${n.sub}</div></div></div>`).join('');}}
 function goPage(name,navId){showPage(name);document.querySelectorAll('.nav-item').forEach(i=>i.classList.remove('active'));if(navId)document.getElementById(navId)?.classList.add('active');}
 function requireAuth(page,navId){if(!me){toast('Log ind for at fortsætte');goPage('profile','nav-prof');return;}goPage(page,navId);}
 function toast(msg){const t=document.getElementById('toast');t.textContent=msg;t.classList.add('show');setTimeout(()=>t.classList.remove('show'),2500);}
