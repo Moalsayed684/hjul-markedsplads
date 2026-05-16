@@ -28,7 +28,7 @@
     .cat-icon-item{display:flex;flex-direction:column;align-items:center;gap:5px;padding:10px 16px 12px;cursor:pointer;flex-shrink:0;border-bottom:2px solid transparent;transition:all 0.2s;}
     .cat-icon-item.active{border-bottom-color:#8fbc5a;}
     .cat-icon-item.active .cat-icon-label{color:#8fbc5a;font-weight:700;}
-    .cat-icon-label{font-size:12px;font-weight:600;color:#aaa;white-space:nowrap;} body.light-mode .cat-icon-label{color:#222;}
+    .cat-icon-label{font-size:12px;font-weight:600;color:#fff;white-space:nowrap;} body.light-mode .cat-icon-label{color:#222;}
     .subcat-bar{display:flex;gap:0;overflow-x:auto;scrollbar-width:none;background:var(--bg);border-bottom:1px solid var(--border);padding:6px 8px;}
     .subcat-bar::-webkit-scrollbar{display:none;}
     .subcat-item{display:flex;flex-direction:column;align-items:center;gap:5px;padding:8px 12px;cursor:pointer;flex-shrink:0;border-radius:12px;transition:all 0.2s;min-width:68px;}
@@ -36,7 +36,7 @@
     .subcat-item.active .subcat-label{color:#8fbc5a;font-weight:700;}
     .subcat-svg{width:40px;height:40px;background:var(--bg2);border-radius:50%;display:flex;align-items:center;justify-content:center;border:1px solid var(--border2);}
     .subcat-item.active .subcat-svg{background:#1a2a1a;}
-    .subcat-label{font-size:10px;font-weight:600;color:#ccc;text-align:center;white-space:nowrap;} body.light-mode .subcat-label{color:#222;}
+    .subcat-label{font-size:10px;font-weight:600;color:#fff;text-align:center;white-space:nowrap;} body.light-mode .subcat-label{color:#222;}
     .page{display:none;}
     .page.active{display:block;animation:fadeUp 0.2s ease;}
     @keyframes fadeUp{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
@@ -70,15 +70,15 @@
     .nav-plus:active{transform:scale(0.92);}
     .nav-center .nav-label{color:#fff;font-size:10px;font-weight:600;} body.light-mode .nav-center .nav-label{color:#111;}
     .sell-picker{padding:24px 16px;}
-    .sell-picker-title{font-weight:800;font-size:22px;margin-bottom:6px;}
-    .sell-picker-sub{color:#999;font-size:14px;margin-bottom:24px;}
+    .sell-picker-title{font-weight:800;font-size:22px;margin-bottom:6px;color:#fff;}
+    .sell-picker-sub{color:#ccc;font-size:14px;margin-bottom:24px;}
     .sell-cat-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;}
     .sell-cat-btn{background:var(--bg2);border:1.5px solid var(--border2);border-radius:16px;padding:20px 16px;display:flex;flex-direction:column;align-items:center;gap:10px;cursor:pointer;transition:all 0.2s;}
     .sell-cat-btn:active{transform:scale(0.97);}
     .sell-cat-btn:hover{border-color:#8fbc5a;}
-    .sell-cat-icon{font-size:36px;}
-    .sell-cat-name{font-weight:700;font-size:14px;text-align:center;}
-    .sell-cat-desc{font-size:11px;color:#999;text-align:center;} body.light-mode .sell-cat-desc{color:#555;} body.light-mode .sell-cat-name{color:#111;}
+    .sell-cat-icon{font-size:36px;display:flex;align-items:center;justify-content:center;width:52px;height:52px;}
+    .sell-cat-name{font-weight:700;font-size:14px;text-align:center;color:#fff;}
+    .sell-cat-desc{font-size:11px;color:#ccc;text-align:center;} body.light-mode .sell-cat-desc{color:#555;} body.light-mode .sell-cat-name{color:#111;}
     .sell-form-wrap{padding:0 16px 20px;}
     .sell-form-header{display:flex;align-items:center;gap:10px;padding:14px 0 16px;}
     .sell-form-title{font-weight:800;font-size:20px;flex:1;}
@@ -202,24 +202,24 @@
     .filter-drawer.open{transform:translateX(-50%) translateY(0);}
     .drawer-handle{width:40px;height:4px;background:#333;border-radius:4px;margin:14px auto 0;flex-shrink:0;}
     .drawer-head{padding:14px 20px 12px;border-bottom:1px solid #252525;flex-shrink:0;display:flex;align-items:center;justify-content:space-between;}
-    .drawer-title{font-weight:800;font-size:18px;}
+    .drawer-title{font-weight:800;font-size:18px;color:#fff;}
     .drawer-body{flex:1;overflow-y:auto;}
     .drawer-footer{padding:14px 20px 24px;border-top:1px solid #252525;display:flex;gap:10px;flex-shrink:0;background:var(--bg2);}
     .btn-reset{flex:1;background:var(--bg3);border:none;border-radius:50px;padding:13px;font-weight:600;font-size:14px;cursor:pointer;font-family:'Inter',sans-serif;color:var(--text);}
     .btn-apply{flex:2;background:#8fbc5a;color:#111;border:none;border-radius:50px;padding:13px;font-weight:700;font-size:14px;cursor:pointer;font-family:'Inter',sans-serif;}
     .fsection{padding:16px 20px;border-bottom:1px solid var(--border);}
-    .fsection-title{font-size:11px;font-weight:700;color:#999;letter-spacing:0.6px;text-transform:uppercase;margin-bottom:10px;}
+    .fsection-title{font-size:12px;font-weight:700;color:#fff;letter-spacing:0.6px;text-transform:uppercase;margin-bottom:10px;}
     .fchips{display:flex;flex-wrap:wrap;gap:8px;}
     .fchip{padding:7px 14px;border-radius:50px;border:1.5px solid var(--border2);font-size:13px;font-weight:500;cursor:pointer;background:var(--bg);color:var(--text);white-space:nowrap;}
     .fchip.sel{background:#8fbc5a;color:#111;border-color:#8fbc5a;}
     .ftoggle-row{display:flex;align-items:center;justify-content:space-between;}
-    .ftoggle-label{font-size:14px;font-weight:500;}
+    .ftoggle-label{font-size:14px;font-weight:600;color:#fff;}
     .tgsw{width:44px;height:26px;background:#333;border-radius:50px;position:relative;cursor:pointer;transition:background 0.2s;flex-shrink:0;}
     .tgsw.on{background:#8fbc5a;}
     .tgsw::after{content:'';position:absolute;top:3px;left:3px;width:20px;height:20px;background:#fff;border-radius:50%;transition:transform 0.2s;}
     .tgsw.on::after{transform:translateX(18px);}
-    .range-labels{display:flex;justify-content:space-between;margin-bottom:6px;font-size:12px;color:#999;}
-    .range-cur{font-weight:700;font-size:15px;text-align:center;margin-bottom:8px;}
+    .range-labels{display:flex;justify-content:space-between;margin-bottom:6px;font-size:12px;color:#ccc;}
+    .range-cur{font-weight:700;font-size:15px;text-align:center;margin-bottom:8px;color:#fff;}
     input[type=range]{width:100%;accent-color:#8fbc5a;cursor:pointer;}
     .map-visual{width:100%;height:130px;background:linear-gradient(135deg,#1a2a1a,#162616);border-radius:16px;display:flex;align-items:center;justify-content:center;position:relative;overflow:hidden;margin-bottom:12px;}
     .map-ring{position:absolute;border-radius:50%;border:2px solid #8fbc5a;}
@@ -341,20 +341,29 @@
       <div class="cat-icon-label">El-cykler</div>
     </div>
     <div class="cat-icon-item" onclick="openCatPage('tilbehor')">
-      <svg width="32" height="32" viewBox="0 0 32 32" fill="none">
-        <circle cx="16" cy="10" r="4" stroke="#8fbc5a" stroke-width="2"/>
-        <path d="M8 26c0-4.418 3.582-8 8-8s8 3.582 8 8" stroke="#8fbc5a" stroke-width="2" stroke-linecap="round"/>
-        <path d="M22 6l2-2M10 6L8 4M16 4V2" stroke="#8fbc5a" stroke-width="1.5" stroke-linecap="round"/>
-        <rect x="4" y="20" width="6" height="4" rx="1" stroke="#8fbc5a" stroke-width="1.5"/>
-        <rect x="22" y="20" width="6" height="4" rx="1" stroke="#8fbc5a" stroke-width="1.5"/>
-      </svg>
+      <svg width="36" height="36" viewBox="0 0 36 36" fill="none">
+  <!-- Chain links on top -->
+  <rect x="4" y="3" width="5" height="4" rx="2" stroke="#8fbc5a" stroke-width="1.5"/>
+  <rect x="11" y="3" width="5" height="4" rx="2" stroke="#8fbc5a" stroke-width="1.5"/>
+  <rect x="18" y="3" width="5" height="4" rx="2" stroke="#8fbc5a" stroke-width="1.5"/>
+  <rect x="25" y="3" width="5" height="4" rx="2" stroke="#8fbc5a" stroke-width="1.5"/>
+  <!-- Chainring (gear) -->
+  <circle cx="18" cy="22" r="10" stroke="#8fbc5a" stroke-width="2"/>
+  <circle cx="18" cy="22" r="5" stroke="#8fbc5a" stroke-width="1.5"/>
+  <!-- Gear teeth -->
+  <path d="M18 12v-2M18 34v-2M8 22H6M30 22h2M10.3 14.3l-1.4-1.4M27.1 31.1l-1.4-1.4M10.3 29.7l-1.4 1.4M27.1 12.9l-1.4 1.4" stroke="#8fbc5a" stroke-width="2" stroke-linecap="round"/>
+  <!-- Crank arm -->
+  <line x1="18" y1="22" x2="29" y2="26" stroke="#8fbc5a" stroke-width="2.5" stroke-linecap="round"/>
+  <circle cx="29" cy="26" r="2" stroke="#8fbc5a" stroke-width="1.5"/>
+  <!-- Center bolt -->
+  <circle cx="18" cy="22" r="2" fill="#8fbc5a"/>
+</svg>
       <div class="cat-icon-label">Tilbehør</div>
     </div>
     <div class="cat-icon-item" onclick="showPage('vaerksted')">
       <svg width="32" height="32" viewBox="0 0 32 32" fill="none">
-        <path d="M20 4a6 6 0 0 1 0 12 5.9 5.9 0 0 1-2.5-.55l-3 3H13v2h-2v2H7v-4l6.55-6.55A6 6 0 0 1 20 4z" stroke="#8fbc5a" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
-        <circle cx="20" cy="10" r="1.5" fill="#8fbc5a"/>
-      </svg>
+  <path d="M20 2C16 2 13 5 13 9C13 10 13.3 11 13.7 11.8L3 22.5C2 23.5 2 25 3 26L6 29C7 30 8.5 30 9.5 29L20.2 18.3C21 18.7 22 19 23 19C27 19 30 16 30 12C30 11 29.8 10 29.4 9.1L25 13.5L22.5 13.5L22.5 11L26.9 6.6C25.9 4 23.1 2 20 2Z" stroke="#8fbc5a" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+</svg>
       <div class="cat-icon-label">Værksted</div>
     </div>
   </div>
@@ -446,7 +455,23 @@
         <div class="sell-cat-desc">Elektriske cykler</div>
       </div>
       <div class="sell-cat-btn" onclick="openSellForm('tilbehor')">
-        <div class="sell-cat-icon">🔧</div>
+        <div class="sell-cat-icon"><svg width="36" height="36" viewBox="0 0 36 36" fill="none">
+  <!-- Chain links on top -->
+  <rect x="4" y="3" width="5" height="4" rx="2" stroke="#8fbc5a" stroke-width="1.5"/>
+  <rect x="11" y="3" width="5" height="4" rx="2" stroke="#8fbc5a" stroke-width="1.5"/>
+  <rect x="18" y="3" width="5" height="4" rx="2" stroke="#8fbc5a" stroke-width="1.5"/>
+  <rect x="25" y="3" width="5" height="4" rx="2" stroke="#8fbc5a" stroke-width="1.5"/>
+  <!-- Chainring (gear) -->
+  <circle cx="18" cy="22" r="10" stroke="#8fbc5a" stroke-width="2"/>
+  <circle cx="18" cy="22" r="5" stroke="#8fbc5a" stroke-width="1.5"/>
+  <!-- Gear teeth -->
+  <path d="M18 12v-2M18 34v-2M8 22H6M30 22h2M10.3 14.3l-1.4-1.4M27.1 31.1l-1.4-1.4M10.3 29.7l-1.4 1.4M27.1 12.9l-1.4 1.4" stroke="#8fbc5a" stroke-width="2" stroke-linecap="round"/>
+  <!-- Crank arm -->
+  <line x1="18" y1="22" x2="29" y2="26" stroke="#8fbc5a" stroke-width="2.5" stroke-linecap="round"/>
+  <circle cx="29" cy="26" r="2" stroke="#8fbc5a" stroke-width="1.5"/>
+  <!-- Center bolt -->
+  <circle cx="18" cy="22" r="2" fill="#8fbc5a"/>
+</svg></div>
         <div class="sell-cat-name">Tilbehør</div>
         <div class="sell-cat-desc">Hjelme, lygter, lås...</div>
       </div>
@@ -493,7 +518,7 @@
     <div class="form-group"><label class="form-label">Beskrivelse</label><textarea class="form-input" rows="4" id="sell-desc" placeholder="Beskriv din cykel detaljeret..."></textarea></div>
     <div id="sell-msg" class="msg-box"></div>
     <button class="btn-primary" onclick="submitListing()">Opret annonce gratis</button>
-    <div class="upgrade-link">Sælg hurtigere? <span onclick="goPage('pricing')">Se vores planer →</span></div>
+    
   </div>
 </div>
 
@@ -560,7 +585,23 @@
         <div class="sell-cat-desc">Elektriske cykler</div>
       </div>
       <div class="sell-cat-btn" onclick="openBuyDirect('tilbehor')">
-        <div class="sell-cat-icon">🔧</div>
+        <div class="sell-cat-icon"><svg width="36" height="36" viewBox="0 0 36 36" fill="none">
+  <!-- Chain links on top -->
+  <rect x="4" y="3" width="5" height="4" rx="2" stroke="#8fbc5a" stroke-width="1.5"/>
+  <rect x="11" y="3" width="5" height="4" rx="2" stroke="#8fbc5a" stroke-width="1.5"/>
+  <rect x="18" y="3" width="5" height="4" rx="2" stroke="#8fbc5a" stroke-width="1.5"/>
+  <rect x="25" y="3" width="5" height="4" rx="2" stroke="#8fbc5a" stroke-width="1.5"/>
+  <!-- Chainring (gear) -->
+  <circle cx="18" cy="22" r="10" stroke="#8fbc5a" stroke-width="2"/>
+  <circle cx="18" cy="22" r="5" stroke="#8fbc5a" stroke-width="1.5"/>
+  <!-- Gear teeth -->
+  <path d="M18 12v-2M18 34v-2M8 22H6M30 22h2M10.3 14.3l-1.4-1.4M27.1 31.1l-1.4-1.4M10.3 29.7l-1.4 1.4M27.1 12.9l-1.4 1.4" stroke="#8fbc5a" stroke-width="2" stroke-linecap="round"/>
+  <!-- Crank arm -->
+  <line x1="18" y1="22" x2="29" y2="26" stroke="#8fbc5a" stroke-width="2.5" stroke-linecap="round"/>
+  <circle cx="29" cy="26" r="2" stroke="#8fbc5a" stroke-width="1.5"/>
+  <!-- Center bolt -->
+  <circle cx="18" cy="22" r="2" fill="#8fbc5a"/>
+</svg></div>
         <div class="sell-cat-name">Tilbehør</div>
         <div class="sell-cat-desc">Hjelme, lygter, lås...</div>
       </div>
@@ -703,6 +744,7 @@
       <div class="menu-row">📝 Mine annoncer <span>→</span></div>
       <div class="menu-row" onclick="goPage('messages','nav-msgs')">💬 Beskeder <span>→</span></div>
       <div class="menu-row" onclick="goPage('pricing')">💎 Opgrader plan <span>→</span></div>
+      <div class="menu-row" onclick="goPage('advertise')">📢 Annoncér med os <span>→</span></div>
       <div class="menu-row" onclick="goPage('settings')">⚙️ Indstillinger <span>→</span></div>
       <button class="logout-btn" onclick="doLogout()">Log ud</button>
     </div>
@@ -710,46 +752,74 @@
 </div>
 
 <div id="page-pricing" class="page">
-  <div class="pricing-wrap">
-    <div style="font-weight:800;font-size:24px;margin-bottom:4px;">Vælg din plan</div>
-    <div style="color:#999;font-size:14px;margin-bottom:24px;">Sælg din cykel hurtigere</div>
-    <div class="plan-card">
-      <div class="plan-icon">🆓</div><div class="plan-name">Gratis</div>
-      <div class="plan-price">0 <span>kr.</span></div>
-      <div class="plan-desc">Kom i gang uden at betale.</div>
-      <div class="plan-features">
-        <div class="plan-feature"><span class="check">✓</span> Op til 5 aktive annoncer</div>
-        <div class="plan-feature"><span class="check">✓</span> 6 billeder per annonce</div>
-        <div class="plan-feature"><span class="check">✓</span> Annonce aktiv i 30 dage</div>
-      </div>
-      <button class="plan-btn free" onclick="selectPlan('gratis')">Kom i gang gratis</button>
+  <div style="padding:24px 16px;">
+    <div style="display:flex;align-items:center;gap:10px;margin-bottom:24px;">
+      <button class="back-btn" onclick="goPage('profile','nav-prof')">←</button>
+      <div style="font-weight:800;font-size:20px;">💎 Planer</div>
     </div>
-    <div class="plan-card popular">
-      <div class="popular-badge">⭐ Mest populær</div>
-      <div class="plan-icon">🚀</div><div class="plan-name">Premium</div>
-      <div class="plan-price">49 <span>kr. / annonce</span></div>
-      <div class="plan-desc">Din annonce vises øverst i 30 dage.</div>
-      <div class="plan-features">
-        <div class="plan-feature"><span class="check">✓</span> Alt fra Gratis</div>
-        <div class="plan-feature"><span class="check">✓</span> Annonce øverst på siden</div>
-        <div class="plan-feature"><span class="check">✓</span> ⭐ Premium mærke</div>
+
+    <!-- GRATIS BANNER -->
+    <div style="background:linear-gradient(135deg,#1a2a1a,#0d1a0d);border-radius:20px;padding:28px 20px;text-align:center;margin-bottom:20px;border:2px solid #8fbc5a;position:relative;overflow:hidden;">
+      <div style="position:absolute;inset:0;opacity:0.05;"><svg width="100%" height="100%"><defs><pattern id="pgrid" width="20" height="20" patternUnits="userSpaceOnUse"><path d="M 20 0 L 0 0 0 20" fill="none" stroke="#8fbc5a" stroke-width="0.5"/></pattern></defs><rect width="100%" height="100%" fill="url(#pgrid)"/></svg></div>
+      <div style="position:relative;z-index:1;">
+        <div style="font-size:48px;margin-bottom:12px;">🎉</div>
+        <div style="font-weight:800;font-size:26px;color:#8fbc5a;margin-bottom:8px;">100% Gratis</div>
+        <div style="font-size:15px;color:#fff;font-weight:600;margin-bottom:6px;">Ingen grænser · Ingen abonnement</div>
+        <div style="font-size:13px;color:#aaa;line-height:1.6;">Opret så mange annoncer du vil<br>helt gratis – for altid</div>
       </div>
-      <button class="plan-btn premium" onclick="selectPlan('premium')">Boost – 49 kr.</button>
-      <div class="plan-note">Engangsbetaling · Ingen abonnement</div>
     </div>
-    <div class="plan-card elite">
-      <div class="elite-badge-plan">⚡ Lynhurtig Salg</div>
-      <div class="plan-icon">💎</div><div class="plan-name">Lynhurtig Salg</div>
-      <div class="plan-price">199 <span>kr. / annonce</span></div>
-      <div class="plan-desc">Til cykler over 30.000 kr.</div>
-      <div class="plan-features">
-        <div class="plan-feature"><span class="check gold">✓</span> Alt fra Premium</div>
-        <div class="plan-feature"><span class="check gold">✓</span> Fastgjort øverst i 60 dage</div>
-        <div class="plan-feature"><span class="check gold">✓</span> 💎 Eksklusivt mærke</div>
+
+    <!-- FEATURES -->
+    <div style="background:var(--bg2);border-radius:16px;padding:18px;margin-bottom:16px;border:1px solid var(--border2);">
+      <div style="font-weight:700;font-size:15px;margin-bottom:14px;">Hvad du får gratis:</div>
+      <div style="display:flex;flex-direction:column;gap:12px;">
+        <div style="display:flex;align-items:center;gap:12px;">
+          <div style="width:32px;height:32px;background:#1a2a1a;border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:16px;">🚲</div>
+          <div><div style="font-weight:600;font-size:14px;">Ubegrænsede annoncer</div><div style="font-size:12px;color:#888;">Opret så mange du vil</div></div>
+        </div>
+        <div style="display:flex;align-items:center;gap:12px;">
+          <div style="width:32px;height:32px;background:#1a2a1a;border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:16px;">📸</div>
+          <div><div style="font-weight:600;font-size:14px;">6 billeder per annonce</div><div style="font-size:12px;color:#888;">Vis din cykel fra alle vinkler</div></div>
+        </div>
+        <div style="display:flex;align-items:center;gap:12px;">
+          <div style="width:32px;height:32px;background:#1a2a1a;border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:16px;">💬</div>
+          <div><div style="font-weight:600;font-size:14px;">Direkte beskeder</div><div style="font-size:12px;color:#888;">Chat med køber/sælger</div></div>
+        </div>
+        <div style="display:flex;align-items:center;gap:12px;">
+          <div style="width:32px;height:32px;background:#1a2a1a;border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:16px;">🔍</div>
+          <div><div style="font-weight:600;font-size:14px;">Avanceret søgning og filter</div><div style="font-size:12px;color:#888;">Find præcis det du leder efter</div></div>
+        </div>
+        <div style="display:flex;align-items:center;gap:12px;">
+          <div style="width:32px;height:32px;background:#1a2a1a;border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:16px;">🔧</div>
+          <div><div style="font-weight:600;font-size:14px;">Find værksted</div><div style="font-size:12px;color:#888;">40+ cykelværksteder i Danmark</div></div>
+        </div>
+        <div style="display:flex;align-items:center;gap:12px;">
+          <div style="width:32px;height:32px;background:#1a2a1a;border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:16px;">🛡️</div>
+          <div><div style="font-weight:600;font-size:14px;">Stelnummer verificering</div><div style="font-size:12px;color:#888;">Tjek om cykel er efterlyst</div></div>
+        </div>
       </div>
-      <button class="plan-btn elite-btn" onclick="selectPlan('elite')">⚡ Lynhurtig – 199 kr.</button>
-      <div class="plan-note">Engangsbetaling · Ingen abonnement</div>
     </div>
+
+    <!-- COMING SOON -->
+    <div style="background:var(--bg2);border-radius:16px;padding:18px;border:1px solid var(--border2);">
+      <div style="font-weight:700;font-size:15px;margin-bottom:4px;">⏳ Kommer snart</div>
+      <div style="font-size:13px;color:#888;margin-bottom:14px;">Premium funktioner under udvikling</div>
+      <div style="display:flex;flex-direction:column;gap:10px;">
+        <div style="display:flex;align-items:center;gap:10px;opacity:0.5;">
+          <span style="font-size:16px;">⭐</span>
+          <div style="font-size:13px;">Fremhævet annonce – øget synlighed</div>
+        </div>
+        <div style="display:flex;align-items:center;gap:10px;opacity:0.5;">
+          <span style="font-size:16px;">🏪</span>
+          <div style="font-size:13px;">Erhverv butiksprofil</div>
+        </div>
+        <div style="display:flex;align-items:center;gap:10px;opacity:0.5;">
+          <span style="font-size:16px;">📊</span>
+          <div style="font-size:13px;">Annonce statistik</div>
+        </div>
+      </div>
+    </div>
+
   </div>
 </div>
 
@@ -763,8 +833,6 @@
     <div class="menu-row" style="justify-content:space-between;margin-bottom:16px;"><span>☀️ Lyst skærm</span><div class="tgsw" id="theme-toggle" onclick="toggleTheme()"></div></div>
     <div style="font-size:11px;font-weight:700;color:#999;letter-spacing:0.5px;text-transform:uppercase;margin-bottom:8px;">Konto</div>
     <div class="menu-row" onclick="goPage('edit-profile')">👤 Rediger profil <span>→</span></div>
-    <div class="menu-row">🔒 Skift adgangskode <span>→</span></div>
-    <div class="menu-row">📧 Skift e-mail <span>→</span></div>
     <div style="font-size:11px;font-weight:700;color:#999;letter-spacing:0.5px;text-transform:uppercase;margin:16px 0 8px;">Notifikationer</div>
     <div class="menu-row" style="justify-content:space-between;"><span>📩 Email ved ny besked</span><div class="tgsw on" onclick="this.classList.toggle('on')"></div></div>
     <div class="menu-row" style="justify-content:space-between;"><span>⏰ Email før annonce udløber</span><div class="tgsw on" onclick="this.classList.toggle('on')"></div></div>
@@ -821,9 +889,263 @@
     <div class="form-group"><label class="form-label">Telefon</label><input class="form-input" type="tel" id="edit-phone" placeholder="+45 12 34 56 78"></div>
     <div id="edit-profile-msg" class="msg-box"></div>
     <button class="btn-primary" onclick="saveProfile()">Gem ændringer</button>
+
+    <div style="font-size:11px;font-weight:700;color:#999;letter-spacing:0.5px;text-transform:uppercase;margin:24px 0 10px;">Sikkerhed</div>
+    <div class="menu-row" onclick="goPage('skift-password')">🔒 Skift adgangskode <span>→</span></div>
+    <div class="menu-row" onclick="goPage('skift-email');showCurrentEmail()">📧 Skift e-mail <span>→</span></div>
   </div>
 </div>
 
+
+<!-- FIND VÆRKSTED PAGE -->
+<div id="page-vaerksted" class="page" style="padding:0">
+  <div style="background:var(--bg);padding:14px 16px;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:10px;position:sticky;top:0;z-index:50;">
+    <button class="back-btn" onclick="goPage('home','nav-home')">←</button>
+    <div style="font-weight:800;font-size:18px;flex:1;">🔧 Find Værksted</div>
+  </div>
+
+  <!-- MAP AREA -->
+  <div id="vaerksted-map" style="width:100%;height:280px;background:linear-gradient(135deg,#0d1f0d,#0a1a0a);position:relative;overflow:hidden;display:flex;align-items:center;justify-content:center;">
+    <!-- Animated map grid -->
+    <div style="position:absolute;inset:0;opacity:0.15;">
+      <svg width="100%" height="100%"><defs><pattern id="grid" width="30" height="30" patternUnits="userSpaceOnUse"><path d="M 30 0 L 0 0 0 30" fill="none" stroke="#8fbc5a" stroke-width="0.5"/></pattern></defs><rect width="100%" height="100%" fill="url(#grid)"/></svg>
+    </div>
+    <!-- Map pins for workshops -->
+    <div id="map-pins" style="position:absolute;inset:0;"></div>
+    <div style="text-align:center;z-index:2;">
+      <div style="font-size:40px;margin-bottom:8px;">🗺️</div>
+      <div style="color:#8fbc5a;font-weight:700;font-size:14px;">Cykelværksteder i Danmark</div>
+      <div style="color:#666;font-size:12px;margin-top:4px;" id="map-count">Indlæser...</div>
+    </div>
+  </div>
+
+  <!-- SEARCH BAR -->
+  <div style="padding:12px 16px;background:var(--bg);border-bottom:1px solid var(--border);">
+    <div style="background:var(--bg2);border-radius:12px;display:flex;align-items:center;padding:10px 14px;gap:10px;border:1.5px solid var(--border2);" id="vaerksted-search-wrap">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#8fbc5a" stroke-width="2.5" stroke-linecap="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+      <input type="text" id="vaerksted-search" placeholder="Søg by eller postnummer..." style="background:none;border:none;outline:none;font-size:14px;width:100%;color:var(--text);font-family:'Inter',sans-serif;" oninput="searchVaerksted(this.value)">
+      <button onclick="clearVaerkstedSearch()" style="background:none;border:none;cursor:pointer;color:#555;font-size:16px;" id="vaerksted-clear" style="display:none">✕</button>
+    </div>
+  </div>
+
+  <!-- RESULTS LIST -->
+  <div id="vaerksted-list" style="padding:12px 16px;"></div>
+</div>
+
+
+<!-- ===== ADMIN PANEL OVERLAY ===== -->
+<div class="admin-overlay" id="admin-overlay">
+  <div class="admin-panel">
+    <div class="admin-header">
+      <div class="admin-title">⚙️ Annonce Admin</div>
+      <button class="admin-close" onclick="closeAdmin()">✕</button>
+    </div>
+
+    <!-- STATS -->
+    <div class="admin-section">
+      <div class="admin-section-title">📊 Statistik</div>
+      <div class="stats-grid">
+        <div class="stat-card"><div class="stat-num" id="stat-total">0</div><div class="stat-label">Aktive annoncer</div></div>
+        <div class="stat-card"><div class="stat-num" id="stat-banner">0</div><div class="stat-label">Banner visninger</div></div>
+        <div class="stat-card"><div class="stat-num" id="stat-clicks">0</div><div class="stat-label">Klik i dag</div></div>
+        <div class="stat-card"><div class="stat-num" id="stat-revenue">0</div><div class="stat-label">kr. / md</div></div>
+      </div>
+    </div>
+
+    <!-- AD LIST -->
+    <div class="admin-section">
+      <div class="admin-section-title">📢 Annoncer</div>
+      <div id="admin-ad-list"></div>
+      <button onclick="showAdForm(null)" style="width:100%;background:#1a2a1a;color:#8fbc5a;border:1.5px dashed #8fbc5a;border-radius:12px;padding:11px;font-weight:700;font-size:13px;cursor:pointer;font-family:'Inter',sans-serif;margin-top:4px;">+ Tilføj ny annonce</button>
+    </div>
+
+    <!-- AD FORM -->
+    <div class="admin-section" id="admin-form-section" style="display:none;">
+      <div class="ad-form">
+        <div class="ad-form-title" id="ad-form-title">✏️ Ny annonce</div>
+        <input class="admin-input" id="af-brand" placeholder="Virksomhedsnavn (fx. Telia)">
+        <input class="admin-input" id="af-logo" placeholder="Emoji logo (fx. 📱)">
+        <input class="admin-input" id="af-desc" placeholder="Beskrivelse (max 60 tegn)">
+        <input class="admin-input" id="af-cta" placeholder="Knaptekst (fx. Se tilbud →)">
+        <input class="admin-input" id="af-url" placeholder="Link URL (https://...)">
+        <div style="margin-bottom:8px;">
+  <div style="display:flex;gap:8px;align-items:center;">
+    <input class="admin-input" id="af-img" placeholder="Billedlink URL (https://...)" style="margin-bottom:0;flex:1;">
+    <label for="af-img-upload" style="background:#1a2a1a;color:#8fbc5a;border:1.5px solid #8fbc5a;border-radius:10px;padding:10px 12px;font-size:12px;font-weight:700;cursor:pointer;white-space:nowrap;flex-shrink:0;">📷 Upload</label>
+    <input type="file" id="af-img-upload" accept="image/*" style="display:none;" onchange="uploadAdImage(event)">
+  </div>
+  <div id="af-img-preview" style="display:none;margin-top:8px;border-radius:10px;overflow:hidden;height:100px;background:#1a1a1a;">
+    <img id="af-img-preview-img" src="" style="width:100%;height:100%;object-fit:cover;">
+  </div>
+  <div id="af-img-upload-progress" style="display:none;font-size:11px;color:#8fbc5a;margin-top:4px;text-align:center;">⏳ Uploader...</div>
+</div>
+        <input class="admin-input" id="af-price" placeholder="Månedspris (kr.)" type="number">
+        <select class="admin-select" id="af-position">
+          <option value="both">Banner + kort (begge)</option>
+          <option value="banner">Kun top banner</option>
+          <option value="card">Kun kort i listen</option>
+        </select>
+        <input type="hidden" id="af-edit-id">
+        <button class="admin-save-btn" onclick="saveAd()">💾 Gem annonce</button>
+        <button class="admin-cancel-btn" onclick="hideAdForm()">Annuller</button>
+      </div>
+    </div>
+
+    <!-- SETTINGS -->
+    <div class="admin-section">
+      <div class="admin-section-title">⚙️ Indstillinger</div>
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px;">
+        <span style="font-size:13px;color:#aaa;">Rotér banner hvert</span>
+        <select class="admin-select" id="rotate-interval" style="width:120px;margin-bottom:0;" onchange="updateRotateInterval()">
+          <option value="4000">4 sek.</option>
+          <option value="6000" selected>6 sek.</option>
+          <option value="10000">10 sek.</option>
+          <option value="15000">15 sek.</option>
+        </select>
+      </div>
+      <div style="display:flex;align-items:center;justify-content:space-between;">
+        <span style="font-size:13px;color:#aaa;">Annonce hver X opslag</span>
+        <select class="admin-select" id="ad-frequency" style="width:120px;margin-bottom:0;" onchange="updateAdFrequency()">
+          <option value="5">Hver 5.</option>
+          <option value="8">Hver 8.</option>
+          <option value="10">Hver 10.</option>
+          <option value="15" selected>Hver 15.</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="admin-section">
+      <div class="admin-section-title">📥 Nye forespørgsler</div>
+      <div id="admin-requests-list"><div style="font-size:12px;color:#444;text-align:center;padding:10px;">Indlæser...</div></div>
+    </div>
+    <div style="padding:14px 20px 24px;text-align:center;">
+      <div style="font-size:11px;color:#333;">CykelHub Admin · Kun synlig for dig</div>
+    </div>
+  </div>
+</div>
+
+<!-- Admin FAB button (kun synlig for admin) -->
+<button class="admin-fab" id="admin-fab" onclick="openAdmin()">⚙️</button>
+
+
+<!-- ANNONCÉR MED OS PAGE -->
+<div id="page-advertise" class="page">
+  <div style="padding:0 0 30px;">
+
+    <!-- HERO SECTION -->
+    <div style="background:linear-gradient(135deg,#1a2a1a,#0d1a0d);padding:32px 20px;text-align:center;position:relative;overflow:hidden;">
+      <div style="position:absolute;inset:0;opacity:0.1;">
+        <svg width="100%" height="100%"><defs><pattern id="adgrid" width="30" height="30" patternUnits="userSpaceOnUse"><path d="M 30 0 L 0 0 0 30" fill="none" stroke="#8fbc5a" stroke-width="0.5"/></pattern></defs><rect width="100%" height="100%" fill="url(#adgrid)"/></svg>
+      </div>
+      <div style="position:relative;z-index:1;">
+        <div style="font-size:40px;margin-bottom:12px;">📢</div>
+        <div style="font-weight:800;font-size:24px;color:#fff;margin-bottom:8px;">Annoncér på CykelHub</div>
+        <div style="font-size:14px;color:#8fbc5a;font-weight:600;margin-bottom:8px;">Danmarks dedikerede cykelmarkedsplads</div>
+        <div style="font-size:13px;color:#aaa;line-height:1.6;">Nå ud til tusindvis af cykelenthusiaster<br>der aktivt køber og sælger cykler</div>
+      </div>
+    </div>
+
+    <div style="padding:0 16px;">
+
+      <!-- STATS -->
+      <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;margin:20px 0;">
+        <div style="background:var(--bg2);border-radius:14px;padding:14px 10px;text-align:center;border:1px solid var(--border2);">
+          <div style="font-weight:800;font-size:20px;color:#8fbc5a;">🚲</div>
+          <div style="font-weight:800;font-size:16px;margin-top:4px;">100%</div>
+          <div style="font-size:10px;color:#888;margin-top:2px;">Cykel fokus</div>
+        </div>
+        <div style="background:var(--bg2);border-radius:14px;padding:14px 10px;text-align:center;border:1px solid var(--border2);">
+          <div style="font-weight:800;font-size:20px;color:#8fbc5a;">🎯</div>
+          <div style="font-weight:800;font-size:16px;margin-top:4px;">Målrettet</div>
+          <div style="font-size:10px;color:#888;margin-top:2px;">Målgruppe</div>
+        </div>
+        <div style="background:var(--bg2);border-radius:14px;padding:14px 10px;text-align:center;border:1px solid var(--border2);">
+          <div style="font-weight:800;font-size:20px;color:#8fbc5a;">📱</div>
+          <div style="font-weight:800;font-size:16px;margin-top:4px;">Mobil</div>
+          <div style="font-size:10px;color:#888;margin-top:2px;">App first</div>
+        </div>
+      </div>
+
+      <!-- PAKKER -->
+      <div style="font-weight:800;font-size:18px;margin-bottom:4px;">Annonceringsmuligheder</div>
+      <div style="font-size:13px;color:#888;margin-bottom:16px;">Skræddersyet til din virksomhed</div>
+
+      <!-- STANDARD -->
+      <div style="background:var(--bg2);border-radius:16px;padding:18px;margin-bottom:12px;border:1px solid var(--border2);">
+        <div style="display:flex;align-items:center;gap:12px;margin-bottom:12px;">
+          <div style="width:44px;height:44px;background:#1a2a1a;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:22px;flex-shrink:0;">📋</div>
+          <div>
+            <div style="font-weight:800;font-size:16px;">Standard</div>
+            <div style="font-size:12px;color:#888;">Perfekt til cykelbutikker og forhandlere</div>
+          </div>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:8px;margin-bottom:14px;">
+          <div style="display:flex;align-items:center;gap:8px;font-size:13px;"><span style="color:#8fbc5a;font-weight:700;">✓</span> Annonce vist mellem cykelopslag</div>
+          <div style="display:flex;align-items:center;gap:8px;font-size:13px;"><span style="color:#8fbc5a;font-weight:700;">✓</span> Billede + tekst + knap</div>
+          <div style="display:flex;align-items:center;gap:8px;font-size:13px;"><span style="color:#8fbc5a;font-weight:700;">✓</span> Link til din hjemmeside</div>
+          <div style="display:flex;align-items:center;gap:8px;font-size:13px;"><span style="color:#8fbc5a;font-weight:700;">✓</span> Månedlig statistik</div>
+        </div>
+        <button onclick="openAdContact('Standard')" style="width:100%;background:var(--bg3);color:#8fbc5a;border:1.5px solid #8fbc5a;border-radius:50px;padding:12px;font-weight:700;font-size:14px;cursor:pointer;font-family:'Inter',sans-serif;">Få et tilbud →</button>
+      </div>
+
+      <!-- VIP -->
+      <div style="background:linear-gradient(135deg,#1a2a1a,#162616);border-radius:16px;padding:18px;margin-bottom:12px;border:2px solid #8fbc5a;position:relative;">
+        <div style="position:absolute;top:-12px;left:50%;transform:translateX(-50%);background:#8fbc5a;color:#111;font-size:11px;font-weight:700;padding:4px 16px;border-radius:50px;white-space:nowrap;">⭐ Mest synlighed</div>
+        <div style="display:flex;align-items:center;gap:12px;margin-bottom:12px;">
+          <div style="width:44px;height:44px;background:#2a3a2a;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:22px;flex-shrink:0;">👑</div>
+          <div>
+            <div style="font-weight:800;font-size:16px;color:#8fbc5a;">VIP</div>
+            <div style="font-size:12px;color:#aaa;">Maksimal eksponering</div>
+          </div>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:8px;margin-bottom:14px;">
+          <div style="display:flex;align-items:center;gap:8px;font-size:13px;"><span style="color:#8fbc5a;font-weight:700;">✓</span> Alt fra Standard</div>
+          <div style="display:flex;align-items:center;gap:8px;font-size:13px;"><span style="color:#8fbc5a;font-weight:700;">✓</span> Top banner - første ting brugeren ser</div>
+          <div style="display:flex;align-items:center;gap:8px;font-size:13px;"><span style="color:#8fbc5a;font-weight:700;">✓</span> Roterer automatisk i toppen</div>
+          <div style="display:flex;align-items:center;gap:8px;font-size:13px;"><span style="color:#8fbc5a;font-weight:700;">✓</span> Prioriteret placering i listen</div>
+          <div style="display:flex;align-items:center;gap:8px;font-size:13px;"><span style="color:#8fbc5a;font-weight:700;">✓</span> Ugentlig statistik + rapport</div>
+        </div>
+        <button onclick="openAdContact('VIP')" style="width:100%;background:#8fbc5a;color:#111;border:none;border-radius:50px;padding:12px;font-weight:700;font-size:14px;cursor:pointer;font-family:'Inter',sans-serif;">Få et VIP tilbud →</button>
+      </div>
+
+      <!-- CUSTOM -->
+      <div style="background:var(--bg2);border-radius:16px;padding:18px;margin-bottom:20px;border:1px solid var(--border2);">
+        <div style="display:flex;align-items:center;gap:12px;margin-bottom:12px;">
+          <div style="width:44px;height:44px;background:#1a1a2a;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:22px;flex-shrink:0;">🤝</div>
+          <div>
+            <div style="font-weight:800;font-size:16px;">Skræddersyet løsning</div>
+            <div style="font-size:12px;color:#888;">Til større kampagner og partnerskaber</div>
+          </div>
+        </div>
+        <div style="font-size:13px;color:#aaa;line-height:1.6;margin-bottom:14px;">Har du særlige behov eller ønsker en længerevarende aftale? Vi finder den løsning, der passer bedst til din virksomhed.</div>
+        <button onclick="openAdContact('Skræddersyet')" style="width:100%;background:var(--bg3);color:#fff;border:1.5px solid var(--border2);border-radius:50px;padding:12px;font-weight:700;font-size:14px;cursor:pointer;font-family:'Inter',sans-serif;">Kontakt os →</button>
+      </div>
+
+      <!-- KONTAKT FORMULAR -->
+      <div id="ad-contact-form" style="display:none;background:var(--bg2);border-radius:16px;padding:18px;margin-bottom:20px;border:1.5px solid #8fbc5a;">
+        <div style="font-weight:800;font-size:16px;margin-bottom:4px;" id="ad-contact-title">📩 Kontakt os</div>
+        <div style="font-size:13px;color:#888;margin-bottom:16px;">Vi vender tilbage inden for 24 timer</div>
+        <div id="ad-contact-msg" class="msg-box"></div>
+        <div class="form-group"><label class="form-label">Virksomhedsnavn *</label><input class="form-input" type="text" id="ac-company" placeholder="fx. Trek Danmark"></div>
+        <div class="form-group"><label class="form-label">Kontaktperson *</label><input class="form-input" type="text" id="ac-contact" placeholder="Dit navn"></div>
+        <div class="form-group"><label class="form-label">E-mail *</label><input class="form-input" type="email" id="ac-email" placeholder="kontakt@virksomhed.dk"></div>
+        <div class="form-group"><label class="form-label">Telefon</label><input class="form-input" type="tel" id="ac-phone" placeholder="+45 12 34 56 78"></div>
+        <div class="form-group"><label class="form-label">Besked</label><textarea class="form-input" rows="3" id="ac-message" placeholder="Fortæl os lidt om din virksomhed og hvad du ønsker..."></textarea></div>
+        <input type="hidden" id="ac-package">
+        <button class="btn-primary" onclick="submitAdContact()">📨 Send forespørgsel</button>
+        <button onclick="closeAdContact()" style="width:100%;background:transparent;border:none;color:#666;padding:10px;cursor:pointer;font-family:'Inter',sans-serif;font-size:13px;margin-top:6px;">Annuller</button>
+      </div>
+
+      <!-- DIREKTE KONTAKT -->
+      <div style="background:var(--bg2);border-radius:16px;padding:18px;border:1px solid var(--border2);text-align:center;">
+        <div style="font-size:13px;color:#888;margin-bottom:12px;">Foretrækker du at kontakte os direkte?</div>
+        <a href="mailto:malsayed516@gmail.com?subject=Annoncering på CykelHub" style="display:flex;align-items:center;justify-content:center;gap:8px;background:#1a2a1a;color:#8fbc5a;border:1.5px solid #8fbc5a;border-radius:50px;padding:12px;font-weight:700;font-size:14px;text-decoration:none;margin-bottom:8px;">📧 malsayed516@gmail.com</a>
+        <div style="font-size:11px;color:#555;">Vi svarer inden for 24 timer · Alle ugens dage</div>
+      </div>
+
+    </div>
+  </div>
+</div>
 
 <!-- FIND VÆRKSTED PAGE -->
 <div id="page-vaerksted" class="page" style="padding:0">
@@ -1012,6 +1334,63 @@
     <div class="form-group"><label class="form-label">Besked</label><textarea class="form-input" rows="3" id="ar-message" placeholder="Fortæl os lidt om din virksomhed og hvad du ønsker at annoncere..."></textarea></div>
     <button class="btn-primary" onclick="submitAdRequest()">📨 Send forespørgsel</button>
     <div style="text-align:center;margin-top:14px;font-size:12px;color:#555;">Vi vender tilbage inden for 24 timer · malsayed516@gmail.com</div>
+  </div>
+</div>
+
+<!-- SKIFT ADGANGSKODE PAGE -->
+<div id="page-skift-password" class="page">
+  <div class="profile-wrap">
+    <div style="display:flex;align-items:center;gap:10px;margin-bottom:24px;">
+      <button class="back-btn" onclick="goPage('settings')">←</button>
+      <div style="font-weight:800;font-size:20px;">🔒 Skift adgangskode</div>
+    </div>
+    <div id="skift-pass-msg" class="msg-box"></div>
+    <div class="form-group">
+      <label class="form-label">Nuværende adgangskode</label>
+      <input class="form-input" type="password" id="current-pass" placeholder="Din nuværende adgangskode">
+    </div>
+    <div class="form-group">
+      <label class="form-label">Ny adgangskode</label>
+      <input class="form-input" type="password" id="new-pass" placeholder="Min. 6 tegn">
+    </div>
+    <div class="form-group">
+      <label class="form-label">Gentag ny adgangskode</label>
+      <input class="form-input" type="password" id="new-pass2" placeholder="Gentag ny adgangskode">
+    </div>
+    <button class="btn-primary" onclick="doChangePassword()">Gem ny adgangskode</button>
+    <div style="text-align:center;margin-top:16px;">
+      <div style="font-size:13px;color:#666;margin-bottom:8px;">Glemt din adgangskode?</div>
+      <button onclick="doForgotFromSettings()" style="background:transparent;border:1.5px solid #8fbc5a;color:#8fbc5a;border-radius:50px;padding:10px 20px;font-family:'Inter',sans-serif;font-weight:600;font-size:13px;cursor:pointer;">📧 Send nulstillingslink</button>
+    </div>
+  </div>
+</div>
+
+<!-- SKIFT E-MAIL PAGE -->
+<div id="page-skift-email" class="page">
+  <div class="profile-wrap">
+    <div style="display:flex;align-items:center;gap:10px;margin-bottom:24px;">
+      <button class="back-btn" onclick="goPage('settings')">←</button>
+      <div style="font-weight:800;font-size:20px;">📧 Skift e-mail</div>
+    </div>
+    <div style="background:var(--bg2);border-radius:12px;padding:12px 14px;margin-bottom:20px;border:1px solid var(--border2);">
+      <div style="font-size:11px;color:#999;margin-bottom:4px;">Nuværende e-mail</div>
+      <div style="font-weight:600;font-size:14px;" id="current-email-display"></div>
+    </div>
+    <div id="skift-email-msg" class="msg-box"></div>
+    <div class="form-group">
+      <label class="form-label">Ny e-mail</label>
+      <input class="form-input" type="email" id="new-email" placeholder="din@nyemail.dk">
+    </div>
+    <div class="form-group">
+      <label class="form-label">Gentag ny e-mail</label>
+      <input class="form-input" type="email" id="new-email2" placeholder="din@nyemail.dk igen">
+    </div>
+    <div class="form-group">
+      <label class="form-label">Adgangskode (bekræftelse)</label>
+      <input class="form-input" type="password" id="email-confirm-pass" placeholder="Din adgangskode">
+    </div>
+    <button class="btn-primary" onclick="doChangeEmail()">Gem ny e-mail</button>
+    <div style="font-size:12px;color:#666;text-align:center;margin-top:12px;">Du modtager en bekræftelsesmail på den nye adresse</div>
   </div>
 </div>
 <nav class="bottom-nav">
@@ -1581,7 +1960,7 @@ async function doReset(){const email=document.getElementById('r-email').value.tr
 async function doLogout(){await sb.auth.signOut();toast('Du er nu logget ud');goPage('home','nav-home');}
 function setMsg(m,type){const el=document.getElementById('auth-msg');el.textContent=m;el.className='msg-box '+type;}
 function clearMsg(){const el=document.getElementById('auth-msg');el.className='msg-box';el.textContent='';}
-function selectPlan(plan){if(!me){toast('Log ind for at vælge en plan');goPage('profile','nav-prof');return;}const msgs={gratis:'Gratis plan valgt ✓',premium:'Premium – 49 kr. (Stripe kommer snart) 🚀',elite:'Lynhurtig Salg – 199 kr. (Stripe kommer snart) ⚡'};toast(msgs[plan]);}
+function selectPlan(plan){toast('Alt er gratis på CykelHub! 🎉');}
 function showPage(name){document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));document.getElementById('page-'+name).classList.add('active');const hideTop=['cat','chat','sell-picker','sell-form','detail','vaerksted','buy-results','buy'].includes(name);document.getElementById('topbar').style.display=hideTop?'none':'block';document.getElementById('subcat-bar').style.display=hideTop?'none':'flex';if(name==='messages')loadConvs();if(name==='edit-profile')loadProfile();if(name==='vaerksted'){filteredVaerksteder=[...vaerksteder];renderVaerksted();}if(name==='notifications'){notifs.forEach(n=>n.unread=false);updateBellDot();document.getElementById('notif-list').innerHTML=notifs.map(n=>`<div class="notif-item ${n.unread?'unread':''}"><div style="font-size:22px">${n.icon}</div><div><div style="font-weight:600;font-size:14px">${n.title}</div><div style="font-size:12px;color:#999;margin-top:2px">${n.sub}</div></div></div>`).join('');}}
 function goPage(name,navId){showPage(name);document.querySelectorAll('.nav-item').forEach(i=>i.classList.remove('active'));if(navId)document.getElementById(navId)?.classList.add('active');}
 function requireAuth(page,navId){if(!me){toast('Log ind for at fortsætte');goPage('profile','nav-prof');return;}goPage(page,navId);}
@@ -2092,6 +2471,154 @@ async function submitAdRequest(){
     document.getElementById('ar-message').value = '';
   } catch(e) {
     msgEl.textContent = '❌ Fejl: ' + e.message;
+    msgEl.className = 'msg-box err';
+  }
+}
+
+// ===== SKIFT ADGANGSKODE =====
+async function doChangePassword(){
+  const current = document.getElementById('current-pass').value;
+  const newPass = document.getElementById('new-pass').value;
+  const newPass2 = document.getElementById('new-pass2').value;
+  const msgEl = document.getElementById('skift-pass-msg');
+
+  if(!current || !newPass || !newPass2){
+    msgEl.textContent = 'Udfyld alle felter';
+    msgEl.className = 'msg-box err';
+    return;
+  }
+  if(newPass !== newPass2){
+    msgEl.textContent = 'De nye adgangskoder stemmer ikke overens';
+    msgEl.className = 'msg-box err';
+    return;
+  }
+  if(newPass.length < 6){
+    msgEl.textContent = 'Adgangskode skal være mindst 6 tegn';
+    msgEl.className = 'msg-box err';
+    return;
+  }
+
+  msgEl.textContent = '⏳ Opdaterer...';
+  msgEl.className = 'msg-box ok';
+
+  try {
+    const { error } = await sb.auth.updateUser({ password: newPass });
+    if(error) throw error;
+    msgEl.textContent = '✅ Adgangskode opdateret!';
+    msgEl.className = 'msg-box ok';
+    document.getElementById('current-pass').value = '';
+    document.getElementById('new-pass').value = '';
+    document.getElementById('new-pass2').value = '';
+    setTimeout(() => goPage('settings'), 2000);
+  } catch(e) {
+    msgEl.textContent = '❌ Fejl: ' + (e.message || 'Prøv igen');
+    msgEl.className = 'msg-box err';
+  }
+}
+
+async function doForgotFromSettings(){
+  if(!me) return;
+  const msgEl = document.getElementById('skift-pass-msg');
+  try {
+    const { error } = await sb.auth.resetPasswordForEmail(me.email, {
+      redirectTo: 'https://moalsayed684.github.io/hjul-markedsplads/index.html'
+    });
+    if(error) throw error;
+    msgEl.textContent = '✅ Nulstillingslink sendt til ' + me.email;
+    msgEl.className = 'msg-box ok';
+  } catch(e) {
+    msgEl.textContent = '❌ Fejl: ' + e.message;
+    msgEl.className = 'msg-box err';
+  }
+}
+
+// ===== SKIFT E-MAIL =====
+function showCurrentEmail(){
+  const el = document.getElementById('current-email-display');
+  if(el && me) el.textContent = me.email;
+}
+
+async function doChangeEmail(){
+  const newEmail = document.getElementById('new-email').value.trim();
+  const newEmail2 = document.getElementById('new-email2').value.trim();
+  const msgEl = document.getElementById('skift-email-msg');
+
+  if(!newEmail || !newEmail2){
+    msgEl.textContent = 'Udfyld alle felter';
+    msgEl.className = 'msg-box err';
+    return;
+  }
+  if(newEmail !== newEmail2){
+    msgEl.textContent = 'E-mails stemmer ikke overens';
+    msgEl.className = 'msg-box err';
+    return;
+  }
+
+  msgEl.textContent = '⏳ Opdaterer...';
+  msgEl.className = 'msg-box ok';
+
+  try {
+    const { error } = await sb.auth.updateUser({ email: newEmail });
+    if(error) throw error;
+    msgEl.textContent = '✅ Bekræftelsesmail sendt til ' + newEmail;
+    msgEl.className = 'msg-box ok';
+    document.getElementById('new-email').value = '';
+    document.getElementById('new-email2').value = '';
+    document.getElementById('email-confirm-pass').value = '';
+  } catch(e) {
+    msgEl.textContent = '❌ Fejl: ' + (e.message || 'Prøv igen');
+    msgEl.className = 'msg-box err';
+  }
+}
+
+// ===== ANNONCÉR MED OS =====
+function openAdContact(pkg){
+  document.getElementById('ad-contact-form').style.display = 'block';
+  document.getElementById('ac-package').value = pkg;
+  document.getElementById('ad-contact-title').textContent = '📩 ' + pkg + ' – Få et tilbud';
+  document.getElementById('ad-contact-form').scrollIntoView({behavior:'smooth'});
+}
+function closeAdContact(){
+  document.getElementById('ad-contact-form').style.display = 'none';
+}
+async function submitAdContact(){
+  const company  = document.getElementById('ac-company').value.trim();
+  const contact  = document.getElementById('ac-contact').value.trim();
+  const email    = document.getElementById('ac-email').value.trim();
+  const phone    = document.getElementById('ac-phone').value.trim();
+  const message  = document.getElementById('ac-message').value.trim();
+  const pkg      = document.getElementById('ac-package').value;
+  const msgEl    = document.getElementById('ad-contact-msg');
+
+  if(!company || !contact || !email){
+    msgEl.textContent = 'Udfyld virksomhedsnavn, kontaktperson og e-mail';
+    msgEl.className = 'msg-box err';
+    return;
+  }
+
+  msgEl.textContent = '⏳ Sender...';
+  msgEl.className = 'msg-box ok';
+
+  try {
+    const { error } = await sb.from('ad_requests').insert({
+      company,
+      email,
+      phone,
+      message: '[' + pkg + '] Kontaktperson: ' + contact + '\n' + message,
+      budget: pkg,
+      status: 'ny'
+    });
+    if(error) throw error;
+    msgEl.textContent = '✅ Tak! Vi kontakter dig inden for 24 timer.';
+    msgEl.className = 'msg-box ok';
+    document.getElementById('ac-company').value = '';
+    document.getElementById('ac-contact').value = '';
+    document.getElementById('ac-email').value = '';
+    document.getElementById('ac-phone').value = '';
+    document.getElementById('ac-message').value = '';
+    setTimeout(() => closeAdContact(), 3000);
+  } catch(e) {
+    msgEl.textContent = '❌ Fejl: ' + (e.message || 'Prøv igen');
     msgEl.className = 'msg-box err';
   }
 }
