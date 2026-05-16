@@ -10,6 +10,23 @@
   <style>
     :root{--bg:#111;--bg2:#1c1c1c;--bg3:#252525;--border:#1e1e1e;--border2:#252525;--text:#f0f0f0;--text2:#888;--text3:#555;--search-bg:#1e1e1e;}
     body.light-mode{--bg:#f5f5f5;--bg2:#ffffff;--bg3:#e8e8e8;--border:#e0e0e0;--border2:#d0d0d0;--text:#111111;--text2:#555555;--text3:#888888;--search-bg:#e8e8e8;}
+    body.light-mode svg path, body.light-mode svg circle, body.light-mode svg rect, body.light-mode svg line, body.light-mode svg polyline{stroke:#2d6e10;}
+    body.light-mode svg path[fill="#8fbc5a"], body.light-mode svg circle[fill="#8fbc5a"]{fill:#2d6e10;}
+    body.light-mode .cat-icon-item.active .cat-icon-label{color:#2d6e10;}
+    body.light-mode .cat-icon-item.active{border-bottom-color:#2d6e10;}
+    body.light-mode .subcat-item.active .subcat-label{color:#2d6e10;}
+    body.light-mode .listing-price{color:#2d6e10;}
+    body.light-mode .logo-text span{color:#2d6e10;}
+    body.light-mode .nav-item.active .nav-label{color:#2d6e10;}
+    body.light-mode .nav-plus{background:#2d6e10;}
+    body.light-mode .btn-primary{background:#2d6e10;}
+    body.light-mode .filter-open-btn{color:#2d6e10;border-color:#2d6e10;}
+    body.light-mode .search-wrap:focus-within{border-color:#2d6e10;}
+    body.light-mode .chip-opt.sel{background:#2d6e10;border-color:#2d6e10;}
+    body.light-mode .fchip.sel{background:#2d6e10;border-color:#2d6e10;}
+    body.light-mode .tgsw.on{background:#2d6e10;}
+    body.light-mode .detail-price{color:#2d6e10;}
+    body.light-mode .back-btn{color:#2d6e10;}
     *{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent;}
     body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;max-width:430px;margin:0 auto;overflow-x:hidden;padding-bottom:72px;}
     .topbar{background:var(--bg);padding:12px 16px 10px;border-bottom:1px solid var(--border);position:sticky;top:0;z-index:100;}
@@ -323,7 +340,7 @@
     <div class="logo-text">Cykel<span>Hub</span></div>
     <div class="search-wrap">
       <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#555" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
-      <input type="text" placeholder="Søg efter cykler, by, mærke..." oninput="handleSearch(this.value)" autocomplete="off" autocorrect="off" autocapitalize="off">
+      <input type="text" placeholder="Søg efter cykler, by, mærke..." oninput="handleSearch(this.value)" autocomplete="new-password" autocorrect="off" autocapitalize="off" name="search_cykelhub" readonly onfocus="this.removeAttribute('readonly')" onblur="this.setAttribute('readonly','')">
     </div>
     <button class="bell-btn" onclick="goPage('notifications')">🔔<div class="bell-dot" id="bell-dot"></div></button>
   </div>
@@ -764,8 +781,8 @@
       <div style="position:relative;z-index:1;">
         <div style="font-size:48px;margin-bottom:12px;">🎉</div>
         <div style="font-weight:800;font-size:26px;color:#8fbc5a;margin-bottom:8px;">100% Gratis</div>
-        <div style="font-size:15px;color:#fff;font-weight:600;margin-bottom:6px;">Ingen grænser · Ingen abonnement</div>
-        <div style="font-size:13px;color:#aaa;line-height:1.6;">Opret så mange annoncer du vil<br>helt gratis – for altid</div>
+        <div style="font-size:15px;color:#fff;font-weight:600;margin-bottom:6px;">Ingen grænser · Kom i gang nu</div>
+        <div style="font-size:13px;color:#aaa;line-height:1.6;">Opret så mange annoncer du vil<br>helt gratis i dag</div>
       </div>
     </div>
 
