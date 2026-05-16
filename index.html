@@ -59,6 +59,15 @@
     body.light-mode .plan-feature{color:#333 !important;}
     body.light-mode .chip-opt{color:#111;background:#fff;border-color:#ccc;}
     body.light-mode .chip-opt.sel{color:#fff !important;background:#2d6e10;border-color:#2d6e10;}
+    body.light-mode #page-advertise *{color:#111 !important;}
+    body.light-mode #page-advertise a{color:#fff !important;}
+    body.light-mode #page-advertise button{color:#fff !important;}
+    body.light-mode #page-advertise .popular-badge{color:#fff !important;}
+    body.light-mode #page-advertise span[style*="color:#8fbc5a"]{color:#2d6e10 !important;}
+    body.light-mode #page-advertise span[style*="color:#888"]{color:#444 !important;}
+    body.light-mode #page-advertise div[style*="color:#aaa"]{color:#444 !important;}
+    body.light-mode #page-advertise div[style*="color:#666"]{color:#333 !important;}
+    body.light-mode #page-advertise div[style*="color:#555"]{color:#333 !important;}
     body.light-mode svg path, body.light-mode svg circle, body.light-mode svg rect, body.light-mode svg line, body.light-mode svg polyline{stroke:#1a1a1a !important;} body.light-mode .sell-cat-btn svg path, body.light-mode .sell-cat-btn svg circle{stroke:#111 !important;} body.light-mode .cat-icon-item svg path, body.light-mode .cat-icon-item svg circle, body.light-mode .cat-icon-item svg rect{stroke:#1a5c00 !important;} body.light-mode .subcat-item svg path, body.light-mode .subcat-item svg circle{stroke:#1a5c00 !important;}
     body.light-mode svg path[fill="#8fbc5a"], body.light-mode svg circle[fill="#8fbc5a"]{fill:#2d6e10;}
     body.light-mode .cat-icon-item.active .cat-icon-label{color:#2d6e10;}
@@ -1787,7 +1796,7 @@ function setUser(u){
   }
 }
 function clearUser(){me=null;document.getElementById('auth-section').style.display='block';document.getElementById('profile-section').style.display='none';checkAdminAccess();}
-function listingCard(l){const lid=JSON.stringify(l.id);return`<div class="listing-card" onclick="openListing(${lid})">${l.img?`<img src="${l.img}" alt="${l.title}" loading="lazy">`:'<div class="listing-img-ph">🚲</div>'}${l.plan==='premium'?'<div class="premium-badge">⭐ Premium</div>':''}<button class="heart-btn" onclick="event.stopPropagation();this.classList.toggle('liked');this.textContent=this.classList.contains('liked')?'♥':'♡'">♡</button><div class="listing-info"><div class="listing-title">${l.title}</div><div class="listing-price">${l.price}</div><div class="listing-loc">📍 ${l.city}</div></div></div>`;}
+function listingCard(l){const lid=String(l.id);return`<div class="listing-card" onclick="openListingById('${lid}')">${l.img?`<img src="${l.img}" alt="${l.title}" loading="lazy">`:'<div class="listing-img-ph">🚲</div>'}${l.plan==='premium'?'<div class="premium-badge">⭐ Premium</div>':''}<button class="heart-btn" onclick="event.stopPropagation();this.classList.toggle('liked');this.textContent=this.classList.contains('liked')?'♥':'♡'">♡</button><div class="listing-info"><div class="listing-title">${l.title}</div><div class="listing-price">${l.price}</div><div class="listing-loc">📍 ${l.city}</div></div></div>`;}
 function adCard(a){
   if(!a) return '';
   return `<div style="grid-column:span 2;border-radius:16px;overflow:hidden;cursor:pointer;position:relative;margin:2px 0;" onclick="trackAdClick('${a.id||''}','${a.url||''}')">
@@ -1904,6 +1913,13 @@ function selectCat(cat,el){document.querySelectorAll('.cat-icon-item').forEach(t
 function selectSubcat(subcat,el){document.querySelectorAll('.subcat-item').forEach(i=>i.classList.remove('active'));el.classList.add('active');const map={bycykel:'Bycykel',mountainbike:'Mountainbike',racercykel:'Racercykel',damecykel:'Damecykel',bornecykel:'Børnecykel',ladcykel:'Ladcykel'};const t=map[subcat];let items;if(subcat==='elladcykel')items=allListings.filter(l=>l.cat==='elcykler');else if(t)items=allListings.filter(l=>l.type===t);else items=allListings;renderHome(items);showPage('home');}
 function openCatPage(cat){if(cat==='tilbehor'){activeCat='tilbehor';activeFilters={};document.getElementById('cat-page-title').textContent='🔧 Tilbehør';document.getElementById('filter-open-btn').classList.remove('has-filters');document.getElementById('filter-open-btn').textContent='⚙️ Filter';const items=allListings.filter(l=>l.cat==='tilbehor');document.getElementById('results-count').textContent=items.length+' annoncer';document.getElementById('cat-listings').innerHTML=items.length?items.map(l=>listingCard(l)).join(''):'<div class="empty"><div class="e-icon">🔧</div><p>Ingen tilbehør endnu</p><p style="font-size:12px;color:#333;margin-top:6px;">Vær den første til at sælge!</p></div>';showPage('cat');return;}activeCat=cat;activeFilters={};const titles={cykler:'🚲 Cykler',elcykler:'⚡ El-cykler'};document.getElementById('cat-page-title').textContent=titles[cat];document.getElementById('filter-open-btn').classList.remove('has-filters');document.getElementById('filter-open-btn').textContent='⚙️ Filter';const items=allListings.filter(l=>l.cat===cat);document.getElementById('results-count').textContent=items.length+' annoncer';document.getElementById('cat-listings').innerHTML=items.length?items.map(l=>listingCard(l)).join(''):'<div class="empty"><div class="e-icon">🔍</div><p>Ingen annoncer</p></div>';showPage('cat');}
 function goBackHome(){document.getElementById('topbar').style.display='block';document.getElementById('subcat-bar').style.display='flex';showPage('home');document.querySelectorAll('.nav-item').forEach((i,idx)=>i.classList.toggle('active',idx===0));}
+async function openListingById(id){
+  // Convert numeric string back to number if needed
+  const numId = parseInt(id);
+  const finalId = isNaN(numId) || String(numId) !== id ? id : numId;
+  await openListing(finalId);
+}
+
 async function openListing(id){
   let l=allListings.find(x=>x.id===id);
   if(!l){
