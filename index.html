@@ -552,6 +552,7 @@
       </div>
     </div>
     <div class="detail-imgs" id="detail-img-wrap"></div>
+    <div id="detail-stats-bar"></div>
     <div class="detail-body">
       <div class="detail-title" id="detail-title"></div>
       <div class="detail-price" id="detail-price"></div>
@@ -758,7 +759,7 @@
       <div id="p-erhverv-info" style="display:none;background:#2a1a00;border:1px solid #f0c040;border-radius:12px;padding:12px 14px;margin-bottom:16px;font-size:13px;color:#f0c040;line-height:1.7;">
         <div id="p-cvr-info"></div>
       </div>
-      <div class="menu-row">📝 Mine annoncer <span>→</span></div>
+      <div class="menu-row" onclick="goPage('mine-annoncer');loadMineAnnoncer()">📝 Mine annoncer <span>→</span></div>
       <div class="menu-row" onclick="goPage('messages','nav-msgs')">💬 Beskeder <span>→</span></div>
       <div class="menu-row" onclick="goPage('pricing')">💎 Opgrader plan <span>→</span></div>
       <div class="menu-row" onclick="goPage('advertise')">📢 Annoncér med os <span>→</span></div>
@@ -1431,6 +1432,19 @@
     <button class="btn-primary" onclick="doResetPassword()">Gem ny adgangskode</button>
   </div>
 </div>
+
+<!-- MINE ANNONCER PAGE -->
+<div id="page-mine-annoncer" class="page">
+  <div style="padding:16px;">
+    <div style="display:flex;align-items:center;gap:10px;margin-bottom:20px;">
+      <button class="back-btn" onclick="goPage('profile','nav-prof')">←</button>
+      <div style="font-weight:800;font-size:20px;">📝 Mine annoncer</div>
+    </div>
+    <div id="mine-annoncer-list">
+      <div style="text-align:center;padding:30px;color:#555;">⏳ Indlæser...</div>
+    </div>
+  </div>
+</div>
 <nav class="bottom-nav">
   <div class="nav-item active" id="nav-home" onclick="goPage('home','nav-home')"><div class="nav-icon">🏠</div><div class="nav-label">Hjem</div></div>
   <div class="nav-item" id="nav-buy" onclick="goPage('buy','nav-buy')"><div class="nav-icon">🔍</div><div class="nav-label">Vil du købe</div></div>
@@ -1729,6 +1743,15 @@ function trackAdClick(id, url){
   if(url) window.open(url, '_blank');
 }
 
+async function trackShare(listingId){
+  if(!listingId || typeof listingId !== 'string' || !listingId.includes('-')) return;
+  const l = allListings.find(x=>x.id===listingId);
+  if(l){
+    l.shares = (l.shares||0)+1;
+    await sb.from('listings').update({shares: l.shares}).eq('id', listingId);
+  }
+}
+
 function openBannerAd(){
   const activeAds = ads.filter(a=>a.active && (a.position==='both'||a.position==='banner'));
   if(!activeAds.length) return;
@@ -1810,7 +1833,57 @@ function selectCat(cat,el){document.querySelectorAll('.cat-icon-item').forEach(t
 function selectSubcat(subcat,el){document.querySelectorAll('.subcat-item').forEach(i=>i.classList.remove('active'));el.classList.add('active');const map={bycykel:'Bycykel',mountainbike:'Mountainbike',racercykel:'Racercykel',damecykel:'Damecykel',bornecykel:'Børnecykel',ladcykel:'Ladcykel'};const t=map[subcat];let items;if(subcat==='elladcykel')items=allListings.filter(l=>l.cat==='elcykler');else if(t)items=allListings.filter(l=>l.type===t);else items=allListings;renderHome(items);showPage('home');}
 function openCatPage(cat){if(cat==='tilbehor'){activeCat='tilbehor';activeFilters={};document.getElementById('cat-page-title').textContent='🔧 Tilbehør';document.getElementById('filter-open-btn').classList.remove('has-filters');document.getElementById('filter-open-btn').textContent='⚙️ Filter';const items=allListings.filter(l=>l.cat==='tilbehor');document.getElementById('results-count').textContent=items.length+' annoncer';document.getElementById('cat-listings').innerHTML=items.length?items.map(l=>listingCard(l)).join(''):'<div class="empty"><div class="e-icon">🔧</div><p>Ingen tilbehør endnu</p><p style="font-size:12px;color:#333;margin-top:6px;">Vær den første til at sælge!</p></div>';showPage('cat');return;}activeCat=cat;activeFilters={};const titles={cykler:'🚲 Cykler',elcykler:'⚡ El-cykler'};document.getElementById('cat-page-title').textContent=titles[cat];document.getElementById('filter-open-btn').classList.remove('has-filters');document.getElementById('filter-open-btn').textContent='⚙️ Filter';const items=allListings.filter(l=>l.cat===cat);document.getElementById('results-count').textContent=items.length+' annoncer';document.getElementById('cat-listings').innerHTML=items.length?items.map(l=>listingCard(l)).join(''):'<div class="empty"><div class="e-icon">🔍</div><p>Ingen annoncer</p></div>';showPage('cat');}
 function goBackHome(){document.getElementById('topbar').style.display='block';document.getElementById('subcat-bar').style.display='flex';showPage('home');document.querySelectorAll('.nav-item').forEach((i,idx)=>i.classList.toggle('active',idx===0));}
-function openListing(id){const l=allListings.find(x=>x.id===id);if(!l)return;detailId=id;detailFrom=document.querySelector('.page.active')?.id?.replace('page-','')||'home';document.getElementById('detail-header-title').textContent=l.title;document.getElementById('detail-title').textContent=l.title;document.getElementById('detail-price').textContent=l.price;document.getElementById('detail-loc').textContent='📍 '+l.city;document.getElementById('detail-img-wrap').innerHTML=l.img?`<img src="${l.img}" alt="${l.title}">`:'<div class="detail-img-ph">🚲</div>';const stelSec=document.getElementById('detail-stel-section');if(l.stelnummer){stelSec.style.display='block';document.getElementById('detail-stel-val').textContent=l.stelnummer;}else stelSec.style.display='none';const specs=[];if(l.type)specs.push(l.type);if(l.brand)specs.push(l.brand);if(l.year)specs.push(l.year);if(l.color)specs.push(l.color);if(l.condition)specs.push(l.condition);const spSec=document.getElementById('detail-specs-section');if(specs.length){spSec.style.display='block';document.getElementById('detail-specs').innerHTML=specs.map(s=>`<div class="detail-tag">${s}</div>`).join('');}else spSec.style.display='none';const dSec=document.getElementById('detail-desc-section');if(l.desc){dSec.style.display='block';document.getElementById('detail-desc-txt').textContent=l.desc;}else dSec.style.display='none';document.getElementById('detail-seller').textContent=l.seller||'Privat sælger';const callBtn=document.getElementById('call-btn');if(callBtn){callBtn.style.display=l.phone?'flex':'none';}document.getElementById('detail-annonce-id').textContent='Annonce ID: #'+String(l.id).padStart(6,'0');showPage('detail');}
+async function openListing(id){
+  const l=allListings.find(x=>x.id===id);
+  if(!l)return;
+  detailId=id;
+  detailFrom=document.querySelector('.page.active')?.id?.replace('page-','')||'home';
+
+  // Track view in Supabase (only if ID is a UUID)
+  if(typeof id === 'string' && id.includes('-')){
+    sb.from('listings').update({views: (l.views||0)+1}).eq('id',id).then(()=>{
+      l.views = (l.views||0)+1;
+    });
+  }
+
+  document.getElementById('detail-header-title').textContent=l.title;
+  document.getElementById('detail-title').textContent=l.title;
+  document.getElementById('detail-price').textContent=l.price;
+  document.getElementById('detail-loc').textContent='📍 '+l.city;
+  document.getElementById('detail-img-wrap').innerHTML=l.img?`<img src="${l.img}" alt="${l.title}">`:'<div class="detail-img-ph">🚲</div>';
+  const stelSec=document.getElementById('detail-stel-section');
+  if(l.stelnummer){stelSec.style.display='block';document.getElementById('detail-stel-val').textContent=l.stelnummer;}
+  else stelSec.style.display='none';
+  const specs=[];
+  if(l.type)specs.push(l.type);
+  if(l.brand)specs.push(l.brand);
+  if(l.year)specs.push(l.year);
+  if(l.color)specs.push(l.color);
+  if(l.condition)specs.push(l.condition);
+  const spSec=document.getElementById('detail-specs-section');
+  if(specs.length){spSec.style.display='block';document.getElementById('detail-specs').innerHTML=specs.map(s=>`<div class="detail-tag">${s}</div>`).join('');}
+  else spSec.style.display='none';
+  const dSec=document.getElementById('detail-desc-section');
+  if(l.desc){dSec.style.display='block';document.getElementById('detail-desc-txt').textContent=l.desc;}
+  else dSec.style.display='none';
+  document.getElementById('detail-seller').textContent=l.seller||'Privat sælger';
+  const callBtn=document.getElementById('call-btn');
+  if(callBtn){callBtn.style.display=l.phone?'flex':'none';}
+  document.getElementById('detail-annonce-id').textContent='Annonce ID: #'+String(l.id).slice(-6).padStart(6,'0');
+
+  // Show stats bar
+  const statsBar = document.getElementById('detail-stats-bar');
+  if(statsBar){
+    statsBar.innerHTML = `
+      <div style="display:flex;gap:16px;padding:10px 16px;background:var(--bg2);border-top:1px solid var(--border2);border-bottom:1px solid var(--border2);">
+        <div style="display:flex;align-items:center;gap:5px;font-size:12px;color:#888;">👁️ <span>${(l.views||0)+1} visninger</span></div>
+        <div style="display:flex;align-items:center;gap:5px;font-size:12px;color:#888;">❤️ <span>${l.saves||0} gemt</span></div>
+        <div style="display:flex;align-items:center;gap:5px;font-size:12px;color:#888;">📤 <span>${l.shares||0} delt</span></div>
+        ${l.created_at ? `<div style="display:flex;align-items:center;gap:5px;font-size:12px;color:#888;">📅 <span>${new Date(l.created_at).toLocaleDateString('da-DK')}</span></div>` : ''}
+      </div>`;
+  }
+
+  showPage('detail');}
 function goDetailBack(){showPage(detailFrom);if(detailFrom==='cat'){document.getElementById('topbar').style.display='none';document.getElementById('subcat-bar').style.display='none';}else{document.getElementById('topbar').style.display='block';document.getElementById('subcat-bar').style.display='flex';}}
 function callSeller(){const l=allListings.find(x=>x.id===detailId);if(!l||!l.phone)return;window.location.href='tel:'+l.phone;}
 function contactSeller(){if(!me){toast('Log ind for at kontakte sælger');goPage('profile','nav-prof');return;}const l=allListings.find(x=>x.id===detailId);document.getElementById('chat-name').textContent='Sælger';document.getElementById('chat-sub').textContent=l?'om: '+l.title:'';showPage('chat');loadChat('l'+detailId);}
@@ -1821,7 +1894,132 @@ function selectBrand(fieldId,brand){document.getElementById(fieldId+'-input').va
 function handleImgUpload(e){const file=e.target.files[0];if(!file)return;if(uploadedImgs.length>=6){toast('Max 6 billeder');return;}const reader=new FileReader();reader.onload=ev=>{uploadedImgs.push({file,url:ev.target.result});updateImgGrid();};reader.readAsDataURL(file);e.target.value='';}
 function updateImgGrid(){for(let i=0;i<6;i++){const slot=document.getElementById('slot-'+i);if(!slot)continue;if(uploadedImgs[i]){slot.classList.add('filled');slot.innerHTML=`<img src="${uploadedImgs[i].url}"><button class="remove-img" onclick="event.stopPropagation();removeImg(${i})">✕</button>${i===0?'<div class="main-img-badge">Forside</div>':''}`;slot.onclick=null;}else{slot.classList.remove('filled');slot.innerHTML='<span class="plus">+</span>';slot.onclick=()=>document.getElementById('file-input').click();}}}
 function removeImg(i){uploadedImgs.splice(i,1);updateImgGrid();}
-function submitListing(){if(!me){toast('Log ind for at oprette annonce');goPage('profile','nav-prof');return;}const title=document.getElementById('sell-title').value.trim(),price=document.getElementById('sell-price').value,city=document.getElementById('sell-city').value.trim();if(!title||!price||!city){const el=document.getElementById('sell-msg');el.textContent='Udfyld titel, pris og by';el.className='msg-box err';return;}const img=uploadedImgs.length>0?uploadedImgs[0].url:(photos[currentSellCat]||photos.cykler)[Math.floor(Math.random()*3)];const stelnummer=document.getElementById('sf-stelnummer')?.value.trim()||'';const desc=document.getElementById('sell-desc')?.value.trim()||'';const brand=document.getElementById('sf-brand')?.value||'';const type=document.getElementById('sf-type')?.value||'';const savedProfile=JSON.parse(localStorage.getItem('profile')||'{}');allListings.unshift({id:Date.now(),title,price:price+' kr.',city,cat:currentSellCat,img,stelnummer,desc,brand,type,seller:me.user_metadata?.name||me.email.split('@')[0],phone:savedProfile.phone||''});renderHome(allListings);toast('Annonce oprettet! 🎉');goPage('home','nav-home');}
+async function trackSave(listingId, saved){
+  if(!listingId || typeof listingId !== 'string' || !listingId.includes('-')) return;
+  const l = allListings.find(x=>x.id===listingId);
+  if(l){
+    l.saves = Math.max(0, (l.saves||0) + (saved ? 1 : -1));
+    await sb.from('listings').update({saves: l.saves}).eq('id', listingId);
+  }
+}
+
+async function loadMineAnnoncer(){
+  const el = document.getElementById('mine-annoncer-list');
+  if(!el || !me) return;
+  el.innerHTML = '<div style="text-align:center;padding:30px;color:#555;">⏳ Indlæser...</div>';
+
+  try {
+    const { data, error } = await sb.from('listings')
+      .select('*')
+      .eq('user_id', me.id)
+      .order('created_at', { ascending: false });
+
+    if(error) throw error;
+
+    if(!data || !data.length){
+      el.innerHTML = '<div style="text-align:center;padding:50px 20px;"><div style="font-size:40px;margin-bottom:12px;">🚲</div><div style="font-weight:600;color:#888;">Ingen annoncer endnu</div><div style="font-size:13px;color:#555;margin-top:6px;">Opret din første annonce!</div></div>';
+      return;
+    }
+
+    el.innerHTML = data.map(l => `
+      <div style="background:var(--bg2);border-radius:16px;padding:14px;margin-bottom:12px;border:1px solid var(--border2);">
+        <div style="display:flex;gap:12px;margin-bottom:12px;">
+          <div style="width:70px;height:70px;border-radius:10px;overflow:hidden;flex-shrink:0;background:var(--bg3);">
+            ${l.images && l.images[0] ? `<img src="${l.images[0]}" style="width:100%;height:100%;object-fit:cover;">` : '<div style="width:100%;height:100%;display:flex;align-items:center;justify-content:center;font-size:28px;">🚲</div>'}
+          </div>
+          <div style="flex:1;min-width:0;">
+            <div style="font-weight:700;font-size:15px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">${l.title}</div>
+            <div style="font-weight:700;font-size:16px;color:#8fbc5a;margin-top:2px;">${l.price ? l.price.toLocaleString('da-DK')+' kr.' : ''}</div>
+            <div style="font-size:12px;color:#888;margin-top:2px;">📍 ${l.city} · ${new Date(l.created_at).toLocaleDateString('da-DK')}</div>
+          </div>
+        </div>
+        <!-- Stats -->
+        <div style="display:flex;gap:0;background:var(--bg3);border-radius:10px;overflow:hidden;margin-bottom:10px;">
+          <div style="flex:1;text-align:center;padding:8px 4px;border-right:1px solid var(--border2);">
+            <div style="font-weight:700;font-size:16px;">${l.views||0}</div>
+            <div style="font-size:10px;color:#888;">👁️ Visninger</div>
+          </div>
+          <div style="flex:1;text-align:center;padding:8px 4px;border-right:1px solid var(--border2);">
+            <div style="font-weight:700;font-size:16px;">${l.saves||0}</div>
+            <div style="font-size:10px;color:#888;">❤️ Gemt</div>
+          </div>
+          <div style="flex:1;text-align:center;padding:8px 4px;">
+            <div style="font-weight:700;font-size:16px;">${l.shares||0}</div>
+            <div style="font-size:10px;color:#888;">📤 Delt</div>
+          </div>
+        </div>
+        <!-- Actions -->
+        <div style="display:flex;gap:8px;">
+          <button onclick="deleteListing('${l.id}')" style="flex:1;background:#2a1a1a;color:#e03030;border:1px solid #3a2020;border-radius:10px;padding:9px;font-size:12px;font-weight:700;cursor:pointer;font-family:'Inter',sans-serif;">🗑️ Slet</button>
+          <button onclick="toggleListingActive('${l.id}',${l.active})" style="flex:1;background:${l.active?'#1a2a1a':'#252525'};color:${l.active?'#8fbc5a':'#888'};border:1px solid ${l.active?'#2a3a2a':'#333'};border-radius:10px;padding:9px;font-size:12px;font-weight:700;cursor:pointer;font-family:'Inter',sans-serif;">${l.active?'✅ Aktiv':'⏸ Inaktiv'}</button>
+        </div>
+      </div>
+    `).join('');
+  } catch(e) {
+    el.innerHTML = '<div style="text-align:center;padding:30px;color:#e03030;">❌ Fejl ved indlæsning</div>';
+  }
+}
+
+async function deleteListing(id){
+  if(!confirm('Er du sikker på, at du vil slette denne annonce?')) return;
+  try {
+    await sb.from('listings').delete().eq('id', id);
+    allListings = allListings.filter(l => l.id !== id);
+    renderHome(allListings);
+    loadMineAnnoncer();
+    toast('🗑️ Annonce slettet');
+  } catch(e) {
+    toast('❌ Fejl: ' + e.message);
+  }
+}
+
+async function toggleListingActive(id, currentActive){
+  try {
+    await sb.from('listings').update({active: !currentActive}).eq('id', id);
+    loadMineAnnoncer();
+    toast(currentActive ? '⏸ Annonce sat på pause' : '✅ Annonce aktiveret');
+  } catch(e) {
+    toast('❌ Fejl: ' + e.message);
+  }
+}
+
+async function submitListing(){
+  if(!me){toast('Log ind for at oprette annonce');goPage('profile','nav-prof');return;}
+  const title=document.getElementById('sell-title').value.trim();
+  const price=document.getElementById('sell-price').value;
+  const city=document.getElementById('sell-city').value.trim();
+  if(!title||!price||!city){
+    const el=document.getElementById('sell-msg');
+    el.textContent='Udfyld titel, pris og by';
+    el.className='msg-box err';
+    return;
+  }
+  const img=uploadedImgs.length>0?uploadedImgs[0].url:(photos[currentSellCat]||photos.cykler)[Math.floor(Math.random()*3)];
+  const stelnummer=document.getElementById('sf-stelnummer')?.value.trim()||'';
+  const desc=document.getElementById('sell-desc')?.value.trim()||'';
+  const brand=document.getElementById('sf-brand')?.value||'';
+  const type=document.getElementById('sf-type')?.value||'';
+  const savedProfile=JSON.parse(localStorage.getItem('profile')||'{}');
+  const details={brand,type};
+
+  const msgEl=document.getElementById('sell-msg');
+  msgEl.textContent='⏳ Opretter annonce...';
+  msgEl.className='msg-box ok';
+
+  try {
+    const{data,error}=await sb.from('listings').insert({
+      user_id:me.id, title, price:parseInt(price), city,
+      category:currentSellCat, description:desc,
+      images:uploadedImgs.map(i=>i.url), stelnummer, details,
+      views:0, saves:0, shares:0, active:true
+    }).select().single();
+    if(error) throw error;
+    allListings.unshift({id:data.id,title,price:price+' kr.',city,cat:currentSellCat,img,stelnummer,desc,brand,type,seller:me.user_metadata?.name||me.email.split('@')[0],phone:savedProfile.phone||''});
+  } catch(e) {
+    console.warn('Saving locally:', e.message);
+    allListings.unshift({id:Date.now(),title,price:price+' kr.',city,cat:currentSellCat,img,stelnummer,desc,brand,type,seller:me.user_metadata?.name||me.email.split('@')[0],phone:savedProfile.phone||''});
+  }
+  renderHome(allListings);toast('Annonce oprettet! 🎉');goPage('home','nav-home');}
 function filterSignupCities(val){const dd=document.getElementById('signup-city-dropdown');if(!val||val.length<2){dd.style.display='none';return;}const filtered=danishCities.filter(c=>c.city.toLowerCase().includes(val.toLowerCase())||c.zip.startsWith(val)).slice(0,8);if(!filtered.length){dd.style.display='none';return;}dd.style.display='block';dd.innerHTML=filtered.map(c=>'<div class="city-option" onclick="selectSignupCity(\''+c.zip+' '+c.city+'\')"><span style="color:#8fbc5a;font-weight:700;font-family:monospace;">'+c.zip+'</span> '+c.city+'</div>').join('');}
 function selectSignupCity(val){document.getElementById('s-city').value=val;document.getElementById('signup-city-dropdown').style.display='none';}
 
@@ -1901,7 +2099,7 @@ function closeFilter(){document.getElementById('filter-drawer').classList.remove
 function resetFilters(){if(filterMode==='buy'){buyActiveFilters={};openBuyFilterDrawer();}else{activeFilters={};openFilter();document.getElementById('filter-open-btn').classList.remove('has-filters');document.getElementById('filter-open-btn').textContent='⚙️ Filter';}}
 function applyFilters(){closeFilter();const hasAny=Object.values(activeFilters).some(v=>Array.isArray(v)?v.length>0:v!==false&&v!==undefined);const btn=document.getElementById('filter-open-btn');btn.classList.toggle('has-filters',hasAny);btn.textContent=hasAny?'✓ Filter':'⚙️ Filter';const items=allListings.filter(l=>l.cat===activeCat);document.getElementById('results-count').textContent=items.length+' annoncer';document.getElementById('cat-listings').innerHTML=items.map(l=>listingCard(l)).join('');toast('Filter anvendt ✓');}
 
-function openShareDrawer(){const l=allListings.find(x=>x.id===detailId);if(!l)return;shareListingId=detailId;const url='https://thunderous-bienenstitch-fd830e.netlify.app?annonce='+detailId;document.getElementById('share-url').textContent=url;document.getElementById('share-overlay').classList.add('open');document.getElementById('share-drawer').classList.add('open');}
+function openShareDrawer(){const l=allListings.find(x=>x.id===detailId);if(l)trackShare(detailId);if(!l)return;shareListingId=detailId;const url='https://thunderous-bienenstitch-fd830e.netlify.app?annonce='+detailId;document.getElementById('share-url').textContent=url;document.getElementById('share-overlay').classList.add('open');document.getElementById('share-drawer').classList.add('open');}
 function closeShareDrawer(){document.getElementById('share-overlay').classList.remove('open');document.getElementById('share-drawer').classList.remove('open');}
 function shareVia(platform){const l=allListings.find(x=>x.id===shareListingId);if(!l)return;const url='https://thunderous-bienenstitch-fd830e.netlify.app?annonce='+shareListingId;const text=l.title+' - '+l.price+' - CykelHub';const links={sms:'sms:?body='+encodeURIComponent(text+' '+url),email:'mailto:?subject='+encodeURIComponent(l.title)+'&body='+encodeURIComponent(text+'\n\n'+url),facebook:'https://www.facebook.com/sharer/sharer.php?u='+encodeURIComponent(url),whatsapp:'https://api.whatsapp.com/send?text='+encodeURIComponent(text+' '+url)};window.open(links[platform],'_blank');closeShareDrawer();}
 function copyLink(){const url=document.getElementById('share-url').textContent;navigator.clipboard.writeText(url).then(()=>{toast('Link kopieret! 🔗');closeShareDrawer();}).catch(()=>toast('Link kopieret!'));}
