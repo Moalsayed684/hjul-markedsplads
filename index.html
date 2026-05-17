@@ -87,7 +87,7 @@
     body.light-mode .back-btn{color:#2d6e10;}
     *{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent;}
     body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;max-width:430px;margin:0 auto;overflow-x:hidden;padding-bottom:72px;}
-    .topbar{background:var(--bg);padding:12px 16px 10px;border-bottom:1px solid var(--border);position:sticky;top:0;z-index:100;}
+    .topbar{background:var(--bg);padding:12px 16px 10px;border-bottom:1px solid var(--border);position:sticky;top:0;z-index:100;width:100%;}
     .topbar-row{display:flex;align-items:center;gap:8px;margin-bottom:10px;}
     .logo-text{font-weight:800;font-size:20px;flex-shrink:0;}
     .logo-text span{color:#8fbc5a;}
@@ -322,7 +322,7 @@
     .empty .e-icon{font-size:40px;margin-bottom:10px;}
     .toast{position:fixed;bottom:86px;left:50%;transform:translateX(-50%);background:var(--bg2);color:var(--text);border:1px solid #333;padding:11px 20px;border-radius:50px;font-size:13px;font-weight:600;z-index:999;opacity:0;transition:opacity 0.3s;white-space:nowrap;pointer-events:none;}
     .toast.show{opacity:1;}
-    .img-subcat-bar{display:flex;gap:10px;overflow-x:auto;scrollbar-width:none;padding:12px 16px;background:var(--bg);}
+    .img-subcat-bar{display:flex;gap:10px;overflow-x:auto;scrollbar-width:none;padding:12px 16px;background:var(--bg);position:sticky;top:0;z-index:99;}
     .img-subcat-bar::-webkit-scrollbar{display:none;}
     .img-subcat-card{flex-shrink:0;width:100px;border-radius:14px;overflow:hidden;cursor:pointer;position:relative;transition:transform 0.15s;}
     .img-subcat-card:active{transform:scale(0.95);}
@@ -1542,9 +1542,9 @@
   </div>
 </div>
 
-<div class="toast" id="toast"></div>
 
 <script>
+
 const sb=supabase.createClient('https://bwrycgbkebrujcwyvtax.supabase.co','sb_publishable_3h4REcIB9w-AYGx3MgJx6w_k0iTJ5Tz');
 let me=null,chatId=null,activeCat='alle',activeFilters={},currentSellCat='',detailId=null,detailFrom='home',uploadedImgs=[],shareListingId=null;
 let activeBuyCat='cykler',buyActiveFilters={},filterMode='cat';
@@ -1751,6 +1751,116 @@ function selectEditCity(val){document.getElementById('edit-city').value=val;docu
 function handleAvatarUpload(e){const file=e.target.files[0];if(!file)return;const reader=new FileReader();reader.onload=ev=>{const avatar=document.getElementById('edit-avatar');avatar.innerHTML='<img src="'+ev.target.result+'" style="width:100%;height:100%;object-fit:cover;">';localStorage.setItem('avatar',ev.target.result);};reader.readAsDataURL(file);e.target.value='';}
 function saveProfile(){const firstname=document.getElementById('edit-firstname').value.trim();const lastname=document.getElementById('edit-lastname').value.trim();const city=document.getElementById('edit-city').value.trim();const phone=document.getElementById('edit-phone').value.trim();if(!firstname||!lastname){const el=document.getElementById('edit-profile-msg');el.textContent='Udfyld fornavn og efternavn';el.className='msg-box err';return;}localStorage.setItem('profile',JSON.stringify({firstname,lastname,city,phone}));document.getElementById('p-name').textContent=firstname+' '+lastname;toast('Profil gemt! ✅');goPage('profile','nav-prof');}
 function loadProfile(){const saved=localStorage.getItem('profile');if(saved){const p=JSON.parse(saved);if(document.getElementById('edit-firstname'))document.getElementById('edit-firstname').value=p.firstname||'';if(document.getElementById('edit-lastname'))document.getElementById('edit-lastname').value=p.lastname||'';if(document.getElementById('edit-city'))document.getElementById('edit-city').value=p.city||'';if(document.getElementById('edit-phone'))document.getElementById('edit-phone').value=p.phone||'';}const avatar=localStorage.getItem('avatar');if(avatar){const el=document.getElementById('edit-avatar');if(el)el.innerHTML='<img src="'+avatar+'" style="width:100%;height:100%;object-fit:cover;">';}}
+let currentConvId=null,currentSellerId=null;
+
+async function loadChatReal(){
+  const el=document.getElementById('chat-msgs');
+  if(!el)return;
+  if(!currentConvId){el.innerHTML='<div style="text-align:center;padding:30px;color:#888;font-size:13px;">Skriv en besked for at starte samtalen 👇</div>';return;}
+  el.innerHTML='<div style="text-align:center;padding:20px;color:#555;">⏳ Indlæser...</div>';
+  try{
+    const{data,error}=await sb.from('messages').select('*').eq('conversation_id',currentConvId).order('created_at',{ascending:true});
+    if(error)throw error;
+    if(!data||!data.length){el.innerHTML='<div style="text-align:center;padding:30px;color:#888;font-size:13px;">Start samtalen 👇</div>';return;}
+    el.innerHTML=data.map(m=>{
+      const sent=m.sender_id===me?.id;
+      const time=new Date(m.created_at).toLocaleTimeString('da',{hour:'2-digit',minute:'2-digit'});
+      return`<div style="display:flex;flex-direction:column;align-items:${sent?'flex-end':'flex-start'};"><div class="bubble ${sent?'sent':'recv'}">${m.content}</div><div class="btime" style="align-self:${sent?'flex-end':'flex-start'}">${time}</div></div>`;
+    }).join('');
+    el.scrollTop=el.scrollHeight;
+    await sb.from('messages').update({read:true}).eq('conversation_id',currentConvId).neq('sender_id',me.id);
+  }catch(e){el.innerHTML='<div style="text-align:center;padding:30px;color:#888;">Start samtalen 👇</div>';}
+}
+
+async function sendMsgReal(){
+  const inp=document.getElementById('chat-inp');
+  const t=inp?.value.trim();
+  if(!t||!me)return;
+  inp.value='';
+  if(!currentConvId){
+    try{
+      const{data:nc,error}=await sb.from('conversations').insert({listing_id:String(detailId||''),buyer_id:me.id,seller_id:currentSellerId||me.id,last_message:t,updated_at:new Date().toISOString()}).select('id').single();
+      if(!error&&nc)currentConvId=nc.id;
+      else{toast('❌ Kunne ikke oprette samtale');return;}
+    }catch(e){toast('❌ Fejl: '+e.message);return;}
+  }
+  try{
+    const{error}=await sb.from('messages').insert({conversation_id:currentConvId,sender_id:me.id,receiver_id:currentSellerId||me.id,content:t,read:false});
+    if(error)throw error;
+    await sb.from('conversations').update({last_message:t,updated_at:new Date().toISOString()}).eq('id',currentConvId);
+    loadChatReal();
+  }catch(e){toast('❌ Fejl: '+e.message);}
+}
+
+async function loadConvsReal(){
+  const el=document.getElementById('conv-list');
+  if(!el)return;
+  if(!me){el.innerHTML='<div style="text-align:center;padding:40px;color:#555;">Log ind for at se beskeder</div>';return;}
+  el.innerHTML='<div style="text-align:center;padding:20px;color:#555;">⏳ Indlæser...</div>';
+  try{
+    const{data,error}=await sb.from('conversations').select('*').or('buyer_id.eq.'+me.id+',seller_id.eq.'+me.id).order('updated_at',{ascending:false});
+    if(error)throw error;
+    if(!data||!data.length){el.innerHTML='<div style="text-align:center;padding:40px;color:#555;"><div style="font-size:36px;margin-bottom:10px;">💬</div><div>Ingen beskeder endnu</div></div>';return;}
+    el.innerHTML=data.map(c=>{
+      const isbuyer=c.buyer_id===me.id;
+      const time=new Date(c.updated_at).toLocaleTimeString('da',{hour:'2-digit',minute:'2-digit'});
+      return`<div class="conv-item" onclick="openRealConv('${c.id}','${isbuyer?c.seller_id:c.buyer_id}','${c.listing_id||''}')"><div class="conv-avatar">👤</div><div class="conv-info"><div class="conv-name">${isbuyer?'Sælger':'Køber'}</div><div class="conv-preview">${c.last_message||'Ny samtale'}</div></div><div class="conv-time">${time}</div></div>`;
+    }).join('');
+  }catch(e){el.innerHTML='<div style="text-align:center;padding:30px;color:#e03030;">❌ Fejl</div>';}
+}
+
+async function openRealConv(convId,otherId,listingId){
+  currentConvId=convId;currentSellerId=otherId;
+  const l=listingId?allListings.find(x=>String(x.id)===String(listingId)):null;
+  document.getElementById('chat-name').textContent='Besked';
+  document.getElementById('chat-sub').textContent=l?'om: '+l.title:'Privat besked';
+  showPage('chat');loadChatReal();
+}
+
+async function loadListingsFromDb(){
+  try{
+    const res=await sb.from('listings').select('id,title,price,city,category,images,stelnummer,description,details,views,saves,shares,created_at,user_id').eq('active',true).order('created_at',{ascending:false}).limit(100);
+    if(res.error)throw new Error(res.error.message);
+    const rows=res.data||[];
+    if(rows.length){
+      const dbListings=rows.map(l=>({
+        id:String(l.id),
+        title:String(l.title||''),
+        price:l.price?Number(l.price).toLocaleString('da-DK')+' kr.':'0 kr.',
+        city:String(l.city||''),
+        cat:String(l.category||'cykler'),
+        img:Array.isArray(l.images)&&l.images[0]?String(l.images[0]):null,
+        stelnummer:String(l.stelnummer||''),
+        desc:String(l.description||''),
+        brand:String(l.details?.brand||''),
+        type:String(l.details?.type||''),
+        seller:String(l.details?.seller||'Privat sælger'),
+        phone:String(l.details?.phone||''),
+        views:Number(l.views||0),saves:Number(l.saves||0),shares:Number(l.shares||0),
+        created_at:String(l.created_at||''),user_id:String(l.user_id||'')
+      }));
+      const localSamples=allListings.filter(l=>typeof l.id==='number');
+      allListings=[...dbListings,...localSamples];
+      renderHome(allListings);
+    }
+  }catch(e){console.warn('loadListings error:',e.message);}
+}
+
+function checkResetToken(){
+  const hash=window.location.hash;
+  if(hash&&hash.includes('type=recovery')){
+    const params=new URLSearchParams(hash.substring(1));
+    const accessToken=params.get('access_token');
+    const refreshToken=params.get('refresh_token');
+    if(accessToken){
+      sb.auth.setSession({access_token:accessToken,refresh_token:refreshToken||''}).then(()=>{
+        showPage('reset-password');
+        window.history.replaceState(null,'',window.location.pathname);
+      });
+    }
+  }
+}
+
 async function init(){
   loadTheme();
   checkResetToken();
@@ -2051,7 +2161,8 @@ async function contactSeller(){
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
   <title>CykelHub</title>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
+  
+</script>
   <style>
     :root{--bg:#111;--bg2:#1c1c1c;--bg3:#252525;--border:#1e1e1e;--border2:#252525;--text:#f0f0f0;--text2:#888;--text3:#555;--search-bg:#1e1e1e;}
     body.light-mode{--bg:#f5f5f5;--bg2:#ffffff;--bg3:#e8e8e8;--border:#e0e0e0;--border2:#d0d0d0;--text:#111111;--text2:#333333;--text3:#555555;--search-bg:#e8e8e8;}
@@ -2132,7 +2243,7 @@ async function contactSeller(){
     body.light-mode .back-btn{color:#2d6e10;}
     *{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent;}
     body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;max-width:430px;margin:0 auto;overflow-x:hidden;padding-bottom:72px;}
-    .topbar{background:var(--bg);padding:12px 16px 10px;border-bottom:1px solid var(--border);position:sticky;top:0;z-index:100;}
+    .topbar{background:var(--bg);padding:12px 16px 10px;border-bottom:1px solid var(--border);position:sticky;top:0;z-index:100;width:100%;}
     .topbar-row{display:flex;align-items:center;gap:8px;margin-bottom:10px;}
     .logo-text{font-weight:800;font-size:20px;flex-shrink:0;}
     .logo-text span{color:#8fbc5a;}
@@ -2367,7 +2478,7 @@ async function contactSeller(){
     .empty .e-icon{font-size:40px;margin-bottom:10px;}
     .toast{position:fixed;bottom:86px;left:50%;transform:translateX(-50%);background:var(--bg2);color:var(--text);border:1px solid #333;padding:11px 20px;border-radius:50px;font-size:13px;font-weight:600;z-index:999;opacity:0;transition:opacity 0.3s;white-space:nowrap;pointer-events:none;}
     .toast.show{opacity:1;}
-    .img-subcat-bar{display:flex;gap:10px;overflow-x:auto;scrollbar-width:none;padding:12px 16px;background:var(--bg);}
+    .img-subcat-bar{display:flex;gap:10px;overflow-x:auto;scrollbar-width:none;padding:12px 16px;background:var(--bg);position:sticky;top:0;z-index:99;}
     .img-subcat-bar::-webkit-scrollbar{display:none;}
     .img-subcat-card{flex-shrink:0;width:100px;border-radius:14px;overflow:hidden;cursor:pointer;position:relative;transition:transform 0.15s;}
     .img-subcat-card:active{transform:scale(0.95);}
@@ -3583,11 +3694,7 @@ async function contactSeller(){
   </div>
   <div class="share-copy-row">
     <div class="share-copy-url" id="share-url"></div>
-    <button class="share-copy-btn" onclick="copyLink()">Kopiér</button>
-  </div>
-</div>
-
-<div class="toast" id="toast"></div>
+    <button class="share-copy-btn" onclick="cop
 init();
 </script>
 </body>
