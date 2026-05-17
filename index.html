@@ -455,7 +455,7 @@
 </div>
 
 <div class="img-subcat-bar" id="subcat-bar">
-  <div class="subcat-item active" onclick="selectSubcat('bycykel',this)">
+  <div class="subcat-item" onclick="selectSubcat('bycykel',this)">
     <div class="subcat-svg"><svg width="24" height="24" viewBox="0 0 36 36" fill="none"><circle cx="9" cy="25" r="6" stroke="#8fbc5a" stroke-width="2"/><circle cx="27" cy="25" r="6" stroke="#8fbc5a" stroke-width="2"/><path d="M9 25L15 11h6l3 9M15 11l9 14" stroke="#8fbc5a" stroke-width="2" stroke-linecap="round"/><path d="M5 11h6" stroke="#8fbc5a" stroke-width="2" stroke-linecap="round"/></svg></div>
     <div class="subcat-label">Bycykel</div>
   </div>
@@ -1655,12 +1655,12 @@ const fallbackAds = [
 async function loadAds(){
   try {
     const res = await sb.from('ads').select('id,brand,logo,description,cta,url,img,price,position,active,created_at').eq('active', true).order('created_at', {ascending:false});
-    if(res.error) throw new Error(res.error.message);
+    if(res.error) throw new Error(String(res.error.message||res.error.code||'error'));
     const rows = res.data || [];
     if(rows.length){
       ads = rows.map(a=>({id:String(a.id||''),brand:String(a.brand||''),logo:String(a.logo||'📢'),desc:String(a.description||''),description:String(a.description||''),cta:String(a.cta||'Se mere →'),url:String(a.url||''),img:String(a.img||''),price:Number(a.price||0),position:String(a.position||'both'),active:Boolean(a.active)}));
     } else { ads = fallbackAds; }
-  } catch(e){ console.warn('Supabase ads unavailable, using fallback'); ads = fallbackAds; }
+  } catch(e){ console.warn('Supabase ads unavailable:', String(e&&e.message?e.message:e)); ads = [...fallbackAds]; }
   rotateBannerAd();
   renderHome(allListings);
 }
@@ -1768,15 +1768,15 @@ async function openRealConv(convId,otherId,listingId){
 async function loadListingsFromDb(){
   try{
     const res=await sb.from('listings').select('id,title,price,city,category,images,stelnummer,description,details,views,saves,shares,created_at,user_id').eq('active',true).order('created_at',{ascending:false}).limit(100);
-    if(res.error)throw new Error(res.error.message);
+    if(res.error)throw new Error(String(res.error.message||res.error.code||'DB error'));
     const rows=res.data||[];
     if(rows.length){
-      const dbListings=rows.map(l=>({id:String(l.id),title:String(l.title||''),price:l.price?Number(l.price).toLocaleString('da-DK')+' kr.':'0 kr.',city:String(l.city||''),cat:String(l.category||'cykler'),img:Array.isArray(l.images)&&l.images[0]?String(l.images[0]):null,stelnummer:String(l.stelnummer||''),desc:String(l.description||''),brand:String(l.details?.brand||''),type:String(l.details?.type||''),seller:String(l.details?.seller||'Privat sælger'),phone:String(l.details?.phone||''),views:Number(l.views||0),saves:Number(l.saves||0),shares:Number(l.shares||0),created_at:String(l.created_at||''),user_id:String(l.user_id||'')}));
+      const dbListings=rows.map(l=>({id:String(l.id),title:String(l.title||''),price:l.price?Number(l.price).toLocaleString('da-DK')+' kr.':'0 kr.',city:String(l.city||''),cat:String(l.category||'cykler'),img:Array.isArray(l.images)&&l.images[0]?String(l.images[0]):null,stelnummer:String(l.stelnummer||''),desc:String(l.description||''),brand:String((l.details&&l.details.brand)||''),type:String((l.details&&l.details.type)||''),seller:String((l.details&&l.details.seller)||'Privat sælger'),phone:String((l.details&&l.details.phone)||''),views:Number(l.views||0),saves:Number(l.saves||0),shares:Number(l.shares||0),created_at:String(l.created_at||''),user_id:String(l.user_id||'')}));
       const localSamples=allListings.filter(l=>typeof l.id==='number');
       allListings=[...dbListings,...localSamples];
       renderHome(allListings);
     }
-  }catch(e){console.warn('loadListings error:',e.message);}
+  }catch(e){console.warn('loadListings error:',String(e&&e.message?e.message:e));}
 }
 
 function checkResetToken(){
@@ -1880,7 +1880,7 @@ function renderHome(items){
 
 function handleSearch(val){renderHome(!val.trim()?allListings:allListings.filter(l=>l.title.toLowerCase().includes(val.toLowerCase())||l.city.toLowerCase().includes(val.toLowerCase())));}
 function selectCat(cat,el){document.querySelectorAll('.cat-icon-item').forEach(t=>t.classList.remove('active'));el.classList.add('active');renderHome(allListings);showPage('home');}
-function selectSubcat(subcat,el){document.querySelectorAll('.subcat-item').forEach(i=>i.classList.remove('active'));el.classList.add('active');const map={bycykel:'Bycykel',mountainbike:'Mountainbike',racercykel:'Racercykel',damecykel:'Damecykel',bornecykel:'Børnecykel',ladcykel:'Ladcykel'};const t=map[subcat];let items;if(subcat==='elladcykel')items=allListings.filter(l=>l.cat==='elcykler');else if(t)items=allListings.filter(l=>l.type===t);else items=allListings;renderHome(items);showPage('home');}
+function selectSubcat(subcat,el){if(el.classList.contains('active')){document.querySelectorAll('.subcat-item').forEach(i=>i.classList.remove('active'));renderHome(allListings);showPage('home');return;}document.querySelectorAll('.subcat-item').forEach(i=>i.classList.remove('active'));el.classList.add('active');const map={bycykel:'Bycykel',mountainbike:'Mountainbike',racercykel:'Racercykel',damecykel:'Damecykel',bornecykel:'Børnecykel',ladcykel:'Ladcykel'};const t=map[subcat];let items;if(subcat==='elladcykel')items=allListings.filter(l=>l.cat==='elcykler');else if(t)items=allListings.filter(l=>l.type===t);else items=allListings;renderHome(items);showPage('home');}
 function openCatPage(cat){if(cat==='tilbehor'){activeCat='tilbehor';activeFilters={};document.getElementById('cat-page-title').textContent='🔧 Tilbehør';document.getElementById('filter-open-btn').classList.remove('has-filters');document.getElementById('filter-open-btn').textContent='⚙️ Filter';const items=allListings.filter(l=>l.cat==='tilbehor');document.getElementById('results-count').textContent=items.length+' annoncer';document.getElementById('cat-listings').innerHTML=items.length?items.map(l=>listingCard(l)).join(''):'<div class="empty"><div class="e-icon">🔧</div><p>Ingen tilbehør endnu</p></div>';showPage('cat');return;}activeCat=cat;activeFilters={};const titles={cykler:'🚲 Cykler',elcykler:'⚡ El-cykler'};document.getElementById('cat-page-title').textContent=titles[cat];document.getElementById('filter-open-btn').classList.remove('has-filters');document.getElementById('filter-open-btn').textContent='⚙️ Filter';const items=allListings.filter(l=>l.cat===cat);document.getElementById('results-count').textContent=items.length+' annoncer';document.getElementById('cat-listings').innerHTML=items.length?items.map(l=>listingCard(l)).join(''):'<div class="empty"><div class="e-icon">🔍</div><p>Ingen annoncer</p></div>';showPage('cat');}
 function goBackHome(){document.getElementById('topbar').style.display='block';document.getElementById('subcat-bar').style.display='flex';showPage('home');document.querySelectorAll('.nav-item').forEach((i,idx)=>i.classList.toggle('active',idx===0));}
 
