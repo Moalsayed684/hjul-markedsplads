@@ -85,6 +85,11 @@
     body.light-mode .tgsw.on{background:#2d6e10;}
     body.light-mode .detail-price{color:#2d6e10;}
     body.light-mode .back-btn{color:#2d6e10;}
+    /* Fix dark green backgrounds in light mode */
+    body.light-mode #banner-bg{background:linear-gradient(135deg,#2d6e10,#1a5c00) !important;}
+    body.light-mode #vaerksted-map{background:linear-gradient(135deg,#c8dfc8,#b8d4b8) !important;}
+    body.light-mode .stelnummer-box{background:#e8f5e8 !important;border-color:#2d6e10 !important;}
+    body.light-mode .ad-form{background:#f5f5f5 !important;border-color:#2d6e10 !important;}
     *{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent;}
     body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;max-width:430px;margin:0 auto;overflow-x:hidden;padding-bottom:72px;}
     .topbar{background:var(--bg);padding:12px 16px 10px;border-bottom:1px solid var(--border);position:sticky;top:0;z-index:100;width:100%;}
@@ -112,6 +117,10 @@
     .subcat-svg{width:40px;height:40px;background:var(--bg2);border-radius:50%;display:flex;align-items:center;justify-content:center;border:1px solid var(--border2);}
     .subcat-item.active .subcat-svg{background:#1a2a1a;}
     body.light-mode .subcat-item.active .subcat-svg{background:#e8e8e8;}
+    body.light-mode [style*="background:#1a2a1a"]{background:#e8e8e8 !important;}
+    body.light-mode [style*="background:linear-gradient(135deg,#1a2a1a"]{background:linear-gradient(135deg,#d4e8d4,#c8dfc8) !important;}
+    body.light-mode [style*="background:linear-gradient(135deg,#0d1f0d"]{background:linear-gradient(135deg,#d0e8d0,#c8e0c8) !important;}
+    body.light-mode [style*="background:linear-gradient(135deg,#1a2a1a,#0d1a0d"]{background:linear-gradient(135deg,#d4e8d4,#c8dfc8) !important;}
     .subcat-label{font-size:10px;font-weight:600;color:#fff;text-align:center;white-space:nowrap;} body.light-mode .subcat-label{color:#111;font-weight:700;}
     .page{display:none;min-height:calc(100vh - 72px);}
     .page.active{display:block;animation:fadeUp 0.2s ease;min-height:calc(100vh - 72px);}
@@ -479,7 +488,7 @@
 <div id="page-home" class="page active">
   <!-- TOP BANNER AD -->
   <div id="top-banner-ad" style="margin:10px 12px 0;border-radius:16px;overflow:hidden;position:relative;cursor:pointer;" onclick="openBannerAd()">
-    <div id="banner-bg" style="width:100%;height:170px;background:linear-gradient(135deg,#1a2a1a,#0d1a0d);position:relative;overflow:hidden;transition:opacity 0.4s;">
+    <div id="banner-bg" style="width:100%;height:170px;background:linear-gradient(135deg,#2d6e10,#1a5c00);position:relative;overflow:hidden;transition:opacity 0.4s;">
       <img id="banner-img" src="" alt="" style="width:100%;height:100%;object-fit:cover;display:none;opacity:0.6;">
       <div style="position:absolute;inset:0;background:linear-gradient(to bottom,rgba(0,0,0,0.05) 20%,rgba(0,0,0,0.72) 100%);"></div>
       <div style="position:absolute;top:10px;left:10px;background:rgba(0,0,0,0.6);color:#bbb;font-size:10px;font-weight:600;padding:3px 10px;border-radius:50px;">Sponsoreret</div>
@@ -837,7 +846,7 @@
     </div>
 
     <!-- GRATIS BANNER -->
-    <div style="background:linear-gradient(135deg,#1a2a1a,#0d1a0d);border-radius:20px;padding:28px 20px;text-align:center;margin-bottom:20px;border:2px solid #8fbc5a;position:relative;overflow:hidden;">
+    <div style="background:linear-gradient(135deg,#2d6e10,#1a5c00);border-radius:20px;padding:28px 20px;text-align:center;margin-bottom:20px;border:2px solid #8fbc5a;position:relative;overflow:hidden;">
       <div style="position:absolute;inset:0;opacity:0.05;"><svg width="100%" height="100%"><defs><pattern id="pgrid" width="20" height="20" patternUnits="userSpaceOnUse"><path d="M 20 0 L 0 0 0 20" fill="none" stroke="#8fbc5a" stroke-width="0.5"/></pattern></defs><rect width="100%" height="100%" fill="url(#pgrid)"/></svg></div>
       <div style="position:relative;z-index:1;">
         <div style="font-size:48px;margin-bottom:12px;">🎉</div>
@@ -852,27 +861,27 @@
       <div style="font-weight:700;font-size:15px;margin-bottom:14px;">Hvad du får gratis:</div>
       <div style="display:flex;flex-direction:column;gap:12px;">
         <div style="display:flex;align-items:center;gap:12px;">
-          <div style="width:32px;height:32px;background:#1a2a1a;border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:16px;">🚲</div>
+          <div style="width:32px;height:32px;background:var(--bg3);border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:16px;">🚲</div>
           <div><div style="font-weight:600;font-size:14px;">Ubegrænsede annoncer</div><div style="font-size:12px;color:#888;">Opret så mange du vil</div></div>
         </div>
         <div style="display:flex;align-items:center;gap:12px;">
-          <div style="width:32px;height:32px;background:#1a2a1a;border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:16px;">📸</div>
+          <div style="width:32px;height:32px;background:var(--bg3);border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:16px;">📸</div>
           <div><div style="font-weight:600;font-size:14px;">6 billeder per annonce</div><div style="font-size:12px;color:#888;">Vis din cykel fra alle vinkler</div></div>
         </div>
         <div style="display:flex;align-items:center;gap:12px;">
-          <div style="width:32px;height:32px;background:#1a2a1a;border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:16px;">💬</div>
+          <div style="width:32px;height:32px;background:var(--bg3);border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:16px;">💬</div>
           <div><div style="font-weight:600;font-size:14px;">Direkte beskeder</div><div style="font-size:12px;color:#888;">Chat med køber/sælger</div></div>
         </div>
         <div style="display:flex;align-items:center;gap:12px;">
-          <div style="width:32px;height:32px;background:#1a2a1a;border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:16px;">🔍</div>
+          <div style="width:32px;height:32px;background:var(--bg3);border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:16px;">🔍</div>
           <div><div style="font-weight:600;font-size:14px;">Avanceret søgning og filter</div><div style="font-size:12px;color:#888;">Find præcis det du leder efter</div></div>
         </div>
         <div style="display:flex;align-items:center;gap:12px;">
-          <div style="width:32px;height:32px;background:#1a2a1a;border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:16px;">🔧</div>
+          <div style="width:32px;height:32px;background:var(--bg3);border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:16px;">🔧</div>
           <div><div style="font-weight:600;font-size:14px;">Find værksted</div><div style="font-size:12px;color:#888;">40+ cykelværksteder i Danmark</div></div>
         </div>
         <div style="display:flex;align-items:center;gap:12px;">
-          <div style="width:32px;height:32px;background:#1a2a1a;border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:16px;">🛡️</div>
+          <div style="width:32px;height:32px;background:var(--bg3);border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:16px;">🛡️</div>
           <div><div style="font-weight:600;font-size:14px;">Stelnummer verificering</div><div style="font-size:12px;color:#888;">Tjek om cykel er efterlyst</div></div>
         </div>
       </div>
@@ -1109,7 +1118,7 @@
   <div style="padding:0 0 30px;">
 
     <!-- HERO SECTION -->
-    <div style="background:linear-gradient(135deg,#1a2a1a,#0d1a0d);padding:32px 20px;text-align:center;position:relative;overflow:hidden;">
+    <div style="background:linear-gradient(135deg,#2d6e10,#1a5c00);padding:32px 20px;text-align:center;position:relative;overflow:hidden;">
       <div style="position:absolute;inset:0;opacity:0.1;">
         <svg width="100%" height="100%"><defs><pattern id="adgrid" width="30" height="30" patternUnits="userSpaceOnUse"><path d="M 30 0 L 0 0 0 30" fill="none" stroke="#8fbc5a" stroke-width="0.5"/></pattern></defs><rect width="100%" height="100%" fill="url(#adgrid)"/></svg>
       </div>
@@ -1168,7 +1177,7 @@
       <div style="background:var(--bg2);border-radius:16px;padding:18px;margin-bottom:12px;border:2px solid #2d6e10;position:relative;">
         <div style="position:absolute;top:-12px;left:50%;transform:translateX(-50%);background:#2d6e10;color:#fff;font-size:11px;font-weight:700;padding:4px 16px;border-radius:50px;white-space:nowrap;">⭐ Mest synlighed</div>
         <div style="display:flex;align-items:center;gap:12px;margin-bottom:12px;">
-          <div style="width:44px;height:44px;background:#2a3a2a;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:22px;flex-shrink:0;">👑</div>
+          <div style="width:44px;height:44px;background:var(--bg3);border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:22px;flex-shrink:0;">👑</div>
           <div>
             <div style="font-weight:800;font-size:16px;color:var(--text);">VIP</div>
             <div style="font-size:12px;color:var(--text2);">Maksimal eksponering</div>
