@@ -1579,10 +1579,27 @@ async function loadChatReal(){
   if(!threadId){el.innerHTML='<div style="text-align:center;padding:30px;color:#888;font-size:13px;">Skriv en besked for at starte samtalen 👇</div>';return;}
   el.innerHTML='<div style="text-align:center;padding:20px;color:#555;">⏳ Indlæser...</div>';
   try{
-    // Try ordering by created_at first, fallback to id
-    let res=await sb.from('messages').select('*').eq('listing_id',threadId).order('created_at',{ascending:true});
-    if(res.error&&res.error.message&&res.error.message.includes('created_at')){
-      res=await sb.from('messages').select('*').eq('listing_id',threadId).order('id',{ascending:true});
+    // Filter by listing_id + the two specific users (me + the other person)
+    const myId2=me?.id||'';
+    const otherId2=currentSellerId||'';
+    let res;
+    if(otherId2&&otherId2!==myId2){
+      // Get only messages between these two specific users on this listing
+      res=await sb.from('messages').select('*')
+        .eq('listing_id',threadId)
+        .or('and(sender_id.eq.'+myId2+',receiver_id.eq.'+otherId2+'),and(sender_id.eq.'+otherId2+',receiver_id.eq.'+myId2+')')
+        .order('created_at',{ascending:true});
+      if(res.error&&res.error.message&&res.error.message.includes('created_at')){
+        res=await sb.from('messages').select('*')
+          .eq('listing_id',threadId)
+          .or('and(sender_id.eq.'+myId2+',receiver_id.eq.'+otherId2+'),and(sender_id.eq.'+otherId2+',receiver_id.eq.'+myId2+')')
+          .order('id',{ascending:true});
+      }
+    } else {
+      res=await sb.from('messages').select('*').eq('listing_id',threadId).order('created_at',{ascending:true});
+      if(res.error&&res.error.message&&res.error.message.includes('created_at')){
+        res=await sb.from('messages').select('*').eq('listing_id',threadId).order('id',{ascending:true});
+      }
     }
     const{data,error}=res;
     if(error)throw error;
@@ -1618,10 +1635,11 @@ async function sendMsgReal(){
   if(!threadId){toast('❌ Ingen annonce tilknyttet');return;}
   try{
     // Insert message using listing_id as thread identifier
+    if(!currentSellerId||currentSellerId===me.id){toast('❌ Kan ikke sende til dig selv');return;}
     const{error}=await sb.from('messages').insert({
       listing_id:threadId,
       sender_id:me.id,
-      receiver_id:currentSellerId||me.id,
+      receiver_id:currentSellerId,
       content:t,
       created_at:new Date().toISOString(),
       is_read:false
@@ -1924,8 +1942,14 @@ async function contactSeller(){
   if(l.user_id&&l.user_id===me.id){toast('Dette er din egen annonce');return;}
   document.getElementById('chat-name').textContent=l.seller||'Sælger';
   document.getElementById('chat-sub').textContent='om: '+l.title;
+  // Always fetch the real owner from DB
   let sellerId=l.user_id||null;
-  if(!sellerId&&typeof detailId==='string'&&detailId.includes('-')){try{const{data:ld}=await sb.from('listings').select('user_id').eq('id',detailId).single();if(ld)sellerId=ld.user_id;}catch(e){}}
+  try{
+    const{data:ld}=await sb.from('listings').select('user_id').eq('id',String(detailId)).single();
+    if(ld&&ld.user_id)sellerId=ld.user_id;
+  }catch(e){}
+  if(!sellerId){toast('❌ Kan ikke finde sælger');return;}
+  if(sellerId===me.id){toast('Dette er din egen annonce');return;}
   // Use listing_id as thread identifier - no need for separate conversation
   currentConvId=String(detailId||'');
   currentSellerId=sellerId;
