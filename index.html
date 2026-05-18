@@ -613,10 +613,10 @@
       <button class="back-btn" onclick="goDetailBack()">←</button>
       <div style="flex:1;font-weight:700;font-size:15px" id="detail-header-title"></div>
       <div style="display:flex;align-items:center;gap:8px;">
-        <button onclick="openShareDrawer()" style="width:40px;height:40px;background:#1c1c1c;border-radius:50%;border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;">
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#ccc" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg>
+        <button onclick="openShareDrawer()" style="width:40px;height:40px;background:var(--bg3);border-radius:50%;border:1px solid var(--border2);cursor:pointer;display:flex;align-items:center;justify-content:center;">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--text)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg>
         </button>
-        <button class="heart-btn" id="detail-heart" style="position:static;width:40px;height:40px;background:#1c1c1c;font-size:18px;color:#ccc;" onclick="this.classList.toggle('liked');this.style.color=this.classList.contains('liked')?'#8fbc5a':'#ccc'">♡</button>
+        <button class="heart-btn" id="detail-heart" style="position:static;width:40px;height:40px;background:var(--bg3);border:1px solid var(--border2);font-size:18px;color:var(--text2);" onclick="this.classList.toggle('liked');this.style.color=this.classList.contains('liked')?'#8fbc5a':'var(--text2)'">♡</button>
       </div>
     </div>
     <div class="detail-imgs" id="detail-img-wrap"></div>
@@ -1360,18 +1360,21 @@
 </div>
 
 <div class="drawer-overlay" id="share-overlay" onclick="closeShareDrawer()" style="z-index:402;"></div>
-<div class="share-drawer" id="share-drawer">
-  <div class="share-handle"></div>
-  <div class="share-title">Del annonce</div>
-  <div class="share-options">
-    <div class="share-option" onclick="shareVia('sms')"><div class="share-option-icon" style="background:#25D366;">💬</div><div class="share-option-label">SMS</div></div>
-    <div class="share-option" onclick="shareVia('whatsapp')"><div class="share-option-icon" style="background:#25D366;">📱</div><div class="share-option-label">WhatsApp</div></div>
-    <div class="share-option" onclick="shareVia('facebook')"><div class="share-option-icon" style="background:#1877F2;">f</div><div class="share-option-label">Facebook</div></div>
-    <div class="share-option" onclick="shareVia('email')"><div class="share-option-icon" style="background:#EA4335;">✉️</div><div class="share-option-label">E-mail</div></div>
-    <div class="share-option" onclick="copyLink()"><div class="share-option-icon" style="background:#555;">🔗</div><div class="share-option-label">Kopiér link</div></div>
+<div class="share-drawer" id="share-drawer" style="background:var(--bg2);">
+  <div class="share-handle" style="background:var(--border2);"></div>
+  <div class="share-title" style="color:var(--text);">Del annonce</div>
+  <div class="share-options" style="grid-template-columns:repeat(4,1fr);">
+    <div class="share-option" onclick="shareVia('sms')"><div class="share-option-icon" style="background:#25D366;font-size:26px;">💬</div><div class="share-option-label" style="color:var(--text2);">SMS</div></div>
+    <div class="share-option" onclick="shareVia('whatsapp')"><div class="share-option-icon" style="background:#25D366;font-size:26px;">📱</div><div class="share-option-label" style="color:var(--text2);">WhatsApp</div></div>
+    <div class="share-option" onclick="shareVia('facebook')"><div class="share-option-icon" style="background:#1877F2;color:#fff;font-weight:800;font-size:22px;font-family:Georgia,serif;">f</div><div class="share-option-label" style="color:var(--text2);">Facebook</div></div>
+    <div class="share-option" onclick="shareVia('messenger')"><div class="share-option-icon" style="background:linear-gradient(45deg,#0084ff,#a06ef4);font-size:26px;">💬</div><div class="share-option-label" style="color:var(--text2);">Messenger</div></div>
+    <div class="share-option" onclick="shareVia('twitter')"><div class="share-option-icon" style="background:#000;color:#fff;font-weight:900;font-size:20px;">𝕏</div><div class="share-option-label" style="color:var(--text2);">X</div></div>
+    <div class="share-option" onclick="shareVia('email')"><div class="share-option-icon" style="background:#EA4335;font-size:26px;">✉️</div><div class="share-option-label" style="color:var(--text2);">E-mail</div></div>
+    <div class="share-option" onclick="shareVia('instagram')"><div class="share-option-icon" style="background:linear-gradient(45deg,#f09433,#dc2743,#bc1888);font-size:26px;">📸</div><div class="share-option-label" style="color:var(--text2);">Instagram</div></div>
+    <div class="share-option" onclick="copyLink()"><div class="share-option-icon" style="background:var(--bg3);font-size:26px;">🔗</div><div class="share-option-label" style="color:var(--text2);">Kopiér</div></div>
   </div>
-  <div class="share-copy-row">
-    <div class="share-copy-url" id="share-url"></div>
+  <div class="share-copy-row" style="background:var(--bg3);">
+    <div class="share-copy-url" id="share-url" style="color:var(--text2);"></div>
     <button class="share-copy-btn" onclick="copyLink()">Kopiér</button>
   </div>
 </div>
@@ -1534,26 +1537,30 @@ function loadProfile(){const saved=localStorage.getItem('profile');if(saved){con
 let currentConvId=null,currentSellerId=null;
 
 let _chatRealtimeChannel = null;
-function subscribeToChat(convId){
+function subscribeToChat(listingId){
   if(_chatRealtimeChannel){ sb.removeChannel(_chatRealtimeChannel); _chatRealtimeChannel=null; }
-  if(!convId) return;
-  _chatRealtimeChannel = sb.channel('chat-'+convId)
-    .on('postgres_changes',{event:'INSERT',schema:'public',table:'messages',filter:'conversation_id=eq.'+convId},()=>{ loadChatReal(); })
+  if(!listingId) return;
+  _chatRealtimeChannel = sb.channel('chat-'+listingId)
+    .on('postgres_changes',{event:'INSERT',schema:'public',table:'messages',filter:'listing_id=eq.'+listingId},()=>{ loadChatReal(); })
     .subscribe();
 }
 async function loadChatReal(){
   const el=document.getElementById('chat-msgs');
   if(!el)return;
-  if(!currentConvId){el.innerHTML='<div style="text-align:center;padding:30px;color:#888;font-size:13px;">Skriv en besked for at starte samtalen 👇</div>';return;}
+  // Use detailId (listing_id) as the chat thread identifier
+  const threadId=String(detailId||currentConvId||'');
+  if(!threadId){el.innerHTML='<div style="text-align:center;padding:30px;color:#888;font-size:13px;">Skriv en besked for at starte samtalen 👇</div>';return;}
   el.innerHTML='<div style="text-align:center;padding:20px;color:#555;">⏳ Indlæser...</div>';
   try{
-    const{data,error}=await sb.from('messages').select('*').eq('conversation_id',currentConvId).order('created_at',{ascending:true});
+    const{data,error}=await sb.from('messages').select('*').eq('listing_id',threadId).order('id',{ascending:true});
     if(error)throw error;
     if(!data||!data.length){el.innerHTML='<div style="text-align:center;padding:30px;color:#888;font-size:13px;">Start samtalen 👇</div>';return;}
-    el.innerHTML=data.map(m=>{const sent=m.sender_id===me?.id;const time=new Date(m.created_at).toLocaleTimeString('da',{hour:'2-digit',minute:'2-digit'});return`<div style="display:flex;flex-direction:column;align-items:${sent?'flex-end':'flex-start'};"><div class="bubble ${sent?'sent':'recv'}">${m.content}</div><div class="btime" style="align-self:${sent?'flex-end':'flex-start'}">${time}</div></div>`;}).join('');
+    el.innerHTML=data.map(m=>{
+      const sent=m.sender_id===me?.id;
+      return`<div style="display:flex;flex-direction:column;align-items:${sent?'flex-end':'flex-start'};"><div class="bubble ${sent?'sent':'recv'}">${sanitize(m.content||'')}</div></div>`;
+    }).join('');
     el.scrollTop=el.scrollHeight;
-    await sb.from('messages').update({read:true}).eq('conversation_id',currentConvId).neq('sender_id',me.id);
-  }catch(e){el.innerHTML='<div style="text-align:center;padding:30px;color:#888;">Start samtalen 👇</div>';}
+  }catch(e){el.innerHTML='<div style="text-align:center;padding:30px;color:#888;">Start samtalen 👇</div><div style="text-align:center;font-size:11px;color:#e03030;">'+String(e&&e.message?e.message:e)+'</div>';}
 }
 
 async function sendMsgReal(){
@@ -1561,19 +1568,23 @@ async function sendMsgReal(){
   const t=inp?.value.trim();
   if(!t||!me)return;
   inp.value='';
-  if(!currentConvId){
-    try{
-      const{data:nc,error}=await sb.from('conversations').insert({listing_id:String(detailId||''),buyer_id:me.id,seller_id:currentSellerId||me.id,last_message:t,updated_at:new Date().toISOString()}).select('id').single();
-      if(!error&&nc)currentConvId=nc.id;
-      else{toast('❌ Kunne ikke oprette samtale');return;}
-    }catch(e){toast('❌ Fejl: '+e.message);return;}
-  }
+  const threadId=String(detailId||currentConvId||'');
+  if(!threadId){toast('❌ Ingen annonce tilknyttet');return;}
   try{
-    const{error}=await sb.from('messages').insert({conversation_id:currentConvId,sender_id:me.id,receiver_id:currentSellerId||me.id,content:t,read:false});
+    // Insert message using listing_id as thread identifier
+    const{error}=await sb.from('messages').insert({
+      listing_id:threadId,
+      sender_id:me.id,
+      receiver_id:currentSellerId||me.id,
+      content:t
+    });
     if(error)throw error;
-    await sb.from('conversations').update({last_message:t,updated_at:new Date().toISOString()}).eq('id',currentConvId);
+    // Update conversation last_message if conversation exists
+    if(currentConvId){
+      try{await sb.from('conversations').update({last_message:t,updated_at:new Date().toISOString()}).eq('id',currentConvId);}catch(_){}
+    }
     loadChatReal();
-  }catch(e){toast('❌ Fejl: '+e.message);}
+  }catch(e){toast('❌ Fejl: '+String(e&&e.message?e.message:e));}
 }
 
 async function loadConvsReal(){
@@ -1602,7 +1613,7 @@ async function loadConvsReal(){
       const otherName=userMap[otherId]||(isbuyer?'Sælger':'Køber');
       const time=new Date(c.updated_at).toLocaleTimeString('da',{hour:'2-digit',minute:'2-digit'});
       const listing=c.listing_id?allListings.find(l=>String(l.id)===String(c.listing_id)):null;
-      const preview=c.last_message&&c.last_message.trim()?c.last_message:(listing?'om: '+listing.title:'Skriv en besked...');
+      const preview=c.last_message&&c.last_message.trim()?c.last_message:(listing?'om: '+sanitize(listing.title):'Skriv en besked …');
       const hasUnread=!c.last_message||!c.last_message.trim();
       return`<div class="conv-item" onclick="openRealConv('${c.id}','${otherId}','${c.listing_id||''}','${otherName.replace(/'/g,"\'")}')">
         <div class="conv-avatar" style="background:var(--bg3);border:2px solid ${hasUnread?'#8fbc5a':'var(--border2)'};">👤</div>
@@ -1619,9 +1630,11 @@ async function loadConvsReal(){
 
 async function openRealConv(convId,otherId,listingId,otherName){
   currentConvId=convId;currentSellerId=otherId;
+  // Set detailId so loadChatReal uses listing_id as thread
+  if(listingId) detailId=listingId;
   const l=listingId?allListings.find(x=>String(x.id)===String(listingId)):null;
   document.getElementById('chat-name').textContent=otherName||'Besked';
-  document.getElementById('chat-sub').textContent=l?'om: '+l.title:'Privat besked';
+  document.getElementById('chat-sub').textContent=l?'om: '+sanitize(l.title):'Privat besked';
   showPage('chat');loadChatReal();
 }
 
@@ -1665,6 +1678,21 @@ function sanitize(str){
   return String(str).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#x27;');
 }
 async function init(){
+  // Diagnose messages table columns on first load
+  try{
+    const{data,error}=await sb.from('messages').select('*').limit(1);
+    if(!error&&data&&data.length){
+      const cols=Object.keys(data[0]);
+      console.log('messages table columns:', cols);
+      // Auto-detect conversation column name
+      if(cols.includes('conv_id')&&!cols.includes('conversation_id')){
+        window._convCol='conv_id';
+        console.log('Using conv_id as conversation column');
+      } else {
+        window._convCol='conversation_id';
+      }
+    } else { window._convCol='conversation_id'; }
+  }catch(_){ window._convCol='conversation_id'; }
   // Offline detection
   window.addEventListener('online', ()=>{ toast('✅ Forbindelse genoprettet'); loadListingsFromDb(); loadAds(); });
   window.addEventListener('offline', ()=>{ toast('⚠️ Ingen internetforbindelse'); });
@@ -1817,19 +1845,39 @@ async function contactSeller(){
   document.getElementById('chat-sub').textContent='om: '+l.title;
   let sellerId=l.user_id||null;
   if(!sellerId&&typeof detailId==='string'&&detailId.includes('-')){try{const{data:ld}=await sb.from('listings').select('user_id').eq('id',detailId).single();if(ld)sellerId=ld.user_id;}catch(e){}}
+  // Use listing_id as thread identifier - no need for separate conversation
+  currentConvId=String(detailId||'');
+  currentSellerId=sellerId;
+  // Try to find/create conversation record for last_message tracking
   try{
-    let convId=null;
     const{data:existing}=await sb.from('conversations').select('id').eq('listing_id',String(detailId)).eq('buyer_id',me.id).limit(1);
-    if(existing&&existing.length>0){convId=existing[0].id;}
-    else{const{data:newConv,error}=await sb.from('conversations').insert({listing_id:String(detailId),buyer_id:me.id,seller_id:sellerId||me.id,last_message:'',updated_at:new Date().toISOString()}).select('id').single();if(!error&&newConv)convId=newConv.id;}
-    currentConvId=convId;currentSellerId=sellerId;
-  }catch(e){console.warn('Conv error:',e.message);currentConvId=null;currentSellerId=sellerId;}
+    if(existing&&existing.length>0){currentConvId=existing[0].id||String(detailId);}
+    else{
+      const{data:newConv}=await sb.from('conversations').insert({listing_id:String(detailId),buyer_id:me.id,seller_id:sellerId||me.id,last_message:'',updated_at:new Date().toISOString()}).select('id').single();
+      if(newConv)currentConvId=newConv.id||String(detailId);
+    }
+  }catch(_){currentConvId=String(detailId);}
   showPage('chat');loadChatReal();
 }
 
-function openShareDrawer(){const l=allListings.find(x=>x.id===detailId);if(!l)return;shareListingId=detailId;const url='https://moalsayed684.github.io/hjul-markedsplads/index.html?annonce='+detailId;document.getElementById('share-url').textContent=url;document.getElementById('share-overlay').classList.add('open');document.getElementById('share-drawer').classList.add('open');}
+async function openShareDrawer(){
+  const l=allListings.find(x=>x.id===detailId);
+  if(!l)return;
+  shareListingId=detailId;
+  const url='https://moalsayed684.github.io/hjul-markedsplads/index.html?annonce='+detailId;
+  const shareData={title:'CykelHub - '+l.title,text:l.title+' - '+l.price+' - Find den på CykelHub!',url:url};
+  // Use native Web Share API if available (iOS Safari, Android Chrome)
+  if(navigator.share){
+    try{await navigator.share(shareData);trackShare(String(detailId));return;}
+    catch(e){if(e.name==='AbortError')return;/* user cancelled, fallback to drawer */}
+  }
+  // Fallback: show custom drawer
+  document.getElementById('share-url').textContent=url;
+  document.getElementById('share-overlay').classList.add('open');
+  document.getElementById('share-drawer').classList.add('open');
+}
 function closeShareDrawer(){document.getElementById('share-overlay').classList.remove('open');document.getElementById('share-drawer').classList.remove('open');}
-function shareVia(platform){const l=allListings.find(x=>x.id===shareListingId);if(!l)return;const url='https://moalsayed684.github.io/hjul-markedsplads/index.html?annonce='+shareListingId;const text=l.title+' - '+l.price+' - CykelHub';const links={sms:'sms:?body='+encodeURIComponent(text+' '+url),email:'mailto:?subject='+encodeURIComponent(l.title+' på CykelHub')+'&body='+encodeURIComponent(text+'\n\n'+url),facebook:'https://www.facebook.com/sharer/sharer.php?u='+encodeURIComponent(url),whatsapp:'https://api.whatsapp.com/send?text='+encodeURIComponent(text+' '+url)};window.open(links[platform],'_blank');closeShareDrawer();}
+function shareVia(platform){const l=allListings.find(x=>x.id===shareListingId);if(!l)return;const url='https://moalsayed684.github.io/hjul-markedsplads/index.html?annonce='+shareListingId;const text=l.title+' - '+l.price+' - CykelHub';if(platform==='instagram'){navigator.clipboard.writeText(url).catch(()=>{});toast('📋 Link kopieret! Indsæt det i Instagram');closeShareDrawer();return;}const links={sms:'sms:?body='+encodeURIComponent(text+' '+url),email:'mailto:?subject='+encodeURIComponent(l.title+' på CykelHub')+'&body='+encodeURIComponent(text+'\n\n'+url),facebook:'https://www.facebook.com/sharer/sharer.php?u='+encodeURIComponent(url),whatsapp:'https://api.whatsapp.com/send?text='+encodeURIComponent(text+' '+url),messenger:'https://www.facebook.com/dialog/send?link='+encodeURIComponent(url)+'&app_id=291494419107518&redirect_uri='+encodeURIComponent(url),twitter:'https://twitter.com/intent/tweet?text='+encodeURIComponent(text)+'&url='+encodeURIComponent(url)};if(links[platform])window.open(links[platform],'_blank');trackShare(String(shareListingId));closeShareDrawer();}
 function copyLink(){const url=document.getElementById('share-url').textContent;navigator.clipboard.writeText(url).then(()=>{toast('Link kopieret! 🔗');closeShareDrawer();}).catch(()=>toast('Link kopieret!'));}
 
 function updateBellDot(){document.getElementById('bell-dot').classList.toggle('on',notifs.some(n=>n.unread));}
@@ -2121,7 +2169,7 @@ function showPage(name){
   document.getElementById('topbar').style.display=hideTop?'none':'block';
   document.getElementById('subcat-bar').style.display=hideTop?'none':'flex';
   if(name==='messages')loadConvsReal();
-  if(name==='chat')subscribeToChat(currentConvId);
+  if(name==='chat')subscribeToChat(String(detailId||currentConvId||''));
   if(name!=='chat'&&_chatRealtimeChannel){sb.removeChannel(_chatRealtimeChannel);_chatRealtimeChannel=null;}
   if(name==='vaerksted')renderWorkshops(filteredWorkshops);
   if(name==='edit-profile')loadProfile();
