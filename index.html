@@ -1585,14 +1585,42 @@ async function loadConvsReal(){
     const{data,error}=await sb.from('conversations').select('*').or('buyer_id.eq.'+me.id+',seller_id.eq.'+me.id).order('updated_at',{ascending:false});
     if(error)throw error;
     if(!data||!data.length){el.innerHTML='<div style="text-align:center;padding:40px;color:#555;"><div style="font-size:36px;margin-bottom:10px;">💬</div><div>Ingen beskeder endnu</div></div>';return;}
-    el.innerHTML=data.map(c=>{const isbuyer=c.buyer_id===me.id;const time=new Date(c.updated_at).toLocaleTimeString('da',{hour:'2-digit',minute:'2-digit'});return`<div class="conv-item" onclick="openRealConv('${c.id}','${isbuyer?c.seller_id:c.buyer_id}','${c.listing_id||''}')"><div class="conv-avatar">👤</div><div class="conv-info"><div class="conv-name">${isbuyer?'Sælger':'Køber'}</div><div class="conv-preview">${c.last_message||'Ny samtale'}</div></div><div class="conv-time">${time}</div></div>`;}).join('');
-  }catch(e){el.innerHTML='<div style="text-align:center;padding:30px;color:#e03030;">❌ Fejl</div>';}
+
+    // Load other user profiles for all conversations
+    const otherIds=[...new Set(data.map(c=>c.buyer_id===me.id?c.seller_id:c.buyer_id).filter(Boolean))];
+    let userMap={};
+    if(otherIds.length){
+      try{
+        const{data:profiles}=await sb.from('listings').select('user_id,details').in('user_id',otherIds).limit(50);
+        if(profiles){profiles.forEach(p=>{if(p.details&&p.details.seller&&!userMap[p.user_id])userMap[p.user_id]=p.details.seller;});}
+      }catch(_){}
+    }
+
+    el.innerHTML=data.map(c=>{
+      const isbuyer=c.buyer_id===me.id;
+      const otherId=isbuyer?c.seller_id:c.buyer_id;
+      const otherName=userMap[otherId]||(isbuyer?'Sælger':'Køber');
+      const time=new Date(c.updated_at).toLocaleTimeString('da',{hour:'2-digit',minute:'2-digit'});
+      const listing=c.listing_id?allListings.find(l=>String(l.id)===String(c.listing_id)):null;
+      const preview=c.last_message&&c.last_message.trim()?c.last_message:(listing?'om: '+listing.title:'Skriv en besked...');
+      const hasUnread=!c.last_message||!c.last_message.trim();
+      return`<div class="conv-item" onclick="openRealConv('${c.id}','${otherId}','${c.listing_id||''}','${otherName.replace(/'/g,"\'")}')">
+        <div class="conv-avatar" style="background:var(--bg3);border:2px solid ${hasUnread?'#8fbc5a':'var(--border2)'};">👤</div>
+        <div class="conv-info">
+          <div class="conv-name" style="font-weight:700;">${sanitize(otherName)}</div>
+          <div class="conv-preview" style="color:${hasUnread?'#8fbc5a':'#999'};">${sanitize(preview)}</div>
+          ${listing?`<div style="font-size:10px;color:#555;margin-top:2px;">📦 ${sanitize(listing.title)}</div>`:''}
+        </div>
+        <div class="conv-time">${time}</div>
+      </div>`;
+    }).join('');
+  }catch(e){el.innerHTML='<div style="text-align:center;padding:30px;color:#e03030;">❌ Fejl: '+String(e&&e.message?e.message:e)+'</div>';}
 }
 
-async function openRealConv(convId,otherId,listingId){
+async function openRealConv(convId,otherId,listingId,otherName){
   currentConvId=convId;currentSellerId=otherId;
   const l=listingId?allListings.find(x=>String(x.id)===String(listingId)):null;
-  document.getElementById('chat-name').textContent='Besked';
+  document.getElementById('chat-name').textContent=otherName||'Besked';
   document.getElementById('chat-sub').textContent=l?'om: '+l.title:'Privat besked';
   showPage('chat');loadChatReal();
 }
