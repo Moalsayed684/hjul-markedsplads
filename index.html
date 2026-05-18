@@ -649,6 +649,7 @@
         </div>
       </div>
       <div class="annonce-id" id="detail-annonce-id"></div>
+      <button style="width:100%;background:transparent;color:#f0a020;border:1.5px solid #f0a020;border-radius:50px;padding:13px;font-family:Inter,sans-serif;font-weight:700;font-size:14px;cursor:pointer;margin-bottom:8px;" onclick="reportListing()">🚨 Anmeld annonce</button>
       <button class="police-btn" onclick="window.open('https://politi.dk/cykler-og-koeretoejer/tjek-om-en-cykel-eller-et-koeretoej-er-efterlyst/tjek-om-en-cykel-er-efterlyst','_blank')">🔍 Tjek, om en cykel er efterlyst</button>
     </div>
   </div>
@@ -1103,6 +1104,20 @@
       <div class="admin-section-title">📥 Nye forespørgsler</div>
       <div id="admin-requests-list"><div style="font-size:12px;color:#444;text-align:center;padding:10px;">Indlæser...</div></div>
     </div>
+    <!-- LISTINGS MODERATION -->
+    <div class="admin-section">
+      <div class="admin-section-title">📋 Alle annoncer</div>
+      <div style="display:flex;gap:8px;margin-bottom:10px;">
+        <input id="admin-listing-search" class="admin-input" placeholder="Søg titel, by..." oninput="adminSearchListings(this.value)" style="margin-bottom:0;flex:1;">
+        <button onclick="loadAdminListings()" style="background:#1a2a1a;color:#8fbc5a;border:1px solid #8fbc5a;border-radius:8px;padding:8px 12px;cursor:pointer;font-size:12px;font-weight:700;font-family:Inter,sans-serif;">&#x21bb; Opdater</button>
+      </div>
+      <div id="admin-listings-list"><div style="font-size:12px;color:#444;text-align:center;padding:10px;">Klik Opdater for at indlæse...</div></div>
+    </div>
+    <!-- REPORTS -->
+    <div class="admin-section">
+      <div class="admin-section-title">🚨 Indberetninger</div>
+      <div id="admin-reports-list"><div style="font-size:12px;color:#444;text-align:center;padding:10px;">Indlæser...</div></div>
+    </div>
     <div style="padding:14px 20px 24px;text-align:center;">
       <div style="font-size:11px;color:#333;">CykelHub Admin · Kun synlig for dig</div>
     </div>
@@ -1336,6 +1351,18 @@
     </div>
   </div>
 </div>
+<!-- REPORT DRAWER -->
+<div class="drawer-overlay" id="report-overlay" onclick="closeReportDrawer()" style="z-index:402;"></div>
+<div id="report-drawer" style="position:fixed;bottom:0;left:50%;transform:translateX(-50%) translateY(100%);width:100%;max-width:430px;background:var(--bg2);border-radius:24px 24px 0 0;z-index:403;transition:transform 0.35s cubic-bezier(0.32,0.72,0,1);padding:0 0 32px;">
+  <div style="width:40px;height:4px;background:var(--border2);border-radius:4px;margin:14px auto 0;"></div>
+  <div style="padding:16px 20px 8px;display:flex;align-items:center;justify-content:space-between;">
+    <div style="font-weight:800;font-size:17px;color:var(--text);">&#x1f6a8; Anmeld annonce</div>
+    <button onclick="closeReportDrawer()" style="width:32px;height:32px;background:var(--bg3);border:none;border-radius:50%;cursor:pointer;font-size:16px;color:var(--text);">&#x2715;</button>
+  </div>
+  <div style="font-size:13px;color:var(--text2);padding:0 20px 12px;">Vælg årsag til anmeldelsen:</div>
+  <div id="report-reasons" style="padding:0 16px;display:flex;flex-direction:column;gap:8px;"></div>
+</div>
+
 <nav class="bottom-nav">
   <div class="nav-item active" id="nav-home" onclick="goPage('home','nav-home')"><div class="nav-icon">🏠</div><div class="nav-label">Hjem</div></div>
   <div class="nav-item" id="nav-buy" onclick="goPage('buy','nav-buy')"><div class="nav-icon">🔍</div><div class="nav-label">Vil du købe</div></div>
@@ -1552,12 +1579,22 @@ async function loadChatReal(){
   if(!threadId){el.innerHTML='<div style="text-align:center;padding:30px;color:#888;font-size:13px;">Skriv en besked for at starte samtalen 👇</div>';return;}
   el.innerHTML='<div style="text-align:center;padding:20px;color:#555;">⏳ Indlæser...</div>';
   try{
-    const{data,error}=await sb.from('messages').select('*').eq('listing_id',threadId).order('id',{ascending:true});
+    // Try ordering by created_at first, fallback to id
+    let res=await sb.from('messages').select('*').eq('listing_id',threadId).order('created_at',{ascending:true});
+    if(res.error&&res.error.message&&res.error.message.includes('created_at')){
+      res=await sb.from('messages').select('*').eq('listing_id',threadId).order('id',{ascending:true});
+    }
+    const{data,error}=res;
     if(error)throw error;
     if(!data||!data.length){el.innerHTML='<div style="text-align:center;padding:30px;color:#888;font-size:13px;">Start samtalen 👇</div>';return;}
+    const myId=me?.id||'';
     el.innerHTML=data.map(m=>{
-      const sent=m.sender_id===me?.id;
-      return`<div style="display:flex;flex-direction:column;align-items:${sent?'flex-end':'flex-start'};"><div class="bubble ${sent?'sent':'recv'}">${sanitize(m.content||'')}</div></div>`;
+      const sent=m.sender_id===myId;
+      const timeStr=m.created_at?new Date(m.created_at).toLocaleTimeString('da',{hour:'2-digit',minute:'2-digit'}):'';
+      return '<div style="display:flex;flex-direction:column;align-items:'+(sent?'flex-end':'flex-start')+';margin-bottom:4px;">'
+        +'<div class="bubble '+(sent?'sent':'recv')+'">'+sanitize(m.content||'')+'</div>'
+        +(timeStr?'<div class="btime" style="align-self:'+(sent?'flex-end':'flex-start')+'">'+timeStr+'</div>':'')
+        +'</div>';
     }).join('');
     el.scrollTop=el.scrollHeight;
   }catch(e){el.innerHTML='<div style="text-align:center;padding:30px;color:#888;">Start samtalen 👇</div><div style="text-align:center;font-size:11px;color:#e03030;">'+String(e&&e.message?e.message:e)+'</div>';}
@@ -1576,7 +1613,8 @@ async function sendMsgReal(){
       listing_id:threadId,
       sender_id:me.id,
       receiver_id:currentSellerId||me.id,
-      content:t
+      content:t,
+      created_at:new Date().toISOString()
     });
     if(error)throw error;
     // Update conversation last_message if conversation exists
@@ -2069,7 +2107,7 @@ async function openAdmin(){
   document.getElementById('stat-banner').textContent=bannerViews;document.getElementById('stat-clicks').textContent=bannerClicks;
   const allAds=await loadAllAds();const active=allAds.filter(a=>a.active);document.getElementById('stat-total').textContent=active.length;
   const rev=allAds.filter(a=>a.active).reduce((s,a)=>s+(a.price||0),0);document.getElementById('stat-revenue').textContent=rev.toLocaleString('da-DK');
-  renderAdminList(allAds);loadAdRequests();
+  renderAdminList(allAds);loadAdRequests();loadAdminReports();
 }
 
 function closeAdmin(){document.getElementById('admin-overlay').classList.remove('open');}
@@ -2179,6 +2217,169 @@ function showPage(name){
 function goPage(name,navId){showPage(name);document.querySelectorAll('.nav-item').forEach(i=>i.classList.remove('active'));if(navId)document.getElementById(navId)?.classList.add('active');}
 function requireAuth(page,navId){if(!me){toast('Log ind for at fortsætte');goPage('profile','nav-prof');return;}goPage(page,navId);}
 function toast(msg){const t=document.getElementById('toast');t.textContent=msg;t.classList.add('show');setTimeout(()=>t.classList.remove('show'),2500);}
+
+
+// ===== ADMIN LISTINGS MODERATION =====
+let _allAdminListings = [];
+async function loadAdminListings(){
+  const el = document.getElementById('admin-listings-list');
+  if(!el) return;
+  el.innerHTML = '<div style="font-size:12px;color:#555;text-align:center;padding:10px;">⏳ Indlæser...</div>';
+  try{
+    const {data, error} = await sb.from('listings').select('id,title,price,city,category,active,created_at,user_id').order('created_at',{ascending:false}).limit(100);
+    if(error) throw error;
+    _allAdminListings = data || [];
+    renderAdminListings(_allAdminListings);
+  }catch(e){
+    el.innerHTML = '<div style="font-size:12px;color:#e03030;text-align:center;padding:10px;">❌ Fejl: '+String(e&&e.message?e.message:e)+'</div>';
+  }
+}
+
+function adminSearchListings(val){
+  if(!val.trim()){ renderAdminListings(_allAdminListings); return; }
+  const f = _allAdminListings.filter(l=>
+    (l.title||'').toLowerCase().includes(val.toLowerCase()) ||
+    (l.city||'').toLowerCase().includes(val.toLowerCase())
+  );
+  renderAdminListings(f);
+}
+
+function renderAdminListings(list){
+  const el=document.getElementById('admin-listings-list');
+  if(!el)return;
+  if(!list.length){el.innerHTML='<div style="font-size:12px;color:#444;text-align:center;padding:10px;">Ingen annoncer</div>';return;}
+  el.innerHTML=list.map(l=>{
+    const date=new Date(l.created_at).toLocaleDateString('da-DK');
+    const sc=l.active?'#8fbc5a':'#e03030';
+    const st=l.active?'Aktiv':'Inaktiv';
+    const id=String(l.id||'');
+    const activeBtn='<button onclick="adminDeactivate(\''+id+'\')" style="flex:1;background:#2a1a00;color:#f0a020;border:1px solid #3a2a00;border-radius:8px;padding:6px;font-size:11px;font-weight:700;cursor:pointer;font-family:Inter,sans-serif;">⏸ Deaktiver</button>';
+    const inactiveBtn='<button onclick="adminActivate(\''+id+'\')" style="flex:1;background:#1a2a1a;color:#8fbc5a;border:1px solid #2a3a2a;border-radius:8px;padding:6px;font-size:11px;font-weight:700;cursor:pointer;font-family:Inter,sans-serif;">▶ Aktiver</button>';
+    return '<div style="background:#1a1a1a;border-radius:10px;padding:10px;margin-bottom:8px;border:1px solid #222;">'
+      +'<div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:6px;">'
+      +'<div style="font-weight:700;font-size:12px;color:#fff;flex:1;margin-right:8px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">'+sanitize(l.title||'')+'</div>'
+      +'<span style="font-size:10px;font-weight:700;color:'+sc+';background:'+sc+'22;padding:2px 8px;border-radius:50px;flex-shrink:0;">'+st+'</span>'
+      +'</div>'
+      +'<div style="font-size:11px;color:#666;margin-bottom:8px;">📍 '+sanitize(l.city||'')+' · '+date+'</div>'
+      +'<div style="display:flex;gap:6px;">'
+      +'<button onclick="adminViewListing(\''+id+'\')" style="flex:1;background:#1c2a1c;color:#8fbc5a;border:1px solid #2a3a2a;border-radius:8px;padding:6px;font-size:11px;font-weight:700;cursor:pointer;font-family:Inter,sans-serif;">👁 Se</button>'
+      +(l.active?activeBtn:inactiveBtn)
+      +'<button onclick="adminDeleteListing(\''+id+'\')" style="flex:1;background:#2a1a1a;color:#e03030;border:1px solid #3a2020;border-radius:8px;padding:6px;font-size:11px;font-weight:700;cursor:pointer;font-family:Inter,sans-serif;">🗑 Slet</button>'
+      +'</div></div>';
+  }).join('');
+}
+
+async function adminViewListing(id){ closeAdmin(); await openListingById(id); }
+
+async function adminDeactivate(id){
+  if(!confirm('Deaktiver denne annonce?')) return;
+  try{
+    const {error} = await sb.from('listings').update({active:false}).eq('id',id);
+    if(error) throw error;
+    toast('✅ Annonce deaktiveret');
+    await loadAdminListings();
+  }catch(e){ toast('❌ Fejl: '+String(e&&e.message?e.message:e)); }
+}
+
+async function adminActivate(id){
+  try{
+    const {error} = await sb.from('listings').update({active:true}).eq('id',id);
+    if(error) throw error;
+    toast('✅ Annonce aktiveret');
+    await loadAdminListings();
+  }catch(e){ toast('❌ Fejl: '+String(e&&e.message?e.message:e)); }
+}
+
+async function adminDeleteListing(id){
+  if(!confirm('SLET denne annonce permanent? Dette kan ikke fortrydes!')) return;
+  try{
+    const {error} = await sb.from('listings').delete().eq('id',id);
+    if(error) throw error;
+    toast('✅ Annonce slettet permanent');
+    allListings = allListings.filter(l=>String(l.id)!==String(id));
+    renderHome(allListings);
+    await loadAdminListings();
+  }catch(e){ toast('❌ Fejl: '+String(e&&e.message?e.message:e)); }
+}
+
+// ===== REPORTS =====
+function reportListing(){
+  if(!me){toast('Log ind for at anmelde');goPage('profile','nav-prof');return;}
+  const l=allListings.find(x=>x.id===detailId);
+  if(!l){toast('Annonce ikke fundet');return;}
+  const reasons=[
+    {icon:'🚫',text:'Ulovligt indhold'},
+    {icon:'💰',text:'Svindel / Fup'},
+    {icon:'🖼️',text:'Falske billeder'},
+    {icon:'📢',text:'Spam'},
+    {icon:'🤔',text:'Misænkelig pris'},
+    {icon:'⚙️',text:'Andet'}
+  ];
+  const el=document.getElementById('report-reasons');
+  if(el){
+    el.innerHTML=reasons.map(function(r){
+      return '<button onclick="submitReport(this.dataset.reason)" data-reason="'+r.text+'" style="display:flex;align-items:center;gap:12px;background:var(--bg3);border:1px solid var(--border2);border-radius:14px;padding:14px 16px;cursor:pointer;font-family:Inter,sans-serif;font-size:14px;font-weight:600;color:var(--text);text-align:left;width:100%;">'
+        +'<span style="font-size:22px;">'+r.icon+'</span><span>'+r.text+'</span></button>';
+    }).join('');
+  }
+  document.getElementById('report-overlay').classList.add('open');
+  document.getElementById('report-drawer').style.transform='translateX(-50%) translateY(0)';
+}
+
+function closeReportDrawer(){
+  document.getElementById('report-overlay').classList.remove('open');
+  document.getElementById('report-drawer').style.transform = 'translateX(-50%) translateY(100%)';
+}
+
+async function submitReport(reason){
+  closeReportDrawer();
+  const l=allListings.find(x=>x.id===detailId);
+  if(!l||!me)return;
+  try{
+    await sb.from('ad_requests').insert({
+      company:'RAPPORT: '+sanitize(l.title),
+      email:me.email,
+      phone:String(detailId),
+      message:'🚨 ANMELDELSE ID: '+String(detailId)+' | Årsag: '+reason+' | Anmelder: '+me.email,
+      budget:'rapport',
+      status:'report'
+    });
+    toast('✅ Tak! Vi behandler din anmeldelse hurtigst muligt.');
+  }catch(e){toast('❌ Fejl: '+String(e&&e.message?e.message:e));}
+}
+
+async function loadAdminReports(){
+  const el=document.getElementById('admin-reports-list');
+  if(!el)return;
+  try{
+    const{data,error}=await sb.from('ad_requests').select('*').eq('status','report').order('created_at',{ascending:false}).limit(20);
+    if(error)throw error;
+    if(!data||!data.length){el.innerHTML='<div style="font-size:12px;color:#555;text-align:center;padding:10px;">✅ Ingen aktive anmeldelser</div>';return;}
+    el.innerHTML=data.map(function(r){
+      const lid=String(r.phone||'');
+      const date=new Date(r.created_at).toLocaleDateString('da-DK');
+      let btns='';
+      if(lid){
+        btns+='<button onclick="adminViewListing(this.dataset.id)" data-id="'+lid+'" style="flex:1;background:#1a1a1a;color:#8fbc5a;border:1px solid #2a3a2a;border-radius:8px;padding:6px;font-size:11px;font-weight:700;cursor:pointer;font-family:Inter,sans-serif;">👁 Se annonce</button>';
+        btns+='<button onclick="adminDeleteListing(this.dataset.id)" data-id="'+lid+'" style="flex:1;background:#2a1a1a;color:#e03030;border:1px solid #3a2020;border-radius:8px;padding:6px;font-size:11px;font-weight:700;cursor:pointer;font-family:Inter,sans-serif;">🗑 Slet</button>';
+      }
+      btns+='<button onclick="dismissReport(this.dataset.id)" data-id="'+String(r.id||'')+'" style="flex:1;background:#1a1a1a;color:#555;border:1px solid #252525;border-radius:8px;padding:6px;font-size:11px;cursor:pointer;font-family:Inter,sans-serif;">✓ Afvis</button>';
+      return '<div style="background:#2a1a1a;border-radius:10px;padding:10px;margin-bottom:8px;border:1px solid #3a2020;">'
+        +'<div style="font-weight:700;font-size:12px;color:#e03030;margin-bottom:4px;">🚨 '+sanitize(r.company||'')+'</div>'
+        +'<div style="font-size:11px;color:#888;margin-bottom:6px;">'+sanitize(r.message||'')+'</div>'
+        +'<div style="font-size:10px;color:#555;margin-bottom:8px;">'+date+'</div>'
+        +'<div style="display:flex;gap:6px;">'+btns+'</div></div>';
+    }).join('');
+  }catch(e){el.innerHTML='<div style="font-size:12px;color:#e03030;text-align:center;">Fejl</div>';}
+}
+
+async function dismissReport(id){
+  try{
+    await sb.from('ad_requests').update({status:'dismissed'}).eq('id',id);
+    toast('✅ Anmeldelse afvist');
+    loadAdminReports();
+  }catch(e){ toast('❌ Fejl'); }
+}
 
 init();
 window.addEventListener('beforeunload',()=>{if(window._adTimer)clearInterval(window._adTimer);if(typeof _chatRealtimeChannel!=='undefined'&&_chatRealtimeChannel){try{sb.removeChannel(_chatRealtimeChannel);}catch(_){}}});
