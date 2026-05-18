@@ -1588,11 +1588,20 @@ async function loadChatReal(){
     if(error)throw error;
     if(!data||!data.length){el.innerHTML='<div style="text-align:center;padding:30px;color:#888;font-size:13px;">Start samtalen 👇</div>';return;}
     const myId=me?.id||'';
+    // Mark received messages as read
+    const unreadIds=data.filter(m=>m.sender_id!==myId&&!m.is_read).map(m=>m.id);
+    if(unreadIds.length){
+      sb.from('messages').update({is_read:true}).in('id',unreadIds).then(()=>{
+        loadConvsReal(); // refresh conv list to clear unread indicators
+      });
+    }
     el.innerHTML=data.map(m=>{
       const sent=m.sender_id===myId;
       const timeStr=m.created_at?new Date(m.created_at).toLocaleTimeString('da',{hour:'2-digit',minute:'2-digit'}):'';
+      // Read receipt: ✓✓ if read, ✓ if not
+      const receipt=sent?('<span style="color:'+(m.is_read?'#8fbc5a':'rgba(255,255,255,0.5)')+';font-size:11px;margin-left:4px;">'+(m.is_read?'✓✓':'✓')+'</span>'):'';
       return '<div style="display:flex;flex-direction:column;align-items:'+(sent?'flex-end':'flex-start')+';margin-bottom:4px;">'
-        +'<div class="bubble '+(sent?'sent':'recv')+'">'+sanitize(m.content||'')+'</div>'
+        +'<div class="bubble '+(sent?'sent':'recv')+'">'+sanitize(m.content||'')+receipt+'</div>'
         +(timeStr?'<div class="btime" style="align-self:'+(sent?'flex-end':'flex-start')+'">'+timeStr+'</div>':'')
         +'</div>';
     }).join('');
@@ -1614,7 +1623,8 @@ async function sendMsgReal(){
       sender_id:me.id,
       receiver_id:currentSellerId||me.id,
       content:t,
-      created_at:new Date().toISOString()
+      created_at:new Date().toISOString(),
+      is_read:false
     });
     if(error)throw error;
     // Update conversation last_message if conversation exists
@@ -1652,15 +1662,22 @@ async function loadConvsReal(){
       const time=new Date(c.updated_at).toLocaleTimeString('da',{hour:'2-digit',minute:'2-digit'});
       const listing=c.listing_id?allListings.find(l=>String(l.id)===String(c.listing_id)):null;
       const preview=c.last_message&&c.last_message.trim()?c.last_message:(listing?'om: '+sanitize(listing.title):'Skriv en besked …');
-      const hasUnread=!c.last_message||!c.last_message.trim();
+      // Check for unread messages in this conversation
+      const hasUnread = c.last_message && c.last_message.trim() && !c.read_by_receiver;
       return`<div class="conv-item" onclick="openRealConv('${c.id}','${otherId}','${c.listing_id||''}','${otherName.replace(/'/g,"\'")}')">
-        <div class="conv-avatar" style="background:var(--bg3);border:2px solid ${hasUnread?'#8fbc5a':'var(--border2)'};">👤</div>
+        <div class="conv-avatar" style="background:var(--bg3);border:2px solid ${hasUnread?'#8fbc5a':'var(--border2)'};position:relative;">
+          👤
+          ${hasUnread?'<div style="position:absolute;top:-2px;right:-2px;width:12px;height:12px;background:#8fbc5a;border-radius:50%;border:2px solid var(--bg2);"></div>':''}
+        </div>
         <div class="conv-info">
-          <div class="conv-name" style="font-weight:700;">${sanitize(otherName)}</div>
-          <div class="conv-preview" style="color:${hasUnread?'#8fbc5a':'#999'};">${sanitize(preview)}</div>
+          <div class="conv-name" style="font-weight:${hasUnread?'800':'700'};">${sanitize(otherName)}</div>
+          <div class="conv-preview" style="color:${hasUnread?'var(--text)':'#999'};font-weight:${hasUnread?'600':'400'};">${sanitize(preview)}</div>
           ${listing?`<div style="font-size:10px;color:#555;margin-top:2px;">📦 ${sanitize(listing.title)}</div>`:''}
         </div>
-        <div class="conv-time">${time}</div>
+        <div style="display:flex;flex-direction:column;align-items:flex-end;gap:4px;">
+          <div class="conv-time">${time}</div>
+          ${hasUnread?'<div style="width:8px;height:8px;background:#8fbc5a;border-radius:50%;"></div>':''}
+        </div>
       </div>`;
     }).join('');
   }catch(e){el.innerHTML='<div style="text-align:center;padding:30px;color:#e03030;">❌ Fejl: '+String(e&&e.message?e.message:e)+'</div>';}
@@ -1716,6 +1733,30 @@ function sanitize(str){
   return String(str).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#x27;');
 }
 async function init(){
+  // Global realtime subscription for incoming messages
+  let _globalMsgChannel = null;
+  async function subscribeToMyMessages(){
+    if(_globalMsgChannel){sb.removeChannel(_globalMsgChannel);_globalMsgChannel=null;}
+    if(!me)return;
+    _globalMsgChannel = sb.channel('my-messages-'+me.id)
+      .on('postgres_changes',{event:'INSERT',schema:'public',table:'messages',filter:'receiver_id=eq.'+me.id},
+        (payload)=>{
+          // Show bell notification
+          document.getElementById('bell-dot').classList.add('on');
+          // If chat is open for this listing, refresh it
+          const msgListingId=payload.new&&payload.new.listing_id?String(payload.new.listing_id):'';
+          const threadId=String(detailId||currentConvId||'');
+          if(msgListingId&&msgListingId===threadId){
+            loadChatReal();
+          }
+          // Refresh conv list if open
+          const msgsPage=document.getElementById('page-messages');
+          if(msgsPage&&msgsPage.classList.contains('active')){loadConvsReal();}
+          // Update bell
+          updateBellDot();
+        }
+      ).subscribe();
+  }
   // Diagnose messages table columns on first load
   try{
     const{data,error}=await sb.from('messages').select('*').limit(1);
@@ -1741,6 +1782,7 @@ async function init(){
   sb.auth.onAuthStateChange((_,s)=>s?setUser(s.user):clearUser());
   renderHome(allListings);
   updateBellDot();
+  if(me)subscribeToMyMessages();
   loadListings();
   await loadAds();
   window._adTimer = setInterval(rotateBannerAd, adRotateInterval);
@@ -1755,6 +1797,7 @@ function setUser(u){
   document.getElementById('auth-section').style.display='none';
   document.getElementById('profile-section').style.display='block';
   checkAdminAccess();
+  subscribeToMyMessages();
   const badge = document.getElementById('p-account-badge');
   const isErhverv = meta.accountType === 'erhverv';
   if(badge){
@@ -1918,7 +1961,17 @@ function closeShareDrawer(){document.getElementById('share-overlay').classList.r
 function shareVia(platform){const l=allListings.find(x=>x.id===shareListingId);if(!l)return;const url='https://moalsayed684.github.io/hjul-markedsplads/index.html?annonce='+shareListingId;const text=l.title+' - '+l.price+' - CykelHub';if(platform==='instagram'){navigator.clipboard.writeText(url).catch(()=>{});toast('📋 Link kopieret! Indsæt det i Instagram');closeShareDrawer();return;}const links={sms:'sms:?body='+encodeURIComponent(text+' '+url),email:'mailto:?subject='+encodeURIComponent(l.title+' på CykelHub')+'&body='+encodeURIComponent(text+'\n\n'+url),facebook:'https://www.facebook.com/sharer/sharer.php?u='+encodeURIComponent(url),whatsapp:'https://api.whatsapp.com/send?text='+encodeURIComponent(text+' '+url),messenger:'https://www.facebook.com/dialog/send?link='+encodeURIComponent(url)+'&app_id=291494419107518&redirect_uri='+encodeURIComponent(url),twitter:'https://twitter.com/intent/tweet?text='+encodeURIComponent(text)+'&url='+encodeURIComponent(url)};if(links[platform])window.open(links[platform],'_blank');trackShare(String(shareListingId));closeShareDrawer();}
 function copyLink(){const url=document.getElementById('share-url').textContent;navigator.clipboard.writeText(url).then(()=>{toast('Link kopieret! 🔗');closeShareDrawer();}).catch(()=>toast('Link kopieret!'));}
 
-function updateBellDot(){document.getElementById('bell-dot').classList.toggle('on',notifs.some(n=>n.unread));}
+function updateBellDot(){
+  document.getElementById('bell-dot').classList.toggle('on',notifs.some(n=>n.unread));
+  // Also check unread messages from DB
+  if(me){
+    sb.from('messages').select('id',{count:'exact',head:true}).eq('receiver_id',me.id).eq('is_read',false).then(r=>{
+      if(r.count&&r.count>0){
+        document.getElementById('bell-dot').classList.add('on');
+      }
+    }).catch(()=>{});
+  }
+}
 
 function switchTab(tab){document.querySelectorAll('.auth-tab').forEach((t,i)=>t.classList.toggle('active',(i===0&&tab==='login')||(i===1&&tab==='signup')));document.getElementById('f-login').style.display=tab==='login'?'block':'none';document.getElementById('f-signup').style.display=tab==='signup'?'block':'none';document.getElementById('f-forgot').style.display='none';clearMsg();}
 function showForgot(){document.getElementById('f-login').style.display='none';document.getElementById('f-forgot').style.display='block';document.querySelectorAll('.auth-tab').forEach(t=>t.classList.remove('active'));}
@@ -1957,7 +2010,7 @@ async function doSignup(){
 }
 
 async function doReset(){const email=document.getElementById('r-email').value.trim();if(!email){setMsg('Indtast din e-mail','err');return;}const{error}=await sb.auth.resetPasswordForEmail(email,{redirectTo:window.location.href});if(error)setMsg(error.message,'err');else setMsg('Nulstillingslink sendt ✉️','ok');}
-async function doLogout(){if(_chatRealtimeChannel){sb.removeChannel(_chatRealtimeChannel);_chatRealtimeChannel=null;}await sb.auth.signOut();toast('Du er nu logget ud');goPage('home','nav-home');}
+async function doLogout(){if(_chatRealtimeChannel){sb.removeChannel(_chatRealtimeChannel);_chatRealtimeChannel=null;}if(typeof _globalMsgChannel!=='undefined'&&_globalMsgChannel){sb.removeChannel(_globalMsgChannel);_globalMsgChannel=null;}await sb.auth.signOut();toast('Du er nu logget ud');goPage('home','nav-home');}
 function setMsg(m,type){const el=document.getElementById('auth-msg');el.textContent=m;el.className='msg-box '+type;}
 function clearMsg(){const el=document.getElementById('auth-msg');el.className='msg-box';el.textContent='';}
 
