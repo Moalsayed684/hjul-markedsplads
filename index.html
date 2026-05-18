@@ -445,7 +445,7 @@
 </svg>
       <div class="cat-icon-label">Tilbehør</div>
     </div>
-    <div class="cat-icon-item" onclick="showPage('vaerksted')">
+    <div class="cat-icon-item" onclick="goPage('vaerksted','nav-home')">
       <svg width="32" height="32" viewBox="0 0 32 32" fill="none">
   <path d="M20 2C16 2 13 5 13 9C13 10 13.3 11 13.7 11.8L3 22.5C2 23.5 2 25 3 26L6 29C7 30 8.5 30 9.5 29L20.2 18.3C21 18.7 22 19 23 19C27 19 30 16 30 12C30 11 29.8 10 29.4 9.1L25 13.5L22.5 13.5L22.5 11L26.9 6.6C25.9 4 23.1 2 20 2Z" stroke="#8fbc5a" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
 </svg>
@@ -719,7 +719,7 @@
     </div>
     <div class="chat-messages" id="chat-msgs"></div>
     <div class="chat-footer">
-      <input class="chat-input" type="text" id="chat-inp" placeholder="Skriv en besked..." onkeydown="if(event.key==='Enter')sendMsgReal()">
+      <input class="chat-input" type="text" id="chat-inp" placeholder="Skriv en besked..." maxlength="1000" onkeydown="if(event.key==='Enter')sendMsgReal()">
       <button class="send-btn" onclick="sendMsgReal()">↑</button>
     </div>
   </div>
@@ -950,7 +950,7 @@
     <div style="font-weight:700;font-size:16px;margin-bottom:8px;">1. Brug af platformen</div>
     <div style="font-size:14px;color:#bbb;line-height:1.7;margin-bottom:16px;">Det er ikke tilladt at sælge stjålne cykler, oprette falske annoncer eller chikanere andre brugere.</div>
     <div style="font-weight:700;font-size:16px;margin-bottom:8px;">2. Priser</div>
-    <div style="font-size:14px;color:#bbb;line-height:1.7;margin-bottom:16px;">• Gratis: 5 annoncer / 30 dage<br>• Premium: 49 kr./annonce<br>• Lynhurtig Salg: 199 kr./annonce</div>
+    <div style="font-size:14px;color:#bbb;line-height:1.7;margin-bottom:16px;">CykelHub er i øjeblikket 100% gratis for alle brugere.<br>Fremtidige betalte funktioner vil altid kommunikeres tydeligt på forhånd.</div>
     <div style="font-weight:700;font-size:16px;margin-bottom:8px;">3. Kontakt</div>
     <div style="font-size:14px;color:#bbb;line-height:1.7;margin-bottom:16px;">📧 malsayed516@gmail.com</div>
   </div>
@@ -1233,194 +1233,18 @@
 </div>
 
 <!-- FIND VÆRKSTED PAGE -->
-<div id="page-vaerksted" class="page" style="padding:0">
-  <div style="background:var(--bg);padding:14px 16px;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:10px;position:sticky;top:0;z-index:50;">
-    <button class="back-btn" onclick="goPage('home','nav-home')">←</button>
-    <div style="font-weight:800;font-size:18px;flex:1;">🔧 Find Værksted</div>
-  </div>
 
-  <!-- MAP AREA -->
-  <div id="vaerksted-map" style="width:100%;height:280px;background:linear-gradient(135deg,#0d1f0d,#0a1a0a);position:relative;overflow:hidden;display:flex;align-items:center;justify-content:center;">
-    <!-- Animated map grid -->
-    <div style="position:absolute;inset:0;opacity:0.15;">
-      <svg width="100%" height="100%"><defs><pattern id="grid" width="30" height="30" patternUnits="userSpaceOnUse"><path d="M 30 0 L 0 0 0 30" fill="none" stroke="#8fbc5a" stroke-width="0.5"/></pattern></defs><rect width="100%" height="100%" fill="url(#grid)"/></svg>
-    </div>
-    <!-- Map pins for workshops -->
-    <div id="map-pins" style="position:absolute;inset:0;"></div>
-    <div style="text-align:center;z-index:2;">
-      <div style="font-size:40px;margin-bottom:8px;">🗺️</div>
-      <div style="color:#8fbc5a;font-weight:700;font-size:14px;">Cykelværksteder i Danmark</div>
-      <div style="color:#666;font-size:12px;margin-top:4px;" id="map-count">Indlæser...</div>
-    </div>
-  </div>
-
-  <!-- SEARCH BAR -->
-  <div style="padding:12px 16px;background:var(--bg);border-bottom:1px solid var(--border);">
-    <div style="background:var(--bg2);border-radius:12px;display:flex;align-items:center;padding:10px 14px;gap:10px;border:1.5px solid var(--border2);" id="vaerksted-search-wrap">
-      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#8fbc5a" stroke-width="2.5" stroke-linecap="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
-      <input type="text" id="vaerksted-search" placeholder="Søg by eller postnummer..." style="background:none;border:none;outline:none;font-size:14px;width:100%;color:var(--text);font-family:'Inter',sans-serif;" oninput="searchVaerksted(this.value)">
-      <button onclick="clearVaerkstedSearch()" style="background:none;border:none;cursor:pointer;color:#555;font-size:16px;" id="vaerksted-clear" style="display:none">✕</button>
-    </div>
-  </div>
-
-  <!-- RESULTS LIST -->
-  <div id="vaerksted-list" style="padding:12px 16px;"></div>
-</div>
 
 
 <!-- ===== ADMIN PANEL OVERLAY ===== -->
-<div class="admin-overlay" id="admin-overlay">
-  <div class="admin-panel">
-    <div class="admin-header">
-      <div class="admin-title">⚙️ Annonce Admin</div>
-      <button class="admin-close" onclick="closeAdmin()">✕</button>
-    </div>
 
-    <!-- STATS -->
-    <div class="admin-section">
-      <div class="admin-section-title">📊 Statistik</div>
-      <div class="stats-grid">
-        <div class="stat-card"><div class="stat-num" id="stat-total">0</div><div class="stat-label">Aktive annoncer</div></div>
-        <div class="stat-card"><div class="stat-num" id="stat-banner">0</div><div class="stat-label">Banner visninger</div></div>
-        <div class="stat-card"><div class="stat-num" id="stat-clicks">0</div><div class="stat-label">Klik i dag</div></div>
-        <div class="stat-card"><div class="stat-num" id="stat-revenue">0</div><div class="stat-label">kr. / md</div></div>
-      </div>
-    </div>
-
-    <!-- AD LIST -->
-    <div class="admin-section">
-      <div class="admin-section-title">📢 Annoncer</div>
-      <div id="admin-ad-list"></div>
-      <button onclick="showAdForm(null)" style="width:100%;background:#1a2a1a;color:#8fbc5a;border:1.5px dashed #8fbc5a;border-radius:12px;padding:11px;font-weight:700;font-size:13px;cursor:pointer;font-family:'Inter',sans-serif;margin-top:4px;">+ Tilføj ny annonce</button>
-    </div>
-
-    <!-- AD FORM -->
-    <div class="admin-section" id="admin-form-section" style="display:none;">
-      <div class="ad-form">
-        <div class="ad-form-title" id="ad-form-title">✏️ Ny annonce</div>
-        <input class="admin-input" id="af-brand" placeholder="Virksomhedsnavn (fx. Telia)">
-        <input class="admin-input" id="af-logo" placeholder="Emoji logo (fx. 📱)">
-        <input class="admin-input" id="af-desc" placeholder="Beskrivelse (max 60 tegn)">
-        <input class="admin-input" id="af-cta" placeholder="Knaptekst (fx. Se tilbud →)">
-        <input class="admin-input" id="af-url" placeholder="Link URL (https://...)">
-        <div style="margin-bottom:8px;">
-  <div style="display:flex;gap:8px;align-items:center;">
-    <input class="admin-input" id="af-img" placeholder="Billedlink URL (https://...)" style="margin-bottom:0;flex:1;">
-    <label for="af-img-upload" style="background:#1a2a1a;color:#8fbc5a;border:1.5px solid #8fbc5a;border-radius:10px;padding:10px 12px;font-size:12px;font-weight:700;cursor:pointer;white-space:nowrap;flex-shrink:0;">📷 Upload</label>
-    <input type="file" id="af-img-upload" accept="image/*" style="display:none;" onchange="uploadAdImage(event)">
-  </div>
-  <div id="af-img-preview" style="display:none;margin-top:8px;border-radius:10px;overflow:hidden;height:100px;background:#1a1a1a;">
-    <img id="af-img-preview-img" src="" style="width:100%;height:100%;object-fit:cover;">
-  </div>
-  <div id="af-img-upload-progress" style="display:none;font-size:11px;color:#8fbc5a;margin-top:4px;text-align:center;">⏳ Uploader...</div>
-</div>
-        <input class="admin-input" id="af-price" placeholder="Månedspris (kr.)" type="number">
-        <select class="admin-select" id="af-position">
-          <option value="both">Banner + kort (begge)</option>
-          <option value="banner">Kun top banner</option>
-          <option value="card">Kun kort i listen</option>
-        </select>
-        <input type="hidden" id="af-edit-id">
-        <button class="admin-save-btn" onclick="saveAd()">💾 Gem annonce</button>
-        <button class="admin-cancel-btn" onclick="hideAdForm()">Annuller</button>
-      </div>
-    </div>
-
-    <!-- SETTINGS -->
-    <div class="admin-section">
-      <div class="admin-section-title">⚙️ Indstillinger</div>
-      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px;">
-        <span style="font-size:13px;color:#aaa;">Rotér banner hvert</span>
-        <select class="admin-select" id="rotate-interval" style="width:120px;margin-bottom:0;" onchange="updateRotateInterval()">
-          <option value="4000">4 sek.</option>
-          <option value="6000" selected>6 sek.</option>
-          <option value="10000">10 sek.</option>
-          <option value="15000">15 sek.</option>
-        </select>
-      </div>
-      <div style="display:flex;align-items:center;justify-content:space-between;">
-        <span style="font-size:13px;color:#aaa;">Annonce hver X opslag</span>
-        <select class="admin-select" id="ad-frequency" style="width:120px;margin-bottom:0;" onchange="updateAdFrequency()">
-          <option value="5">Hver 5.</option>
-          <option value="8">Hver 8.</option>
-          <option value="10">Hver 10.</option>
-          <option value="15" selected>Hver 15.</option>
-        </select>
-      </div>
-    </div>
-
-    <div class="admin-section">
-      <div class="admin-section-title">📥 Nye forespørgsler</div>
-      <div id="admin-requests-list"><div style="font-size:12px;color:#444;text-align:center;padding:10px;">Indlæser...</div></div>
-    </div>
-    <div style="padding:14px 20px 24px;text-align:center;">
-      <div style="font-size:11px;color:#333;">CykelHub Admin · Kun synlig for dig</div>
-    </div>
-  </div>
-</div>
 
 <!-- Admin FAB button (kun synlig for admin) -->
-<button class="admin-fab" id="admin-fab" onclick="openAdmin()">⚙️</button>
+
 
 
 <!-- ANNONCÉR MED OS PAGE -->
-<div id="page-advertise" class="page">
-  <div style="padding:20px 16px 30px;">
-    <div style="display:flex;align-items:center;gap:10px;margin-bottom:24px;">
-      <button class="back-btn" onclick="goPage('home','nav-home')">←</button>
-      <div style="font-weight:800;font-size:20px;">📢 Annoncér med os</div>
-    </div>
 
-    <!-- Priser -->
-    <div style="font-weight:700;font-size:16px;margin-bottom:14px;">Vores pakker</div>
-    <div style="display:flex;flex-direction:column;gap:10px;margin-bottom:24px;">
-      <div style="background:var(--bg2);border-radius:14px;padding:14px 16px;border:1px solid var(--border2);display:flex;align-items:center;gap:14px;">
-        <div style="font-size:28px;">🌱</div>
-        <div style="flex:1;">
-          <div style="font-weight:700;font-size:14px;">Starter</div>
-          <div style="font-size:12px;color:#888;margin-top:2px;">Banner + kort · 30 dage</div>
-        </div>
-        <div style="font-weight:800;font-size:16px;color:#8fbc5a;">500 kr.</div>
-      </div>
-      <div style="background:var(--bg2);border-radius:14px;padding:14px 16px;border:1.5px solid #8fbc5a;display:flex;align-items:center;gap:14px;position:relative;">
-        <div style="position:absolute;top:-10px;left:50%;transform:translateX(-50%);background:#8fbc5a;color:#111;font-size:10px;font-weight:700;padding:2px 12px;border-radius:50px;white-space:nowrap;">⭐ Mest populær</div>
-        <div style="font-size:28px;">🚀</div>
-        <div style="flex:1;">
-          <div style="font-weight:700;font-size:14px;">Pro</div>
-          <div style="font-size:12px;color:#888;margin-top:2px;">Banner + kort · 3 måneder</div>
-        </div>
-        <div style="font-weight:800;font-size:16px;color:#8fbc5a;">1.000 kr.</div>
-      </div>
-      <div style="background:var(--bg2);border-radius:14px;padding:14px 16px;border:1px solid #f0c040;display:flex;align-items:center;gap:14px;">
-        <div style="font-size:28px;">💎</div>
-        <div style="flex:1;">
-          <div style="font-weight:700;font-size:14px;">Premium</div>
-          <div style="font-size:12px;color:#888;margin-top:2px;">Banner + kort · 6 måneder</div>
-        </div>
-        <div style="font-weight:800;font-size:16px;color:#f0c040;">2.000 kr.</div>
-      </div>
-    </div>
-
-    <!-- Kontaktformular -->
-    <div style="font-weight:700;font-size:16px;margin-bottom:14px;">Kontakt os</div>
-    <div id="ad-request-msg" class="msg-box"></div>
-    <div class="form-group"><label class="form-label">Virksomhedsnavn *</label><input class="form-input" type="text" id="ar-company" placeholder="fx. Telia Danmark"></div>
-    <div class="form-group"><label class="form-label">E-mail *</label><input class="form-input" type="email" id="ar-email" placeholder="kontakt@virksomhed.dk"></div>
-    <div class="form-group"><label class="form-label">Telefon</label><input class="form-input" type="tel" id="ar-phone" placeholder="+45 12 34 56 78"></div>
-    <div class="form-group">
-      <label class="form-label">Pakke</label>
-      <select class="form-input" id="ar-budget">
-        <option value="500 kr. - Starter">🌱 Starter – 500 kr./md</option>
-        <option value="1000 kr. - Pro" selected>🚀 Pro – 1.000 kr./md</option>
-        <option value="2000 kr. - Premium">💎 Premium – 2.000 kr./md</option>
-        <option value="Vil diskutere">💬 Vil gerne diskutere</option>
-      </select>
-    </div>
-    <div class="form-group"><label class="form-label">Besked</label><textarea class="form-input" rows="3" id="ar-message" placeholder="Fortæl os lidt om din virksomhed og hvad du ønsker at annoncere..."></textarea></div>
-    <button class="btn-primary" onclick="submitAdRequest()">📨 Send forespørgsel</button>
-    <div style="text-align:center;margin-top:14px;font-size:12px;color:#555;">Vi vender tilbage inden for 24 timer · malsayed516@gmail.com</div>
-  </div>
-</div>
 
 <!-- SKIFT ADGANGSKODE PAGE -->
 <div id="page-skift-password" class="page">
@@ -1548,7 +1372,7 @@
   </div>
   <div class="share-copy-row">
     <div class="share-copy-url" id="share-url"></div>
-    <button class="share-copy-btn" yLink()">Kopiér</button>
+    <button class="share-copy-btn" onclick="copyLink()">Kopiér</button>
   </div>
 </div>
 
@@ -1703,12 +1527,20 @@ function toggleTheme(){const body=document.body;const toggle=document.getElement
 function loadTheme(){const saved=localStorage.getItem('theme');if(saved==='light'){document.body.classList.add('light-mode');}setTimeout(()=>{const toggle=document.getElementById('theme-toggle');if(toggle)toggle.classList.toggle('on',saved==='light');},100);}
 function filterEditCities(val){const dd=document.getElementById('edit-city-dropdown');if(!val||val.length<2){dd.style.display='none';return;}const filtered=danishCities.filter(c=>c.city.toLowerCase().includes(val.toLowerCase())||c.zip.startsWith(val)).slice(0,8);if(!filtered.length){dd.style.display='none';return;}dd.style.display='block';dd.innerHTML=filtered.map(c=>'<div class="city-option" onclick="selectEditCity(\''+c.zip+' '+c.city+'\')"><span style="color:#8fbc5a;font-weight:700;font-family:monospace;">'+c.zip+'</span> '+c.city+'</div>').join('');}
 function selectEditCity(val){document.getElementById('edit-city').value=val;document.getElementById('edit-city-dropdown').style.display='none';}
-function handleAvatarUpload(e){const file=e.target.files[0];if(!file)return;const reader=new FileReader();reader.onload=ev=>{const avatar=document.getElementById('edit-avatar');avatar.innerHTML='<img src="'+ev.target.result+'" style="width:100%;height:100%;object-fit:cover;">';localStorage.setItem('avatar',ev.target.result);};reader.readAsDataURL(file);e.target.value='';}
+function handleAvatarUpload(e){const file=e.target.files[0];if(!file)return;const reader=new FileReader();reader.onload=ev=>{const img=new Image();img.onload=()=>{const canvas=document.createElement('canvas');const size=200;canvas.width=size;canvas.height=size;const ctx=canvas.getContext('2d');ctx.drawImage(img,0,0,size,size);const compressed=canvas.toDataURL('image/jpeg',0.7);const avatar=document.getElementById('edit-avatar');avatar.innerHTML='<img src="'+compressed+'" style="width:100%;height:100%;object-fit:cover;">';try{localStorage.setItem('avatar',compressed);}catch(_){console.warn('Avatar too large for localStorage');}};img.src=ev.target.result;};reader.readAsDataURL(file);e.target.value='';}
 function saveProfile(){const firstname=document.getElementById('edit-firstname').value.trim();const lastname=document.getElementById('edit-lastname').value.trim();const city=document.getElementById('edit-city').value.trim();const phone=document.getElementById('edit-phone').value.trim();if(!firstname||!lastname){const el=document.getElementById('edit-profile-msg');el.textContent='Udfyld fornavn og efternavn';el.className='msg-box err';return;}localStorage.setItem('profile',JSON.stringify({firstname,lastname,city,phone}));document.getElementById('p-name').textContent=firstname+' '+lastname;toast('Profil gemt! ✅');goPage('profile','nav-prof');}
 function loadProfile(){const saved=localStorage.getItem('profile');if(saved){const p=JSON.parse(saved);if(document.getElementById('edit-firstname'))document.getElementById('edit-firstname').value=p.firstname||'';if(document.getElementById('edit-lastname'))document.getElementById('edit-lastname').value=p.lastname||'';if(document.getElementById('edit-city'))document.getElementById('edit-city').value=p.city||'';if(document.getElementById('edit-phone'))document.getElementById('edit-phone').value=p.phone||'';}const avatar=localStorage.getItem('avatar');if(avatar){const el=document.getElementById('edit-avatar');if(el)el.innerHTML='<img src="'+avatar+'" style="width:100%;height:100%;object-fit:cover;">';}}
 
 let currentConvId=null,currentSellerId=null;
 
+let _chatRealtimeChannel = null;
+function subscribeToChat(convId){
+  if(_chatRealtimeChannel){ sb.removeChannel(_chatRealtimeChannel); _chatRealtimeChannel=null; }
+  if(!convId) return;
+  _chatRealtimeChannel = sb.channel('chat-'+convId)
+    .on('postgres_changes',{event:'INSERT',schema:'public',table:'messages',filter:'conversation_id=eq.'+convId},()=>{ loadChatReal(); })
+    .subscribe();
+}
 async function loadChatReal(){
   const el=document.getElementById('chat-msgs');
   if(!el)return;
@@ -1765,15 +1597,26 @@ async function openRealConv(convId,otherId,listingId){
   showPage('chat');loadChatReal();
 }
 
-async function loadListingsFromDb(){
+let _listingsPage=0,_listingsPageSize=20,_listingsHasMore=true;
+async function loadListingsFromDb(append=false){
+  if(!append){_listingsPage=0;_listingsHasMore=true;}
+  if(!_listingsHasMore)return;
   try{
-    const res=await sb.from('listings').select('id,title,price,city,category,images,stelnummer,description,details,views,saves,shares,created_at,user_id').eq('active',true).order('created_at',{ascending:false}).limit(100);
+    const from=_listingsPage*_listingsPageSize;
+    const to=from+_listingsPageSize-1;
+    const res=await sb.from('listings').select('id,title,price,city,category,images,stelnummer,description,details,views,saves,shares,created_at,user_id').eq('active',true).order('created_at',{ascending:false}).range(from,to);
     if(res.error)throw new Error(String(res.error.message||res.error.code||'DB error'));
     const rows=res.data||[];
+    _listingsHasMore=rows.length===_listingsPageSize;
+    _listingsPage++;
     if(rows.length){
-      const dbListings=rows.map(l=>({id:String(l.id),title:String(l.title||''),price:l.price?Number(l.price).toLocaleString('da-DK')+' kr.':'0 kr.',city:String(l.city||''),cat:String(l.category||'cykler'),img:Array.isArray(l.images)&&l.images[0]?String(l.images[0]):null,stelnummer:String(l.stelnummer||''),desc:String(l.description||''),brand:String((l.details&&l.details.brand)||''),type:String((l.details&&l.details.type)||''),seller:String((l.details&&l.details.seller)||'Privat sælger'),phone:String((l.details&&l.details.phone)||''),views:Number(l.views||0),saves:Number(l.saves||0),shares:Number(l.shares||0),created_at:String(l.created_at||''),user_id:String(l.user_id||'')}));
-      const localSamples=allListings.filter(l=>typeof l.id==='number');
-      allListings=[...dbListings,...localSamples];
+      const dbListings=rows.map(l=>{
+        let det={};try{det=(l.details&&typeof l.details==='object')?l.details:{};}catch(_){}
+        let imgs=[];try{imgs=Array.isArray(l.images)?l.images:[];}catch(_){}
+        return {id:String(l.id||''),title:String(l.title||''),price:l.price?Number(l.price).toLocaleString('da-DK')+' kr.':'0 kr.',city:String(l.city||''),cat:String(l.category||'cykler'),img:imgs[0]?String(imgs[0]):null,stelnummer:String(l.stelnummer||''),desc:String(l.description||''),brand:String(det.brand||''),type:String(det.type||''),seller:String(det.seller||'Privat sælger'),phone:String(det.phone||''),views:Number(l.views||0),saves:Number(l.saves||0),shares:Number(l.shares||0),created_at:String(l.created_at||''),user_id:String(l.user_id||'')};
+      });
+      if(append){allListings=[...allListings.filter(l=>typeof l.id==='string'),...dbListings,...allListings.filter(l=>typeof l.id==='number')];}
+      else{const loc=allListings.filter(l=>typeof l.id==='number');allListings=[...dbListings,...loc];}
       renderHome(allListings);
     }
   }catch(e){console.warn('loadListings error:',String(e&&e.message?e.message:e));}
@@ -1789,7 +1632,14 @@ function checkResetToken(){
   }
 }
 
+function sanitize(str){
+  if(!str)return '';
+  return String(str).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#x27;');
+}
 async function init(){
+  // Offline detection
+  window.addEventListener('online', ()=>{ toast('✅ Forbindelse genoprettet'); loadListingsFromDb(); loadAds(); });
+  window.addEventListener('offline', ()=>{ toast('⚠️ Ingen internetforbindelse'); });
   loadTheme();
   checkResetToken();
   const{data:{session}}=await sb.auth.getSession();
@@ -1827,7 +1677,7 @@ function setUser(u){
 
 function clearUser(){me=null;document.getElementById('auth-section').style.display='block';document.getElementById('profile-section').style.display='none';checkAdminAccess();}
 
-function listingCard(l){const lid=String(l.id);return`<div class="listing-card" onclick="openListingById('${lid}')">${l.img?`<img src="${l.img}" alt="${l.title}" loading="lazy">`:'<div class="listing-img-ph">🚲</div>'}${l.plan==='premium'?'<div class="premium-badge">⭐ Premium</div>':''}<button class="heart-btn" onclick="event.stopPropagation();this.classList.toggle('liked');this.textContent=this.classList.contains('liked')?'♥':'♡'">♡</button><div class="listing-info"><div class="listing-title">${l.title}</div><div class="listing-price">${l.price}</div><div class="listing-loc">📍 ${l.city}</div></div></div>`;}
+function listingCard(l){const lid=String(l.id);return`<div class="listing-card" onclick="openListingById('${lid}')">${l.img?`<img src="${sanitize(l.img)}" alt="${sanitize(l.title)}" loading="lazy">`:'<div class="listing-img-ph">🚲</div>'}${l.plan==='premium'?'<div class="premium-badge">⭐ Premium</div>':''}<button class="heart-btn" onclick="event.stopPropagation();this.classList.toggle('liked');this.textContent=this.classList.contains('liked')?'♥':'♡'">♡</button><div class="listing-info"><div class="listing-title">${sanitize(l.title)}</div><div class="listing-price">${sanitize(l.price)}</div><div class="listing-loc">📍 ${sanitize(l.city)}</div></div></div>`;}
 
 function adCard(a){
   if(!a) return '';
@@ -1845,7 +1695,14 @@ function adCard(a){
   </div>`;
 }
 
-function trackAdClick(id, url){bannerClicks++;localStorage.setItem('bannerClicks', bannerClicks);if(url) window.open(url, '_blank');}
+function trackAdClick(id, url){
+  bannerClicks++;
+  localStorage.setItem('bannerClicks', bannerClicks);
+  if(id && !id.startsWith('f')){
+    try{ sb.from('ads').select('id').eq('id',id).single().then(r=>{ if(!r.error){ sb.rpc('increment_ad_clicks',{ad_id:id}).catch(()=>{}); } }); }catch(_){}
+  }
+  if(url) window.open(url, '_blank');
+}
 async function trackShare(listingId){if(!listingId||typeof listingId!=='string'||!listingId.includes('-'))return;const l=allListings.find(x=>x.id===listingId);if(l){l.shares=(l.shares||0)+1;await sb.from('listings').update({shares:l.shares}).eq('id',listingId);}}
 
 function openBannerAd(){const activeAds=ads.filter(a=>a.active&&(a.position==='both'||a.position==='banner'));if(!activeAds.length)return;const a=activeAds[adIndex%activeAds.length];trackAdClick(a.id||'',a.url||'');}
@@ -1875,10 +1732,17 @@ function renderHome(items){
   const cardAds=ads.filter(a=>a.active&&(a.position==='both'||a.position==='card'));
   let h='';let adCount=0;
   items.forEach((l,i)=>{h+=listingCard(l);if((i+1)%adFrequency===0&&cardAds.length){h+=adCard(cardAds[adCount%cardAds.length]);adCount++;}});
+  if(_listingsHasMore){
+    h+=`<div style="grid-column:span 2;text-align:center;padding:16px 0;">
+      <button onclick="loadListingsFromDb(true)" style="background:var(--bg2);border:1.5px solid #8fbc5a;color:#8fbc5a;border-radius:50px;padding:12px 32px;font-family:Inter,sans-serif;font-weight:700;font-size:14px;cursor:pointer;">
+        Indlæs flere annoncer
+      </button>
+    </div>`;
+  }
   el.innerHTML=h;
 }
 
-function handleSearch(val){renderHome(!val.trim()?allListings:allListings.filter(l=>l.title.toLowerCase().includes(val.toLowerCase())||l.city.toLowerCase().includes(val.toLowerCase())));}
+function handleSearch(val){if(val.trim()){document.querySelectorAll('.subcat-item').forEach(i=>i.classList.remove('active'));}renderHome(!val.trim()?allListings:allListings.filter(l=>l.title.toLowerCase().includes(val.toLowerCase())||l.city.toLowerCase().includes(val.toLowerCase())||l.brand&&l.brand.toLowerCase().includes(val.toLowerCase())));}
 function selectCat(cat,el){document.querySelectorAll('.cat-icon-item').forEach(t=>t.classList.remove('active'));el.classList.add('active');renderHome(allListings);showPage('home');}
 function selectSubcat(subcat,el){if(el.classList.contains('active')){document.querySelectorAll('.subcat-item').forEach(i=>i.classList.remove('active'));renderHome(allListings);showPage('home');return;}document.querySelectorAll('.subcat-item').forEach(i=>i.classList.remove('active'));el.classList.add('active');const map={bycykel:'Bycykel',mountainbike:'Mountainbike',racercykel:'Racercykel',damecykel:'Damecykel',bornecykel:'Børnecykel',ladcykel:'Ladcykel'};const t=map[subcat];let items;if(subcat==='elladcykel')items=allListings.filter(l=>l.cat==='elcykler');else if(t)items=allListings.filter(l=>l.type===t);else items=allListings;renderHome(items);showPage('home');}
 function openCatPage(cat){if(cat==='tilbehor'){activeCat='tilbehor';activeFilters={};document.getElementById('cat-page-title').textContent='🔧 Tilbehør';document.getElementById('filter-open-btn').classList.remove('has-filters');document.getElementById('filter-open-btn').textContent='⚙️ Filter';const items=allListings.filter(l=>l.cat==='tilbehor');document.getElementById('results-count').textContent=items.length+' annoncer';document.getElementById('cat-listings').innerHTML=items.length?items.map(l=>listingCard(l)).join(''):'<div class="empty"><div class="e-icon">🔧</div><p>Ingen tilbehør endnu</p></div>';showPage('cat');return;}activeCat=cat;activeFilters={};const titles={cykler:'🚲 Cykler',elcykler:'⚡ El-cykler'};document.getElementById('cat-page-title').textContent=titles[cat];document.getElementById('filter-open-btn').classList.remove('has-filters');document.getElementById('filter-open-btn').textContent='⚙️ Filter';const items=allListings.filter(l=>l.cat===cat);document.getElementById('results-count').textContent=items.length+' annoncer';document.getElementById('cat-listings').innerHTML=items.length?items.map(l=>listingCard(l)).join(''):'<div class="empty"><div class="e-icon">🔍</div><p>Ingen annoncer</p></div>';showPage('cat');}
@@ -1979,7 +1843,7 @@ async function doSignup(){
 }
 
 async function doReset(){const email=document.getElementById('r-email').value.trim();if(!email){setMsg('Indtast din e-mail','err');return;}const{error}=await sb.auth.resetPasswordForEmail(email,{redirectTo:window.location.href});if(error)setMsg(error.message,'err');else setMsg('Nulstillingslink sendt ✉️','ok');}
-async function doLogout(){await sb.auth.signOut();toast('Du er nu logget ud');goPage('home','nav-home');}
+async function doLogout(){if(_chatRealtimeChannel){sb.removeChannel(_chatRealtimeChannel);_chatRealtimeChannel=null;}await sb.auth.signOut();toast('Du er nu logget ud');goPage('home','nav-home');}
 function setMsg(m,type){const el=document.getElementById('auth-msg');el.textContent=m;el.className='msg-box '+type;}
 function clearMsg(){const el=document.getElementById('auth-msg');el.className='msg-box';el.textContent='';}
 
@@ -2034,7 +1898,10 @@ async function submitListing(){
   const price=parseInt(priceRaw);const details={};const def=sellFields[currentSellCat];
   if(def)def.fields.forEach(f=>{if(f.type==='chips'){const sel=document.querySelectorAll(`#chips-${f.id} .chip-opt.sel`);if(sel.length)details[f.id]=Array.from(sel).map(x=>x.textContent).join(', ');}else if(f.type==='brand'){const v=document.getElementById('field-brand');if(v&&v.value)details[f.id]=v.value;}else{const v=document.getElementById('field-'+f.id);if(v&&v.value)details[f.id]=v.value;}});
   details.seller=me.user_metadata?.name||me.email.split('@')[0];details.phone=me.user_metadata?.phone||'';
-  el.textContent='⏳ Opretter annonce...';el.className='msg-box ok';
+  // Check image sizes
+const totalSize = uploadedImgs.reduce((s,img)=>s+img.length,0);
+if(totalSize > 3000000){el.textContent='❌ Billeder er for store. Brug max 3MB total.';el.className='msg-box err';return;}
+el.textContent='⏳ Opretter annonce...';el.className='msg-box ok';
   try{
     const{data,error}=await sb.from('listings').insert({user_id:me.id,title,price,city,category:currentSellCat,images:uploadedImgs.length?uploadedImgs:[],stelnummer,description:desc,details,active:true,views:0,saves:0,shares:0}).select('id').single();
     if(error)throw error;
@@ -2226,6 +2093,8 @@ function showPage(name){
   document.getElementById('topbar').style.display=hideTop?'none':'block';
   document.getElementById('subcat-bar').style.display=hideTop?'none':'flex';
   if(name==='messages')loadConvsReal();
+  if(name==='chat')subscribeToChat(currentConvId);
+  if(name!=='chat'&&_chatRealtimeChannel){sb.removeChannel(_chatRealtimeChannel);_chatRealtimeChannel=null;}
   if(name==='vaerksted')renderWorkshops(filteredWorkshops);
   if(name==='edit-profile')loadProfile();
   if(name==='notifications'){notifs.forEach(n=>n.unread=false);updateBellDot();document.getElementById('notif-list').innerHTML=notifs.map(n=>`<div class="notif-item ${n.unread?'unread':''}"><div style="font-size:22px">${n.icon}</div><div><div style="font-weight:600;font-size:14px">${n.title}</div><div style="font-size:12px;color:#999;margin-top:2px">${n.sub}</div></div></div>`).join('');}
@@ -2236,6 +2105,7 @@ function requireAuth(page,navId){if(!me){toast('Log ind for at fortsætte');goPa
 function toast(msg){const t=document.getElementById('toast');t.textContent=msg;t.classList.add('show');setTimeout(()=>t.classList.remove('show'),2500);}
 
 init();
+window.addEventListener('beforeunload',()=>{if(window._adTimer)clearInterval(window._adTimer);if(typeof _chatRealtimeChannel!=='undefined'&&_chatRealtimeChannel){try{sb.removeChannel(_chatRealtimeChannel);}catch(_){}}});
 
 </script>
 </body>
