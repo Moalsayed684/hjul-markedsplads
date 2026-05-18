@@ -127,7 +127,7 @@
     @keyframes fadeUp{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
     .section-title{font-weight:700;font-size:16px;padding:16px 16px 8px;} body.light-mode .section-title{color:#111;}
     .listings-grid{padding:12px;display:grid;grid-template-columns:1fr 1fr;gap:10px;}
-    .listing-card{background:var(--bg2);border-radius:14px;overflow:hidden;border:1px solid var(--border2);cursor:pointer;transition:transform 0.15s;position:relative;}
+    .listing-card{background:var(--bg2);border-radius:14px;overflow:hidden;border:1px solid var(--border2);cursor:pointer;transition:transform 0.15s;position:relative;isolation:isolate;}
     .listing-card:active{transform:scale(0.97);}
     .listing-card img{width:100%;aspect-ratio:4/3;object-fit:cover;display:block;}
     .listing-img-ph{width:100%;aspect-ratio:4/3;background:var(--bg3);display:flex;align-items:center;justify-content:center;font-size:36px;}
@@ -135,7 +135,7 @@
     .listing-title{font-weight:600;font-size:13px;margin-bottom:4px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
     .listing-price{font-weight:700;font-size:15px;}
     .listing-loc{font-size:11px;color:#999;margin-top:2px;}
-    .heart-btn{position:absolute;top:8px;right:8px;width:28px;height:28px;background:rgba(0,0,0,0.6);border-radius:50%;border:none;cursor:pointer;font-size:14px;color:#bbb;display:flex;align-items:center;justify-content:center;}
+    .heart-btn{position:absolute;top:8px;right:8px;width:32px;height:32px;background:rgba(0,0,0,0.55);border-radius:50%;border:none;cursor:pointer;font-size:16px;color:#bbb;display:flex;align-items:center;justify-content:center;z-index:10;-webkit-tap-highlight-color:transparent;touch-action:manipulation;}
     .heart-btn.liked{color:#8fbc5a;}
     .premium-badge{position:absolute;top:8px;left:8px;background:#8fbc5a;color:#111;font-size:10px;font-weight:700;padding:3px 8px;border-radius:50px;}
     .cat-page-header{background:var(--bg);padding:12px 16px;border-bottom:1px solid var(--border);position:sticky;top:0;z-index:50;}
@@ -1782,14 +1782,17 @@ function toggleFavorite(id, btnEl){
   let favs=getFavorites();
   if(favs.includes(sid)){
     favs=favs.filter(function(f){return f!==sid;});
-    if(btnEl){btnEl.classList.remove('liked');btnEl.textContent='♡';btnEl.style.color='';}
+    if(btnEl){btnEl.classList.remove('liked');btnEl.innerHTML='♡';btnEl.style.color='';}
     toast('Fjernet fra favoritter');
   } else {
     favs.push(sid);
-    if(btnEl){btnEl.classList.add('liked');btnEl.textContent='♥';btnEl.style.color='#8fbc5a';}
+    if(btnEl){btnEl.classList.add('liked');btnEl.innerHTML='♥';btnEl.style.color='#8fbc5a';}
     toast('♥ Gemt i favoritter!');
   }
   saveFavorites(favs);
+  // Refresh favorites page if open
+  const favPage=document.getElementById('page-favorites');
+  if(favPage&&favPage.classList.contains('active'))loadFavorites();
 }
 function loadFavorites(){
   const el=document.getElementById('favorites-list');
@@ -1882,12 +1885,12 @@ function clearUser(){me=null;document.getElementById('auth-section').style.displ
 function listingCard(l){
   const lid=String(l.id);
   const fav=isFavorite(lid);
-  let html='<div class="listing-card" onclick="openListingById('+JSON.stringify(lid)+')">';
-  if(l.img){html+='<img src="'+sanitize(l.img)+'" alt="'+sanitize(l.title)+'" loading="lazy">';}
-  else{html+='<div class="listing-img-ph">🚲</div>';}
-  if(l.plan==='premium'){html+='<div class="premium-badge">⭐ Premium</div>';}
-  html+='<button class="heart-btn" onclick="event.stopPropagation();toggleFavorite('+JSON.stringify(lid)+',this)" style="color:'+(fav?'#8fbc5a':'')+'">'+(fav?'♥':'♡')+'</button>';
-  html+='<div class="listing-info">';
+  let html='<div class="listing-card" style="position:relative;" onclick="openListingById('+JSON.stringify(lid)+')">';
+  if(l.img){html+='<img src="'+sanitize(l.img)+'" alt="'+sanitize(l.title)+'" loading="lazy" style="pointer-events:none;">';}
+  else{html+='<div class="listing-img-ph" style="pointer-events:none;">🚲</div>';}
+  if(l.plan==='premium'){html+='<div class="premium-badge" style="pointer-events:none;">⭐ Premium</div>';}
+  html+='<button class="heart-btn" onclick="event.stopPropagation();event.preventDefault();toggleFavorite('+JSON.stringify(lid)+',this);return false;" style="color:'+(fav?'#8fbc5a':'')+';position:absolute;top:8px;right:8px;z-index:20;">'+(fav?'♥':'♡')+'</button>';
+  html+='<div class="listing-info" style="pointer-events:none;">';
   html+='<div class="listing-title">'+sanitize(l.title)+'</div>';
   html+='<div class="listing-price">'+sanitize(l.price)+'</div>';
   html+='<div class="listing-loc">📍 '+sanitize(l.city)+'</div>';
