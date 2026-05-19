@@ -6,7 +6,251 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
   <title>CykelHub</title>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
+  <script>
+// Lightweight Supabase client - no Proxy, no DataCloneError
+const supabase = {
+  createClient: function(url, key) {
+    var headers = {
+      'apikey': key,
+      'Authorization': 'Bearer ' + key,
+      'Content-Type': 'application/json',
+      'Prefer': 'return=representation'
+    };
+    
+    function apiFetch(path, opts) {
+      return fetch(url + path, Object.assign({headers: headers}, opts||{}))
+        .then(function(r){ return r.json(); });
+    }
+    
+    // Auth via Supabase auth API
+    var _session = null;
+    var _authListeners = [];
+    
+    // Try to restore session from localStorage
+    try {
+      var saved = localStorage.getItem('sb_session');
+      if(saved) _session = JSON.parse(saved);
+    } catch(_){}
+    
+    function setSession(s) {
+      _session = s;
+      if(s) {
+        headers['Authorization'] = 'Bearer ' + s.access_token;
+        try{ localStorage.setItem('sb_session', JSON.stringify(s)); }catch(_){}
+      } else {
+        headers['Authorization'] = 'Bearer ' + key;
+        try{ localStorage.removeItem('sb_session'); }catch(_){}
+      }
+      _authListeners.forEach(function(cb){ cb('SIGNED_'+(s?'IN':'OUT'), s); });
+    }
+    
+    if(_session) headers['Authorization'] = 'Bearer ' + _session.access_token;
+    
+    var auth = {
+      getSession: function() {
+        return Promise.resolve({data:{session:_session}});
+      },
+      onAuthStateChange: function(cb) {
+        _authListeners.push(cb);
+        return {data:{subscription:{unsubscribe:function(){}}}};
+      },
+      signInWithPassword: function(opts) {
+        return fetch(url+'/auth/v1/token?grant_type=password', {
+          method:'POST', headers:headers,
+          body: JSON.stringify({email:opts.email, password:opts.password})
+        }).then(function(r){return r.json();}).then(function(d){
+          if(d.access_token){ setSession(d); return {data:d,error:null}; }
+          return {data:null, error:{message:d.error_description||d.msg||'Login fejl'}};
+        });
+      },
+      signUp: function(opts) {
+        return fetch(url+'/auth/v1/signup', {
+          method:'POST', headers:headers,
+          body: JSON.stringify({email:opts.email, password:opts.password, data:opts.options&&opts.options.data||{}})
+        }).then(function(r){return r.json();}).then(function(d){
+          if(d.error) return {data:null, error:{message:d.msg||d.error}};
+          return {data:d, error:null};
+        });
+      },
+      signOut: function() {
+        return fetch(url+'/auth/v1/logout', {method:'POST', headers:headers})
+          .then(function(){ setSession(null); return {error:null}; })
+          .catch(function(){ setSession(null); return {error:null}; });
+      },
+      resetPasswordForEmail: function(email, opts) {
+        return fetch(url+'/auth/v1/recover', {
+          method:'POST', headers:headers,
+          body: JSON.stringify({email:email, redirect_to: opts&&opts.redirectTo||''})
+        }).then(function(r){return r.json();}).then(function(d){
+          return d.error ? {error:{message:d.msg||d.error}} : {error:null};
+        });
+      },
+      updateUser: function(opts) {
+        return fetch(url+'/auth/v1/user', {
+          method:'PUT', headers:headers,
+          body: JSON.stringify(opts)
+        }).then(function(r){return r.json();}).then(function(d){
+          return d.error ? {data:null,error:{message:d.msg||d.error}} : {data:d,error:null};
+        });
+      },
+      setSession: function(s) {
+        setSession(s); return Promise.resolve({data:s,error:null});
+      }
+    };
+    
+    // Query builder
+    function query(table) {
+      var _filters = [];
+      var _select = '*';
+      var _order = null;
+      var _limit = null;
+      var _range = null;
+      var _single = false;
+      var _method = 'GET';
+      var _body = null;
+      var _updateFilters = [];
+      
+      function buildUrl() {
+        var params = 'select='+encodeURIComponent(_select);
+        _filters.forEach(function(f){ params += '&'+f; });
+        if(_order) params += '&order='+_order;
+        if(_limit) params += '&limit='+_limit;
+        return '/rest/v1/'+table+'?'+params;
+      }
+      
+      var q = {
+        select: function(s){ _select=s; return q; },
+        eq: function(col,val){ _filters.push(col+'=eq.'+encodeURIComponent(val)); return q; },
+        neq: function(col,val){ _filters.push(col+'=neq.'+encodeURIComponent(val)); return q; },
+        in: function(col,vals){ _filters.push(col+'=in.('+vals.join(',')+')'); return q; },
+        or: function(f){ _filters.push('or=('+f+')'); return q; },
+        order: function(col,opts){ _order=col+(opts&&opts.ascending===false?'.desc':'.asc'); return q; },
+        limit: function(n){ _limit=n; return q; },
+        range: function(from,to){ _limit=(to-from+1); return q; },
+        single: function(){ _single=true; return q; },
+        update: function(data){ _method='PATCH'; _body=data; return q; },
+        insert: function(data){ _method='POST'; _body=Array.isArray(data)?data:[data]; return q; },
+        delete: function(){ _method='DELETE'; return q; },
+        upsert: function(data){ _method='POST'; _body=Array.isArray(data)?data:[data]; return q; },
+        then: function(resolve, reject) {
+          var reqHeaders = Object.assign({}, headers);
+          if(_single) reqHeaders['Accept'] = 'application/vnd.pgrst.object+json';
+          if(_method==='PATCH'||_method==='POST') {
+            reqHeaders['Content-Type'] = 'application/json';
+            if(_method==='POST') reqHeaders['Prefer'] = 'return=representation';
+          }
+          var fetchOpts = {method:_method, headers:reqHeaders};
+          if(_body) fetchOpts.body = JSON.stringify(_body);
+          
+          var reqUrl = url + buildUrl();
+          if(_method!=='GET') reqUrl = url+'/rest/v1/'+table;
+          
+          return fetch(reqUrl, fetchOpts)
+            .then(function(r){
+              if(r.status===204) return resolve({data:null,error:null});
+              return r.json().then(function(d){
+                if(r.ok) {
+                  resolve({data:d, error:null});
+                } else {
+                  resolve({data:null, error:{message:d.message||d.hint||('HTTP '+r.status)}});
+                }
+              });
+            })
+            .catch(function(e){
+              resolve({data:null, error:{message:''+e.message}});
+            });
+        },
+        catch: function(fn){ return Promise.resolve(this).catch(fn); }
+      };
+      
+      // Make q thenable properly
+      q.then = function(resolve, reject) {
+        var reqHeaders = Object.assign({}, headers);
+        if(_single) reqHeaders['Accept'] = 'application/vnd.pgrst.object+json';
+        var fetchOpts = {method:_method, headers:reqHeaders};
+        if(_body) fetchOpts.body = JSON.stringify(_body);
+        
+        var reqUrl;
+        if(_method==='GET'||(!_body&&_method!=='DELETE')) {
+          reqUrl = url + buildUrl();
+        } else {
+          var fParams = '';
+          _filters.forEach(function(f,i){ fParams+=(i===0?'?':'&')+f; });
+          reqUrl = url+'/rest/v1/'+table+fParams;
+        }
+        
+        return fetch(reqUrl, fetchOpts)
+          .then(function(r){
+            if(r.status===204) return resolve({data:null,error:null});
+            return r.text().then(function(txt){
+              try{
+                var d = JSON.parse(txt);
+                if(r.ok) resolve({data:d, error:null});
+                else resolve({data:null, error:{message:d.message||d.hint||d.details||('HTTP '+r.status)}});
+              }catch(e){
+                resolve({data:null, error:{message:'Parse error'}});
+              }
+            });
+          })
+          .catch(function(e){
+            resolve({data:null, error:{message:''+e.message}});
+          });
+      };
+      
+      return q;
+    }
+    
+    // Realtime stub (basic)
+    function channel(name) {
+      var _handlers = [];
+      var ch = {
+        on: function(event, opts, cb){ _handlers.push({opts:opts,cb:cb}); return ch; },
+        subscribe: function(){ return ch; },
+        unsubscribe: function(){ return ch; }
+      };
+      return ch;
+    }
+    
+    // Storage
+    var storage = {
+      from: function(bucket) {
+        return {
+          upload: function(path, file, opts) {
+            var formData = new FormData();
+            formData.append('', file);
+            return fetch(url+'/storage/v1/object/'+bucket+'/'+path, {
+              method:'POST',
+              headers:{'apikey':key,'Authorization':'Bearer '+((_session&&_session.access_token)||key)},
+              body: formData
+            }).then(function(r){return r.json();}).then(function(d){
+              return d.error ? {data:null,error:d} : {data:d,error:null};
+            });
+          },
+          getPublicUrl: function(path) {
+            return {data:{publicUrl: url+'/storage/v1/object/public/'+bucket+'/'+path}};
+          }
+        };
+      }
+    };
+    
+    return {
+      auth: auth,
+      from: query,
+      channel: channel,
+      removeChannel: function(){},
+      storage: storage,
+      rpc: function(fn, params) {
+        return fetch(url+'/rest/v1/rpc/'+fn, {
+          method:'POST', headers:headers,
+          body: JSON.stringify(params||{})
+        }).then(function(r){return r.json();}).then(function(d){
+          return {data:d,error:null};
+        }).catch(function(e){ return {data:null,error:{message:''+e.message}}; });
+      }
+    };
+  }
+};
+</script>
   <style>
     :root{--bg:#111;--bg2:#1c1c1c;--bg3:#252525;--border:#1e1e1e;--border2:#252525;--text:#f0f0f0;--text2:#888;--text3:#555;--search-bg:#1e1e1e;}
     body.light-mode{--bg:#f5f5f5;--bg2:#ffffff;--bg3:#e8e8e8;--border:#e0e0e0;--border2:#d0d0d0;--text:#111111;--text2:#333333;--text3:#555555;--search-bg:#e8e8e8;}
@@ -1496,40 +1740,35 @@ const fallbackAds = [
 
 async function loadAds(){
   try{
-    const res=await sb.from('ads')
+    const res = await sb.from('ads')
       .select('id,brand,logo,description,cta,url,img,price,position,active,created_at')
-      .eq('active',true)
-      .order('created_at',{ascending:false});
-    if(res.error)throw new Error(String(res.error.message||'ads error'));
-    const rows=res.data;
-    if(rows&&rows.length){
-      const parsed=[];
-      for(let i=0;i<rows.length;i++){
-        try{
-          const a=rows[i];
-          parsed.push({
-            id:''+a.id,
-            brand:''+( a.brand||''),
-            logo:''+(a.logo||'📢'),
-            desc:''+(a.description||''),
-            description:''+(a.description||''),
-            cta:''+(a.cta||'Se mere →'),
-            url:''+(a.url||''),
-            img:''+(a.img||''),
-            price:+(a.price||0),
-            position:''+(a.position||'both'),
-            active:!!a.active
-          });
-        }catch(_){}
-      }
-      if(parsed.length)ads=parsed;
-      else ads=[].concat(fallbackAds);
+      .eq('active', true)
+      .order('created_at', {ascending: false});
+    if(res.error) throw new Error(''+res.error.message);
+    // KEY FIX: Convert via JSON to get plain objects
+    const rows = JSON.parse(JSON.stringify(res.data || []));
+    if(rows.length){
+      ads = rows.map(function(a){
+        return {
+          id: ''+a.id,
+          brand: ''+(a.brand||''),
+          logo: ''+(a.logo||'📢'),
+          desc: ''+(a.description||''),
+          description: ''+(a.description||''),
+          cta: ''+(a.cta||'Se mere →'),
+          url: ''+(a.url||''),
+          img: ''+(a.img||''),
+          price: +(a.price||0),
+          position: ''+(a.position||'both'),
+          active: !!a.active
+        };
+      });
     } else {
-      ads=[].concat(fallbackAds);
+      ads = fallbackAds.slice();
     }
   }catch(e){
-    console.warn('Supabase ads unavailable:',''+( e&&e.message?e.message:e));
-    ads=[].concat(fallbackAds);
+    console.warn('Supabase ads unavailable:', ''+e.message);
+    ads = fallbackAds.slice();
   }
   rotateBannerAd();
   renderHome(allListings);
@@ -1553,7 +1792,7 @@ async function saveAdToDb(adData){
       const { error } = await sb.from('ads').insert({brand:adData.brand,logo:adData.logo,description:adData.desc,cta:adData.cta,url:adData.url,img:adData.img,price:adData.price||0,position:adData.position||'both',active:true});
       if(error) throw error;
     }
-    await loadAds();
+    loadAds();
     toast('✅ Gemt i Supabase!');
   } catch(e) {
     const existing = fallbackAds.findIndex(x=>x.id===adData.id);
@@ -1564,8 +1803,8 @@ async function saveAdToDb(adData){
   }
 }
 
-async function deleteAdFromDb(id){ try { const { error } = await sb.from('ads').delete().eq('id', id); if(error) throw error; await loadAds(); } catch(e){ toast('❌ Fejl: ' + e.message); } }
-async function toggleAdInDb(id, currentActive){ try { const { error } = await sb.from('ads').update({ active: !currentActive }).eq('id', id); if(error) throw error; await loadAds(); } catch(e){ toast('❌ Fejl: ' + e.message); } }
+async function deleteAdFromDb(id){ try { const { error } = await sb.from('ads').delete().eq('id', id); if(error) throw error; loadAds(); } catch(e){ toast('❌ Fejl: ' + e.message); } }
+async function toggleAdInDb(id, currentActive){ try { const { error } = await sb.from('ads').update({ active: !currentActive }).eq('id', id); if(error) throw error; loadAds(); } catch(e){ toast('❌ Fejl: ' + e.message); } }
 
 const danishCities=[{zip:'1000',city:'København K'},{zip:'1550',city:'København V'},{zip:'1800',city:'Frederiksberg C'},{zip:'2000',city:'Frederiksberg'},{zip:'2100',city:'København Ø'},{zip:'2200',city:'København N'},{zip:'2300',city:'København S'},{zip:'2400',city:'København NV'},{zip:'2450',city:'København SV'},{zip:'2500',city:'Valby'},{zip:'2600',city:'Glostrup'},{zip:'2605',city:'Brøndby'},{zip:'2610',city:'Rødovre'},{zip:'2620',city:'Albertslund'},{zip:'2630',city:'Taastrup'},{zip:'2635',city:'Ishøj'},{zip:'2650',city:'Hvidovre'},{zip:'2670',city:'Greve'},{zip:'2700',city:'Brønshøj'},{zip:'2720',city:'Vanløse'},{zip:'2730',city:'Herlev'},{zip:'2750',city:'Ballerup'},{zip:'2770',city:'Kastrup'},{zip:'2791',city:'Dragør'},{zip:'2800',city:'Kongens Lyngby'},{zip:'2820',city:'Gentofte'},{zip:'2830',city:'Virum'},{zip:'2840',city:'Holte'},{zip:'2860',city:'Søborg'},{zip:'2900',city:'Hellerup'},{zip:'2920',city:'Charlottenlund'},{zip:'2950',city:'Vedbæk'},{zip:'2970',city:'Hørsholm'},{zip:'2990',city:'Nivå'},{zip:'3000',city:'Helsingør'},{zip:'3050',city:'Humlebæk'},{zip:'3060',city:'Espergærde'},{zip:'3100',city:'Hornbæk'},{zip:'3200',city:'Helsinge'},{zip:'3250',city:'Gilleleje'},{zip:'3300',city:'Frederiksværk'},{zip:'3400',city:'Hillerød'},{zip:'3450',city:'Allerød'},{zip:'3460',city:'Birkerød'},{zip:'3480',city:'Fredensborg'},{zip:'3500',city:'Værløse'},{zip:'3520',city:'Farum'},{zip:'3550',city:'Slangerup'},{zip:'3600',city:'Frederikssund'},{zip:'3650',city:'Ølstykke'},{zip:'4000',city:'Roskilde'},{zip:'4100',city:'Ringsted'},{zip:'4200',city:'Slagelse'},{zip:'4300',city:'Holbæk'},{zip:'4400',city:'Kalundborg'},{zip:'4600',city:'Køge'},{zip:'4700',city:'Næstved'},{zip:'4800',city:'Nykøbing F'},{zip:'5000',city:'Odense C'},{zip:'5200',city:'Odense V'},{zip:'5500',city:'Middelfart'},{zip:'5700',city:'Svendborg'},{zip:'5800',city:'Nyborg'},{zip:'6000',city:'Kolding'},{zip:'6100',city:'Haderslev'},{zip:'6200',city:'Aabenraa'},{zip:'6400',city:'Sønderborg'},{zip:'6700',city:'Esbjerg'},{zip:'6800',city:'Varde'},{zip:'6950',city:'Ringkøbing'},{zip:'7000',city:'Fredericia'},{zip:'7100',city:'Vejle'},{zip:'7400',city:'Herning'},{zip:'7500',city:'Holstebro'},{zip:'7700',city:'Thisted'},{zip:'7800',city:'Skive'},{zip:'8000',city:'Aarhus C'},{zip:'8200',city:'Aarhus N'},{zip:'8210',city:'Aarhus V'},{zip:'8600',city:'Silkeborg'},{zip:'8660',city:'Skanderborg'},{zip:'8700',city:'Horsens'},{zip:'8800',city:'Viborg'},{zip:'8900',city:'Randers C'},{zip:'9000',city:'Aalborg'},{zip:'9200',city:'Aalborg SV'},{zip:'9400',city:'Nørresundby'},{zip:'9500',city:'Hobro'},{zip:'9700',city:'Brønderslev'},{zip:'9800',city:'Hjørring'},{zip:'9900',city:'Frederikshavn'},{zip:'9990',city:'Skagen'}];
 
@@ -1594,7 +1833,7 @@ async function loadChatReal(){
   if(!threadId){el.innerHTML='<div style="text-align:center;padding:30px;color:#888;font-size:13px;">Skriv en besked for at starte samtalen 👇</div>';return;}
   el.innerHTML='<div style="text-align:center;padding:20px;color:#555;">⏳ Indlæser...</div>';
   try{
-    const myId=me?.id||'';
+    const myId=me&&me.id?me.id:'';
     const otherId=currentSellerId||'';
     let res;
     if(otherId&&otherId!==myId){
@@ -1631,7 +1870,7 @@ async function loadChatReal(){
 
 async function sendMsgReal(){
   const inp=document.getElementById('chat-inp');
-  const t=inp?.value.trim();
+  const t=inp?inp.value.trim():'';
   if(!t||!me)return;
   inp.value='';
   const threadId=String(detailId||currentConvId||'');
@@ -1732,48 +1971,43 @@ async function openRealConv(convId,otherId,listingId,otherName){
 
 async function loadListingsFromDb(){
   try{
-    const res=await sb.from('listings')
+    const res = await sb.from('listings')
       .select('id,title,price,city,category,images,stelnummer,description,details,views,saves,shares,created_at,user_id')
-      .eq('active',true)
-      .order('created_at',{ascending:false})
+      .eq('active', true)
+      .order('created_at', {ascending: false})
       .limit(100);
-    if(res.error)throw new Error(String(res.error.message||'DB error'));
-    const rows=res.data;
-    if(!rows||!rows.length)return;
-    const dbListings=[];
-    for(let i=0;i<rows.length;i++){
-      try{
-        const r=rows[i];
-        const det=r.details&&typeof r.details==='object'?r.details:{};
-        const imgs=Array.isArray(r.images)?r.images:[];
-        dbListings.push({
-          id:''+r.id,
-          title:''+(r.title||''),
-          price:r.price?(+r.price).toLocaleString('da-DK')+' kr.':'0 kr.',
-          city:''+(r.city||''),
-          cat:''+(r.category||'cykler'),
-          img:imgs.length?''+imgs[0]:null,
-          stelnummer:''+(r.stelnummer||''),
-          desc:''+(r.description||''),
-          brand:''+(det.brand||''),
-          type:''+(det.type||''),
-          seller:''+(det.seller||'Privat sælger'),
-          phone:''+(det.phone||''),
-          views:+(r.views||0),
-          saves:+(r.saves||0),
-          shares:+(r.shares||0),
-          created_at:''+(r.created_at||''),
-          user_id:''+(r.user_id||'')
-        });
-      }catch(rowErr){console.warn('Row parse error:',i);}
-    }
-    if(dbListings.length){
-      const loc=allListings.filter(function(l){return typeof l.id==='number';});
-      allListings=dbListings.concat(loc);
-      renderHome(allListings);
-    }
+    if(res.error) throw new Error(''+res.error.message);
+    // KEY FIX: Convert via JSON to get plain objects (kills Proxy)
+    const rows = JSON.parse(JSON.stringify(res.data || []));
+    if(!rows.length){ renderHome(allListings); return; }
+    const dbListings = rows.map(function(r){
+      var det = r.details || {};
+      var imgs = Array.isArray(r.images) ? r.images : [];
+      return {
+        id: ''+r.id,
+        title: ''+(r.title||''),
+        price: r.price ? (+r.price).toLocaleString('da-DK')+' kr.' : '0 kr.',
+        city: ''+(r.city||''),
+        cat: ''+(r.category||'cykler'),
+        img: imgs.length ? ''+imgs[0] : null,
+        stelnummer: ''+(r.stelnummer||''),
+        desc: ''+(r.description||''),
+        brand: ''+(det.brand||''),
+        type: ''+(det.type||''),
+        seller: ''+(det.seller||'Privat sælger'),
+        phone: ''+(det.phone||''),
+        views: +(r.views||0),
+        saves: +(r.saves||0),
+        shares: +(r.shares||0),
+        created_at: ''+(r.created_at||''),
+        user_id: ''+(r.user_id||'')
+      };
+    });
+    var loc = allListings.filter(function(l){ return typeof l.id === 'number'; });
+    allListings = dbListings.concat(loc);
+    renderHome(allListings);
   }catch(e){
-    console.warn('loadListings error:',e&&e.message?''+e.message:''+e);
+    console.warn('loadListings error:', ''+e.message);
     renderHome(allListings);
   }
 }
@@ -1914,7 +2148,7 @@ async function init(){
   renderHome(allListings); // Show local data immediately
   updateBellDot();
   loadListings();
-  await loadAds();
+  loadAds();
   window._adTimer = setInterval(rotateBannerAd, adRotateInterval);
   for(let i=0;i<6;i++){const s=document.getElementById('slot-'+i);if(s)s.onclick=()=>document.getElementById('file-input').click();}
 }
@@ -1999,35 +2233,87 @@ function selectSubcat(subcat,el){if(el.classList.contains('active')){document.qu
 function openCatPage(cat){if(cat==='tilbehor'){activeCat='tilbehor';activeFilters={};document.getElementById('cat-page-title').textContent='🔧 Tilbehør';document.getElementById('filter-open-btn').classList.remove('has-filters');document.getElementById('filter-open-btn').textContent='⚙️ Filter';const items=allListings.filter(l=>l.cat==='tilbehor');document.getElementById('results-count').textContent=items.length+' annoncer';document.getElementById('cat-listings').innerHTML=items.length?items.map(l=>listingCard(l)).join(''):'<div class="empty"><div class="e-icon">🔧</div><p>Ingen tilbehør endnu</p></div>';showPage('cat');return;}activeCat=cat;activeFilters={};const titles={cykler:'🚲 Cykler',elcykler:'⚡ El-cykler'};document.getElementById('cat-page-title').textContent=titles[cat];document.getElementById('filter-open-btn').classList.remove('has-filters');document.getElementById('filter-open-btn').textContent='⚙️ Filter';const items=allListings.filter(l=>l.cat===cat);document.getElementById('results-count').textContent=items.length+' annoncer';document.getElementById('cat-listings').innerHTML=items.length?items.map(l=>listingCard(l)).join(''):'<div class="empty"><div class="e-icon">🔍</div><p>Ingen annoncer</p></div>';showPage('cat');}
 function goBackHome(){document.getElementById('topbar').style.display='block';document.getElementById('subcat-bar').style.display='flex';showPage('home');document.querySelectorAll('.nav-item').forEach((i,idx)=>i.classList.toggle('active',idx===0));}
 
-async function openListingById(id){const numId=parseInt(id);const finalId=isNaN(numId)||String(numId)!==id?id:numId;await openListing(finalId);}
+async function openListingById(id){
+  // Handle both numeric IDs (local) and UUID strings (Supabase)
+  const sid=String(id);
+  const numId=parseInt(sid);
+  const finalId=(!isNaN(numId)&&String(numId)===sid)?numId:sid;
+  await openListing(finalId);
+}
 
 async function openListing(id){
-  let l=allListings.find(x=>x.id===id);
-  if(!l){try{const{data,error}=await sb.from('listings').select('*').eq('id',id).single();if(!error&&data){l={id:data.id,title:data.title,price:data.price?data.price.toLocaleString('da-DK')+' kr.':'0 kr.',city:data.city||'',cat:data.category||'cykler',img:data.images&&data.images[0]?data.images[0]:null,stelnummer:data.stelnummer||'',desc:data.description||'',brand:data.details?.brand||'',type:data.details?.type||'',seller:data.details?.seller||'Privat sælger',phone:data.details?.phone||'',views:data.views||0,saves:data.saves||0,shares:data.shares||0,created_at:data.created_at,user_id:data.user_id};allListings.push(l);}}catch(e){console.warn('Could not fetch listing:',e);}}
+  const sid=String(id);
+  let l=allListings.find(function(x){return String(x.id)===sid;});
+  if(!l){
+    try{
+      const res=await sb.from('listings').select('*').eq('id',id).single();
+      if(!res.error&&res.data){
+        const raw=JSON.parse(JSON.stringify(res.data));
+        const det=raw.details||{};
+        const imgs=Array.isArray(raw.images)?raw.images:[];
+        l={
+          id:''+raw.id,
+          title:''+(raw.title||''),
+          price:raw.price?(+raw.price).toLocaleString('da-DK')+' kr.':'0 kr.',
+          city:''+(raw.city||''),
+          cat:''+(raw.category||'cykler'),
+          img:imgs.length?''+imgs[0]:null,
+          stelnummer:''+(raw.stelnummer||''),
+          desc:''+(raw.description||''),
+          brand:''+(det.brand||''),
+          type:''+(det.type||''),
+          seller:''+(det.seller||'Privat sælger'),
+          phone:''+(det.phone||''),
+          views:+(raw.views||0),
+          saves:+(raw.saves||0),
+          shares:+(raw.shares||0),
+          created_at:''+(raw.created_at||''),
+          user_id:''+(raw.user_id||'')
+        };
+        allListings.push(l);
+      }
+    }catch(e){console.warn('Could not fetch listing:',''+e.message);}
+  }
   if(!l){toast('Annonce ikke fundet');return;}
   detailId=id;
-  detailFrom=document.querySelector('.page.active')?.id?.replace('page-','')||'home';
-  if(typeof id==='string'&&id.includes('-')){sb.from('listings').update({views:(l.views||0)+1}).eq('id',id).then(()=>{l.views=(l.views||0)+1;});}
+  detailFrom=(document.querySelector('.page.active')||{id:''}).id.replace('page-','')||'home';
+  // Track view
+  if(typeof id==='string'&&id.indexOf('-')>-1){
+    sb.from('listings').update({views:(l.views||0)+1}).eq('id',id).then(function(){l.views=(l.views||0)+1;}).catch(function(){});
+  }
   document.getElementById('detail-header-title').textContent=l.title;
   document.getElementById('detail-title').textContent=l.title;
   document.getElementById('detail-price').textContent=l.price;
   document.getElementById('detail-loc').textContent='📍 '+l.city;
-  document.getElementById('detail-img-wrap').innerHTML=l.img?`<img src="${l.img}" alt="${l.title}">`:'<div class="detail-img-ph">🚲</div>';
+  document.getElementById('detail-img-wrap').innerHTML=l.img?'<img src="'+sanitize(l.img)+'" alt="'+sanitize(l.title)+'">'  :'<div class="detail-img-ph">🚲</div>';
   const stelSec=document.getElementById('detail-stel-section');
-  if(l.stelnummer){stelSec.style.display='block';document.getElementById('detail-stel-val').textContent=l.stelnummer;}else stelSec.style.display='none';
-  const specs=[];if(l.type)specs.push(l.type);if(l.brand)specs.push(l.brand);if(l.year)specs.push(l.year);if(l.color)specs.push(l.color);if(l.condition)specs.push(l.condition);
+  if(l.stelnummer){stelSec.style.display='block';document.getElementById('detail-stel-val').textContent=l.stelnummer;}
+  else stelSec.style.display='none';
+  const specs=[];
+  if(l.type)specs.push(l.type);
+  if(l.brand)specs.push(l.brand);
+  if(l.year)specs.push(l.year);
+  if(l.color)specs.push(l.color);
+  if(l.condition)specs.push(l.condition);
   const spSec=document.getElementById('detail-specs-section');
-  if(specs.length){spSec.style.display='block';document.getElementById('detail-specs').innerHTML=specs.map(s=>`<div class="detail-tag">${s}</div>`).join('');}else spSec.style.display='none';
+  if(specs.length){spSec.style.display='block';document.getElementById('detail-specs').innerHTML=specs.map(function(s){return'<div class="detail-tag">'+sanitize(s)+'</div>';}).join('');}
+  else spSec.style.display='none';
   const dSec=document.getElementById('detail-desc-section');
-  if(l.desc){dSec.style.display='block';document.getElementById('detail-desc-txt').textContent=l.desc;}else dSec.style.display='none';
+  if(l.desc){dSec.style.display='block';document.getElementById('detail-desc-txt').textContent=l.desc;}
+  else dSec.style.display='none';
   document.getElementById('detail-seller').textContent=l.seller||'Privat sælger';
-  // Update heart state
+  const callBtn=document.getElementById('call-btn');
+  if(callBtn)callBtn.style.display=l.phone?'flex':'none';
+  document.getElementById('detail-annonce-id').textContent='Annonce ID: #'+sid.slice(-6).padStart(6,'0');
   const dHeart=document.getElementById('detail-heart');
-  if(dHeart){dHeart.textContent=isFavorite(id)?'♥':'♡';dHeart.style.color=isFavorite(id)?'#8fbc5a':'';}
-  const callBtn=document.getElementById('call-btn');if(callBtn){callBtn.style.display=l.phone?'flex':'none';}
-  document.getElementById('detail-annonce-id').textContent='Annonce ID: #'+String(l.id).slice(-6).padStart(6,'0');
+  if(dHeart){dHeart.innerHTML=isFavorite(sid)?'♥':'♡';dHeart.style.color=isFavorite(sid)?'#8fbc5a':'';}
   const statsBar=document.getElementById('detail-stats-bar');
-  if(statsBar){statsBar.innerHTML=`<div style="display:flex;gap:16px;padding:10px 16px;background:var(--bg2);border-top:1px solid var(--border2);border-bottom:1px solid var(--border2);"><div style="display:flex;align-items:center;gap:5px;font-size:12px;color:#888;">👁️ <span>${(l.views||0)+1} visninger</span></div><div style="display:flex;align-items:center;gap:5px;font-size:12px;color:#888;">❤️ <span>${l.saves||0} gemt</span></div><div style="display:flex;align-items:center;gap:5px;font-size:12px;color:#888;">📤 <span>${l.shares||0} delt</span></div>${l.created_at?`<div style="display:flex;align-items:center;gap:5px;font-size:12px;color:#888;">📅 <span>${new Date(l.created_at).toLocaleDateString('da-DK')}</span></div>`:''}</div>`;}
+  if(statsBar){statsBar.innerHTML='<div style="display:flex;gap:16px;padding:10px 16px;background:var(--bg2);border-top:1px solid var(--border2);border-bottom:1px solid var(--border2);">'
+    +'<div style="font-size:12px;color:#888;">👁 '+((l.views||0)+1)+' visninger</div>'
+    +'<div style="font-size:12px;color:#888;">♥ '+(l.saves||0)+' gemt</div>'
+    +'<div style="font-size:12px;color:#888;">📤 '+(l.shares||0)+' delt</div>'
+    +(l.created_at?'<div style="font-size:12px;color:#888;">📅 '+new Date(l.created_at).toLocaleDateString('da-DK')+'</div>':'')
+    +'</div>';}
   showPage('detail');
 }
 
@@ -2168,7 +2454,7 @@ async function submitListing(){
   if(!title||!priceRaw||!city){el.textContent='Udfyld titel, pris og by';el.className='msg-box err';return;}
   const price=parseInt(priceRaw);const details={};const def=sellFields[currentSellCat];
   if(def)def.fields.forEach(f=>{if(f.type==='chips'){const sel=document.querySelectorAll(`#chips-${f.id} .chip-opt.sel`);if(sel.length)details[f.id]=Array.from(sel).map(x=>x.textContent).join(', ');}else if(f.type==='brand'){const v=document.getElementById('field-brand');if(v&&v.value)details[f.id]=v.value;}else{const v=document.getElementById('field-'+f.id);if(v&&v.value)details[f.id]=v.value;}});
-  details.seller=me.user_metadata?.name||me.email.split('@')[0];details.phone=me.user_metadata?.phone||'';
+  details.seller=me.user_metadata&&me.user_metadata.name?me.user_metadata.name:''||me.email.split('@')[0];details.phone=me.user_metadata&&me.user_metadata.phone?me.user_metadata.phone:''||'';
   el.textContent='⏳ Opretter annonce...';el.className='msg-box ok';
   try{
     const{data,error}=await sb.from('listings').insert({user_id:me.id,title,price,city,category:currentSellCat,images:uploadedImgs.length?uploadedImgs:[],stelnummer,description:desc,details,active:true,views:0,saves:0,shares:0}).select('id').single();
@@ -2368,7 +2654,7 @@ function showPage(name){
   if(name==='notifications'){notifs.forEach(n=>n.unread=false);updateBellDot();document.getElementById('notif-list').innerHTML=notifs.map(n=>`<div class="notif-item ${n.unread?'unread':''}"><div style="font-size:22px">${n.icon}</div><div><div style="font-weight:600;font-size:14px">${n.title}</div><div style="font-size:12px;color:#999;margin-top:2px">${n.sub}</div></div></div>`).join('');}
 }
 
-function goPage(name,navId){showPage(name);document.querySelectorAll('.nav-item').forEach(i=>i.classList.remove('active'));if(navId)document.getElementById(navId)?.classList.add('active');}
+function goPage(name,navId){showPage(name);document.querySelectorAll('.nav-item').forEach(i=>i.classList.remove('active'));if(navId)var _nav=document.getElementById(navId);if(_nav)_nav.classList.add('active');}
 function requireAuth(page,navId){if(!me){toast('Log ind for at fortsætte');goPage('profile','nav-prof');return;}goPage(page,navId);}
 function toast(msg){const t=document.getElementById('toast');t.textContent=msg;t.classList.add('show');setTimeout(()=>t.classList.remove('show'),2500);}
 
