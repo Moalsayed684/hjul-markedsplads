@@ -1495,14 +1495,42 @@ const fallbackAds = [
 ];
 
 async function loadAds(){
-  try {
-    const res = await sb.from('ads').select('id,brand,logo,description,cta,url,img,price,position,active,created_at').eq('active', true).order('created_at', {ascending:false});
-    if(res.error) throw new Error(String(res.error.message||res.error.code||'error'));
-    const rows = res.data || [];
-    if(rows.length){
-      ads = rows.map(a=>({id:String(a.id||''),brand:String(a.brand||''),logo:String(a.logo||'📢'),desc:String(a.description||''),description:String(a.description||''),cta:String(a.cta||'Se mere →'),url:String(a.url||''),img:String(a.img||''),price:Number(a.price||0),position:String(a.position||'both'),active:Boolean(a.active)}));
-    } else { ads = fallbackAds; }
-  } catch(e){ console.warn('Supabase ads unavailable:', String(e&&e.message?e.message:e)); ads = [...fallbackAds]; }
+  try{
+    const res=await sb.from('ads')
+      .select('id,brand,logo,description,cta,url,img,price,position,active,created_at')
+      .eq('active',true)
+      .order('created_at',{ascending:false});
+    if(res.error)throw new Error(String(res.error.message||'ads error'));
+    const rows=res.data;
+    if(rows&&rows.length){
+      const parsed=[];
+      for(let i=0;i<rows.length;i++){
+        try{
+          const a=rows[i];
+          parsed.push({
+            id:''+a.id,
+            brand:''+( a.brand||''),
+            logo:''+(a.logo||'📢'),
+            desc:''+(a.description||''),
+            description:''+(a.description||''),
+            cta:''+(a.cta||'Se mere →'),
+            url:''+(a.url||''),
+            img:''+(a.img||''),
+            price:+(a.price||0),
+            position:''+(a.position||'both'),
+            active:!!a.active
+          });
+        }catch(_){}
+      }
+      if(parsed.length)ads=parsed;
+      else ads=[].concat(fallbackAds);
+    } else {
+      ads=[].concat(fallbackAds);
+    }
+  }catch(e){
+    console.warn('Supabase ads unavailable:',''+( e&&e.message?e.message:e));
+    ads=[].concat(fallbackAds);
+  }
   rotateBannerAd();
   renderHome(allListings);
 }
@@ -1704,16 +1732,50 @@ async function openRealConv(convId,otherId,listingId,otherName){
 
 async function loadListingsFromDb(){
   try{
-    const res=await sb.from('listings').select('id,title,price,city,category,images,stelnummer,description,details,views,saves,shares,created_at,user_id').eq('active',true).order('created_at',{ascending:false}).range(0,19);
-    if(res.error)throw new Error(String(res.error.message||res.error.code||'DB error'));
-    const rows=res.data||[];
-    if(rows.length){
-      const dbListings=rows.map(l=>({id:String(l.id),title:String(l.title||''),price:l.price?Number(l.price).toLocaleString('da-DK')+' kr.':'0 kr.',city:String(l.city||''),cat:String(l.category||'cykler'),img:Array.isArray(l.images)&&l.images[0]?String(l.images[0]):null,stelnummer:String(l.stelnummer||''),desc:String(l.description||''),brand:String((l.details&&l.details.brand)||''),type:String((l.details&&l.details.type)||''),seller:String((l.details&&l.details.seller)||'Privat sælger'),phone:String((l.details&&l.details.phone)||''),views:Number(l.views||0),saves:Number(l.saves||0),shares:Number(l.shares||0),created_at:String(l.created_at||''),user_id:String(l.user_id||'')}));
-      const localSamples=allListings.filter(l=>typeof l.id==='number');
-      allListings=[...dbListings,...localSamples];
+    const res=await sb.from('listings')
+      .select('id,title,price,city,category,images,stelnummer,description,details,views,saves,shares,created_at,user_id')
+      .eq('active',true)
+      .order('created_at',{ascending:false})
+      .limit(100);
+    if(res.error)throw new Error(String(res.error.message||'DB error'));
+    const rows=res.data;
+    if(!rows||!rows.length)return;
+    const dbListings=[];
+    for(let i=0;i<rows.length;i++){
+      try{
+        const r=rows[i];
+        const det=r.details&&typeof r.details==='object'?r.details:{};
+        const imgs=Array.isArray(r.images)?r.images:[];
+        dbListings.push({
+          id:''+r.id,
+          title:''+(r.title||''),
+          price:r.price?(+r.price).toLocaleString('da-DK')+' kr.':'0 kr.',
+          city:''+(r.city||''),
+          cat:''+(r.category||'cykler'),
+          img:imgs.length?''+imgs[0]:null,
+          stelnummer:''+(r.stelnummer||''),
+          desc:''+(r.description||''),
+          brand:''+(det.brand||''),
+          type:''+(det.type||''),
+          seller:''+(det.seller||'Privat sælger'),
+          phone:''+(det.phone||''),
+          views:+(r.views||0),
+          saves:+(r.saves||0),
+          shares:+(r.shares||0),
+          created_at:''+(r.created_at||''),
+          user_id:''+(r.user_id||'')
+        });
+      }catch(rowErr){console.warn('Row parse error:',i);}
+    }
+    if(dbListings.length){
+      const loc=allListings.filter(function(l){return typeof l.id==='number';});
+      allListings=dbListings.concat(loc);
       renderHome(allListings);
     }
-  }catch(e){console.warn('loadListings error:',String(e&&e.message?e.message:e));}
+  }catch(e){
+    console.warn('loadListings error:',e&&e.message?''+e.message:''+e);
+    renderHome(allListings);
+  }
 }
 
 function checkResetToken(){
@@ -1849,7 +1911,7 @@ async function init(){
   const{data:{session}}=await sb.auth.getSession();
   if(session)setUser(session.user);
   sb.auth.onAuthStateChange((_,s)=>s?setUser(s.user):clearUser());
-  renderHome(allListings);
+  renderHome(allListings); // Show local data immediately
   updateBellDot();
   loadListings();
   await loadAds();
