@@ -6,251 +6,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
   <title>CykelHub</title>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-  <script>
-// Lightweight Supabase client - no Proxy, no DataCloneError
-const supabase = {
-  createClient: function(url, key) {
-    var headers = {
-      'apikey': key,
-      'Authorization': 'Bearer ' + key,
-      'Content-Type': 'application/json',
-      'Prefer': 'return=representation'
-    };
-    
-    function apiFetch(path, opts) {
-      return fetch(url + path, Object.assign({headers: headers}, opts||{}))
-        .then(function(r){ return r.json(); });
-    }
-    
-    // Auth via Supabase auth API
-    var _session = null;
-    var _authListeners = [];
-    
-    // Try to restore session from localStorage
-    try {
-      var saved = localStorage.getItem('sb_session');
-      if(saved) _session = JSON.parse(saved);
-    } catch(_){}
-    
-    function setSession(s) {
-      _session = s;
-      if(s) {
-        headers['Authorization'] = 'Bearer ' + s.access_token;
-        try{ localStorage.setItem('sb_session', JSON.stringify(s)); }catch(_){}
-      } else {
-        headers['Authorization'] = 'Bearer ' + key;
-        try{ localStorage.removeItem('sb_session'); }catch(_){}
-      }
-      _authListeners.forEach(function(cb){ cb('SIGNED_'+(s?'IN':'OUT'), s); });
-    }
-    
-    if(_session) headers['Authorization'] = 'Bearer ' + _session.access_token;
-    
-    var auth = {
-      getSession: function() {
-        return Promise.resolve({data:{session:_session}});
-      },
-      onAuthStateChange: function(cb) {
-        _authListeners.push(cb);
-        return {data:{subscription:{unsubscribe:function(){}}}};
-      },
-      signInWithPassword: function(opts) {
-        return fetch(url+'/auth/v1/token?grant_type=password', {
-          method:'POST', headers:headers,
-          body: JSON.stringify({email:opts.email, password:opts.password})
-        }).then(function(r){return r.json();}).then(function(d){
-          if(d.access_token){ setSession(d); return {data:d,error:null}; }
-          return {data:null, error:{message:d.error_description||d.msg||'Login fejl'}};
-        });
-      },
-      signUp: function(opts) {
-        return fetch(url+'/auth/v1/signup', {
-          method:'POST', headers:headers,
-          body: JSON.stringify({email:opts.email, password:opts.password, data:opts.options&&opts.options.data||{}})
-        }).then(function(r){return r.json();}).then(function(d){
-          if(d.error) return {data:null, error:{message:d.msg||d.error}};
-          return {data:d, error:null};
-        });
-      },
-      signOut: function() {
-        return fetch(url+'/auth/v1/logout', {method:'POST', headers:headers})
-          .then(function(){ setSession(null); return {error:null}; })
-          .catch(function(){ setSession(null); return {error:null}; });
-      },
-      resetPasswordForEmail: function(email, opts) {
-        return fetch(url+'/auth/v1/recover', {
-          method:'POST', headers:headers,
-          body: JSON.stringify({email:email, redirect_to: opts&&opts.redirectTo||''})
-        }).then(function(r){return r.json();}).then(function(d){
-          return d.error ? {error:{message:d.msg||d.error}} : {error:null};
-        });
-      },
-      updateUser: function(opts) {
-        return fetch(url+'/auth/v1/user', {
-          method:'PUT', headers:headers,
-          body: JSON.stringify(opts)
-        }).then(function(r){return r.json();}).then(function(d){
-          return d.error ? {data:null,error:{message:d.msg||d.error}} : {data:d,error:null};
-        });
-      },
-      setSession: function(s) {
-        setSession(s); return Promise.resolve({data:s,error:null});
-      }
-    };
-    
-    // Query builder
-    function query(table) {
-      var _filters = [];
-      var _select = '*';
-      var _order = null;
-      var _limit = null;
-      var _range = null;
-      var _single = false;
-      var _method = 'GET';
-      var _body = null;
-      var _updateFilters = [];
-      
-      function buildUrl() {
-        var params = 'select='+encodeURIComponent(_select);
-        _filters.forEach(function(f){ params += '&'+f; });
-        if(_order) params += '&order='+_order;
-        if(_limit) params += '&limit='+_limit;
-        return '/rest/v1/'+table+'?'+params;
-      }
-      
-      var q = {
-        select: function(s){ _select=s; return q; },
-        eq: function(col,val){ _filters.push(col+'=eq.'+encodeURIComponent(val)); return q; },
-        neq: function(col,val){ _filters.push(col+'=neq.'+encodeURIComponent(val)); return q; },
-        in: function(col,vals){ _filters.push(col+'=in.('+vals.join(',')+')'); return q; },
-        or: function(f){ _filters.push('or=('+f+')'); return q; },
-        order: function(col,opts){ _order=col+(opts&&opts.ascending===false?'.desc':'.asc'); return q; },
-        limit: function(n){ _limit=n; return q; },
-        range: function(from,to){ _limit=(to-from+1); return q; },
-        single: function(){ _single=true; return q; },
-        update: function(data){ _method='PATCH'; _body=data; return q; },
-        insert: function(data){ _method='POST'; _body=Array.isArray(data)?data:[data]; return q; },
-        delete: function(){ _method='DELETE'; return q; },
-        upsert: function(data){ _method='POST'; _body=Array.isArray(data)?data:[data]; return q; },
-        then: function(resolve, reject) {
-          var reqHeaders = Object.assign({}, headers);
-          if(_single) reqHeaders['Accept'] = 'application/vnd.pgrst.object+json';
-          if(_method==='PATCH'||_method==='POST') {
-            reqHeaders['Content-Type'] = 'application/json';
-            if(_method==='POST') reqHeaders['Prefer'] = 'return=representation';
-          }
-          var fetchOpts = {method:_method, headers:reqHeaders};
-          if(_body) fetchOpts.body = JSON.stringify(_body);
-          
-          var reqUrl = url + buildUrl();
-          if(_method!=='GET') reqUrl = url+'/rest/v1/'+table;
-          
-          return fetch(reqUrl, fetchOpts)
-            .then(function(r){
-              if(r.status===204) return resolve({data:null,error:null});
-              return r.json().then(function(d){
-                if(r.ok) {
-                  resolve({data:d, error:null});
-                } else {
-                  resolve({data:null, error:{message:d.message||d.hint||('HTTP '+r.status)}});
-                }
-              });
-            })
-            .catch(function(e){
-              resolve({data:null, error:{message:''+e.message}});
-            });
-        },
-        catch: function(fn){ return Promise.resolve(this).catch(fn); }
-      };
-      
-      // Make q thenable properly
-      q.then = function(resolve, reject) {
-        var reqHeaders = Object.assign({}, headers);
-        if(_single) reqHeaders['Accept'] = 'application/vnd.pgrst.object+json';
-        var fetchOpts = {method:_method, headers:reqHeaders};
-        if(_body) fetchOpts.body = JSON.stringify(_body);
-        
-        var reqUrl;
-        if(_method==='GET'||(!_body&&_method!=='DELETE')) {
-          reqUrl = url + buildUrl();
-        } else {
-          var fParams = '';
-          _filters.forEach(function(f,i){ fParams+=(i===0?'?':'&')+f; });
-          reqUrl = url+'/rest/v1/'+table+fParams;
-        }
-        
-        return fetch(reqUrl, fetchOpts)
-          .then(function(r){
-            if(r.status===204) return resolve({data:null,error:null});
-            return r.text().then(function(txt){
-              try{
-                var d = JSON.parse(txt);
-                if(r.ok) resolve({data:d, error:null});
-                else resolve({data:null, error:{message:d.message||d.hint||d.details||('HTTP '+r.status)}});
-              }catch(e){
-                resolve({data:null, error:{message:'Parse error'}});
-              }
-            });
-          })
-          .catch(function(e){
-            resolve({data:null, error:{message:''+e.message}});
-          });
-      };
-      
-      return q;
-    }
-    
-    // Realtime stub (basic)
-    function channel(name) {
-      var _handlers = [];
-      var ch = {
-        on: function(event, opts, cb){ _handlers.push({opts:opts,cb:cb}); return ch; },
-        subscribe: function(){ return ch; },
-        unsubscribe: function(){ return ch; }
-      };
-      return ch;
-    }
-    
-    // Storage
-    var storage = {
-      from: function(bucket) {
-        return {
-          upload: function(path, file, opts) {
-            var formData = new FormData();
-            formData.append('', file);
-            return fetch(url+'/storage/v1/object/'+bucket+'/'+path, {
-              method:'POST',
-              headers:{'apikey':key,'Authorization':'Bearer '+((_session&&_session.access_token)||key)},
-              body: formData
-            }).then(function(r){return r.json();}).then(function(d){
-              return d.error ? {data:null,error:d} : {data:d,error:null};
-            });
-          },
-          getPublicUrl: function(path) {
-            return {data:{publicUrl: url+'/storage/v1/object/public/'+bucket+'/'+path}};
-          }
-        };
-      }
-    };
-    
-    return {
-      auth: auth,
-      from: query,
-      channel: channel,
-      removeChannel: function(){},
-      storage: storage,
-      rpc: function(fn, params) {
-        return fetch(url+'/rest/v1/rpc/'+fn, {
-          method:'POST', headers:headers,
-          body: JSON.stringify(params||{})
-        }).then(function(r){return r.json();}).then(function(d){
-          return {data:d,error:null};
-        }).catch(function(e){ return {data:null,error:{message:''+e.message}}; });
-      }
-    };
-  }
-};
-</script>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
   <style>
     :root{--bg:#111;--bg2:#1c1c1c;--bg3:#252525;--border:#1e1e1e;--border2:#252525;--text:#f0f0f0;--text2:#888;--text3:#555;--search-bg:#1e1e1e;}
     body.light-mode{--bg:#f5f5f5;--bg2:#ffffff;--bg3:#e8e8e8;--border:#e0e0e0;--border2:#d0d0d0;--text:#111111;--text2:#333333;--text3:#555555;--search-bg:#e8e8e8;}
@@ -371,7 +127,7 @@ const supabase = {
     @keyframes fadeUp{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
     .section-title{font-weight:700;font-size:16px;padding:16px 16px 8px;} body.light-mode .section-title{color:#111;}
     .listings-grid{padding:12px;display:grid;grid-template-columns:1fr 1fr;gap:10px;}
-    .listing-card{background:var(--bg2);border-radius:14px;overflow:hidden;border:1px solid var(--border2);cursor:pointer;transition:transform 0.15s;position:relative;isolation:isolate;}
+    .listing-card{background:var(--bg2);border-radius:14px;overflow:hidden;border:1px solid var(--border2);cursor:pointer;transition:transform 0.15s;position:relative;}
     .listing-card:active{transform:scale(0.97);}
     .listing-card img{width:100%;aspect-ratio:4/3;object-fit:cover;display:block;}
     .listing-img-ph{width:100%;aspect-ratio:4/3;background:var(--bg3);display:flex;align-items:center;justify-content:center;font-size:36px;}
@@ -379,7 +135,7 @@ const supabase = {
     .listing-title{font-weight:600;font-size:13px;margin-bottom:4px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
     .listing-price{font-weight:700;font-size:15px;}
     .listing-loc{font-size:11px;color:#999;margin-top:2px;}
-    .heart-btn{position:absolute;top:8px;right:8px;width:32px;height:32px;background:rgba(0,0,0,0.55);border-radius:50%;border:none;cursor:pointer;font-size:16px;color:#bbb;display:flex;align-items:center;justify-content:center;z-index:10;-webkit-tap-highlight-color:transparent;touch-action:manipulation;}
+    .heart-btn{position:absolute;top:8px;right:8px;width:28px;height:28px;background:rgba(0,0,0,0.6);border-radius:50%;border:none;cursor:pointer;font-size:14px;color:#bbb;display:flex;align-items:center;justify-content:center;}
     .heart-btn.liked{color:#8fbc5a;}
     .premium-badge{position:absolute;top:8px;left:8px;background:#8fbc5a;color:#111;font-size:10px;font-weight:700;padding:3px 8px;border-radius:50px;}
     .cat-page-header{background:var(--bg);padding:12px 16px;border-bottom:1px solid var(--border);position:sticky;top:0;z-index:50;}
@@ -689,7 +445,7 @@ const supabase = {
 </svg>
       <div class="cat-icon-label">Tilbehør</div>
     </div>
-    <div class="cat-icon-item" onclick="goPage('vaerksted','nav-home')">
+    <div class="cat-icon-item" onclick="showPage('vaerksted')">
       <svg width="32" height="32" viewBox="0 0 32 32" fill="none">
   <path d="M20 2C16 2 13 5 13 9C13 10 13.3 11 13.7 11.8L3 22.5C2 23.5 2 25 3 26L6 29C7 30 8.5 30 9.5 29L20.2 18.3C21 18.7 22 19 23 19C27 19 30 16 30 12C30 11 29.8 10 29.4 9.1L25 13.5L22.5 13.5L22.5 11L26.9 6.6C25.9 4 23.1 2 20 2Z" stroke="#8fbc5a" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
 </svg>
@@ -699,7 +455,7 @@ const supabase = {
 </div>
 
 <div class="img-subcat-bar" id="subcat-bar">
-  <div class="subcat-item" onclick="selectSubcat('bycykel',this)">
+  <div class="subcat-item active" onclick="selectSubcat('bycykel',this)">
     <div class="subcat-svg"><svg width="24" height="24" viewBox="0 0 36 36" fill="none"><circle cx="9" cy="25" r="6" stroke="#8fbc5a" stroke-width="2"/><circle cx="27" cy="25" r="6" stroke="#8fbc5a" stroke-width="2"/><path d="M9 25L15 11h6l3 9M15 11l9 14" stroke="#8fbc5a" stroke-width="2" stroke-linecap="round"/><path d="M5 11h6" stroke="#8fbc5a" stroke-width="2" stroke-linecap="round"/></svg></div>
     <div class="subcat-label">Bycykel</div>
   </div>
@@ -857,10 +613,10 @@ const supabase = {
       <button class="back-btn" onclick="goDetailBack()">←</button>
       <div style="flex:1;font-weight:700;font-size:15px" id="detail-header-title"></div>
       <div style="display:flex;align-items:center;gap:8px;">
-        <button onclick="openShareDrawer()" style="width:40px;height:40px;background:var(--bg3);border-radius:50%;border:1px solid var(--border2);cursor:pointer;display:flex;align-items:center;justify-content:center;">
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--text)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg>
+        <button onclick="openShareDrawer()" style="width:40px;height:40px;background:#1c1c1c;border-radius:50%;border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#ccc" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg>
         </button>
-        <button class="heart-btn" id="detail-heart" style="position:static;width:40px;height:40px;background:var(--bg3);border:1px solid var(--border2);font-size:18px;color:var(--text2);" onclick="this.classList.toggle('liked');this.style.color=this.classList.contains('liked')?'#8fbc5a':'#ccc'">♡</button>
+        <button class="heart-btn" id="detail-heart" style="position:static;width:40px;height:40px;background:#1c1c1c;font-size:18px;color:#ccc;" onclick="this.classList.toggle('liked');this.style.color=this.classList.contains('liked')?'#8fbc5a':'#ccc'">♡</button>
       </div>
     </div>
     <div class="detail-imgs" id="detail-img-wrap"></div>
@@ -963,7 +719,7 @@ const supabase = {
     </div>
     <div class="chat-messages" id="chat-msgs"></div>
     <div class="chat-footer">
-      <input class="chat-input" type="text" id="chat-inp" placeholder="Skriv en besked..." maxlength="1000" onkeydown="if(event.key==='Enter')sendMsgReal()">
+      <input class="chat-input" type="text" id="chat-inp" placeholder="Skriv en besked..." onkeydown="if(event.key==='Enter')sendMsgReal()">
       <button class="send-btn" onclick="sendMsgReal()">↑</button>
     </div>
   </div>
@@ -1072,7 +828,6 @@ const supabase = {
         <div id="p-cvr-info"></div>
       </div>
       <div class="menu-row" onclick="goPage('mine-annoncer');loadMineAnnoncer()">📝 Mine annoncer <span>→</span></div>
-      <div class="menu-row" onclick="goPage('favorites');loadFavorites()">❤️ Mine favoritter <span>→</span></div>
       <div class="menu-row" onclick="goPage('messages','nav-msgs')">💬 Beskeder <span>→</span></div>
       <div class="menu-row" style="justify-content:space-between;"><span>☀️ Lyst skærm</span><div class="tgsw" id="theme-toggle" onclick="toggleTheme()"></div></div>
       <div class="menu-row" onclick="goPage('pricing')">💎 Opgrader plan <span>→</span></div>
@@ -1195,7 +950,7 @@ const supabase = {
     <div style="font-weight:700;font-size:16px;margin-bottom:8px;">1. Brug af platformen</div>
     <div style="font-size:14px;color:#bbb;line-height:1.7;margin-bottom:16px;">Det er ikke tilladt at sælge stjålne cykler, oprette falske annoncer eller chikanere andre brugere.</div>
     <div style="font-weight:700;font-size:16px;margin-bottom:8px;">2. Priser</div>
-    <div style="font-size:14px;color:#bbb;line-height:1.7;margin-bottom:16px;">CykelHub er i øjeblikket 100% gratis for alle brugere.</div>
+    <div style="font-size:14px;color:#bbb;line-height:1.7;margin-bottom:16px;">• Gratis: 5 annoncer / 30 dage<br>• Premium: 49 kr./annonce<br>• Lynhurtig Salg: 199 kr./annonce</div>
     <div style="font-weight:700;font-size:16px;margin-bottom:8px;">3. Kontakt</div>
     <div style="font-size:14px;color:#bbb;line-height:1.7;margin-bottom:16px;">📧 malsayed516@gmail.com</div>
   </div>
@@ -1478,18 +1233,194 @@ const supabase = {
 </div>
 
 <!-- FIND VÆRKSTED PAGE -->
+<div id="page-vaerksted" class="page" style="padding:0">
+  <div style="background:var(--bg);padding:14px 16px;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:10px;position:sticky;top:0;z-index:50;">
+    <button class="back-btn" onclick="goPage('home','nav-home')">←</button>
+    <div style="font-weight:800;font-size:18px;flex:1;">🔧 Find Værksted</div>
+  </div>
 
+  <!-- MAP AREA -->
+  <div id="vaerksted-map" style="width:100%;height:280px;background:linear-gradient(135deg,#0d1f0d,#0a1a0a);position:relative;overflow:hidden;display:flex;align-items:center;justify-content:center;">
+    <!-- Animated map grid -->
+    <div style="position:absolute;inset:0;opacity:0.15;">
+      <svg width="100%" height="100%"><defs><pattern id="grid" width="30" height="30" patternUnits="userSpaceOnUse"><path d="M 30 0 L 0 0 0 30" fill="none" stroke="#8fbc5a" stroke-width="0.5"/></pattern></defs><rect width="100%" height="100%" fill="url(#grid)"/></svg>
+    </div>
+    <!-- Map pins for workshops -->
+    <div id="map-pins" style="position:absolute;inset:0;"></div>
+    <div style="text-align:center;z-index:2;">
+      <div style="font-size:40px;margin-bottom:8px;">🗺️</div>
+      <div style="color:#8fbc5a;font-weight:700;font-size:14px;">Cykelværksteder i Danmark</div>
+      <div style="color:#666;font-size:12px;margin-top:4px;" id="map-count">Indlæser...</div>
+    </div>
+  </div>
+
+  <!-- SEARCH BAR -->
+  <div style="padding:12px 16px;background:var(--bg);border-bottom:1px solid var(--border);">
+    <div style="background:var(--bg2);border-radius:12px;display:flex;align-items:center;padding:10px 14px;gap:10px;border:1.5px solid var(--border2);" id="vaerksted-search-wrap">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#8fbc5a" stroke-width="2.5" stroke-linecap="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+      <input type="text" id="vaerksted-search" placeholder="Søg by eller postnummer..." style="background:none;border:none;outline:none;font-size:14px;width:100%;color:var(--text);font-family:'Inter',sans-serif;" oninput="searchVaerksted(this.value)">
+      <button onclick="clearVaerkstedSearch()" style="background:none;border:none;cursor:pointer;color:#555;font-size:16px;" id="vaerksted-clear" style="display:none">✕</button>
+    </div>
+  </div>
+
+  <!-- RESULTS LIST -->
+  <div id="vaerksted-list" style="padding:12px 16px;"></div>
+</div>
 
 
 <!-- ===== ADMIN PANEL OVERLAY ===== -->
+<div class="admin-overlay" id="admin-overlay">
+  <div class="admin-panel">
+    <div class="admin-header">
+      <div class="admin-title">⚙️ Annonce Admin</div>
+      <button class="admin-close" onclick="closeAdmin()">✕</button>
+    </div>
 
+    <!-- STATS -->
+    <div class="admin-section">
+      <div class="admin-section-title">📊 Statistik</div>
+      <div class="stats-grid">
+        <div class="stat-card"><div class="stat-num" id="stat-total">0</div><div class="stat-label">Aktive annoncer</div></div>
+        <div class="stat-card"><div class="stat-num" id="stat-banner">0</div><div class="stat-label">Banner visninger</div></div>
+        <div class="stat-card"><div class="stat-num" id="stat-clicks">0</div><div class="stat-label">Klik i dag</div></div>
+        <div class="stat-card"><div class="stat-num" id="stat-revenue">0</div><div class="stat-label">kr. / md</div></div>
+      </div>
+    </div>
+
+    <!-- AD LIST -->
+    <div class="admin-section">
+      <div class="admin-section-title">📢 Annoncer</div>
+      <div id="admin-ad-list"></div>
+      <button onclick="showAdForm(null)" style="width:100%;background:#1a2a1a;color:#8fbc5a;border:1.5px dashed #8fbc5a;border-radius:12px;padding:11px;font-weight:700;font-size:13px;cursor:pointer;font-family:'Inter',sans-serif;margin-top:4px;">+ Tilføj ny annonce</button>
+    </div>
+
+    <!-- AD FORM -->
+    <div class="admin-section" id="admin-form-section" style="display:none;">
+      <div class="ad-form">
+        <div class="ad-form-title" id="ad-form-title">✏️ Ny annonce</div>
+        <input class="admin-input" id="af-brand" placeholder="Virksomhedsnavn (fx. Telia)">
+        <input class="admin-input" id="af-logo" placeholder="Emoji logo (fx. 📱)">
+        <input class="admin-input" id="af-desc" placeholder="Beskrivelse (max 60 tegn)">
+        <input class="admin-input" id="af-cta" placeholder="Knaptekst (fx. Se tilbud →)">
+        <input class="admin-input" id="af-url" placeholder="Link URL (https://...)">
+        <div style="margin-bottom:8px;">
+  <div style="display:flex;gap:8px;align-items:center;">
+    <input class="admin-input" id="af-img" placeholder="Billedlink URL (https://...)" style="margin-bottom:0;flex:1;">
+    <label for="af-img-upload" style="background:#1a2a1a;color:#8fbc5a;border:1.5px solid #8fbc5a;border-radius:10px;padding:10px 12px;font-size:12px;font-weight:700;cursor:pointer;white-space:nowrap;flex-shrink:0;">📷 Upload</label>
+    <input type="file" id="af-img-upload" accept="image/*" style="display:none;" onchange="uploadAdImage(event)">
+  </div>
+  <div id="af-img-preview" style="display:none;margin-top:8px;border-radius:10px;overflow:hidden;height:100px;background:#1a1a1a;">
+    <img id="af-img-preview-img" src="" style="width:100%;height:100%;object-fit:cover;">
+  </div>
+  <div id="af-img-upload-progress" style="display:none;font-size:11px;color:#8fbc5a;margin-top:4px;text-align:center;">⏳ Uploader...</div>
+</div>
+        <input class="admin-input" id="af-price" placeholder="Månedspris (kr.)" type="number">
+        <select class="admin-select" id="af-position">
+          <option value="both">Banner + kort (begge)</option>
+          <option value="banner">Kun top banner</option>
+          <option value="card">Kun kort i listen</option>
+        </select>
+        <input type="hidden" id="af-edit-id">
+        <button class="admin-save-btn" onclick="saveAd()">💾 Gem annonce</button>
+        <button class="admin-cancel-btn" onclick="hideAdForm()">Annuller</button>
+      </div>
+    </div>
+
+    <!-- SETTINGS -->
+    <div class="admin-section">
+      <div class="admin-section-title">⚙️ Indstillinger</div>
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px;">
+        <span style="font-size:13px;color:#aaa;">Rotér banner hvert</span>
+        <select class="admin-select" id="rotate-interval" style="width:120px;margin-bottom:0;" onchange="updateRotateInterval()">
+          <option value="4000">4 sek.</option>
+          <option value="6000" selected>6 sek.</option>
+          <option value="10000">10 sek.</option>
+          <option value="15000">15 sek.</option>
+        </select>
+      </div>
+      <div style="display:flex;align-items:center;justify-content:space-between;">
+        <span style="font-size:13px;color:#aaa;">Annonce hver X opslag</span>
+        <select class="admin-select" id="ad-frequency" style="width:120px;margin-bottom:0;" onchange="updateAdFrequency()">
+          <option value="5">Hver 5.</option>
+          <option value="8">Hver 8.</option>
+          <option value="10">Hver 10.</option>
+          <option value="15" selected>Hver 15.</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="admin-section">
+      <div class="admin-section-title">📥 Nye forespørgsler</div>
+      <div id="admin-requests-list"><div style="font-size:12px;color:#444;text-align:center;padding:10px;">Indlæser...</div></div>
+    </div>
+    <div style="padding:14px 20px 24px;text-align:center;">
+      <div style="font-size:11px;color:#333;">CykelHub Admin · Kun synlig for dig</div>
+    </div>
+  </div>
+</div>
 
 <!-- Admin FAB button (kun synlig for admin) -->
-
+<button class="admin-fab" id="admin-fab" onclick="openAdmin()">⚙️</button>
 
 
 <!-- ANNONCÉR MED OS PAGE -->
+<div id="page-advertise" class="page">
+  <div style="padding:20px 16px 30px;">
+    <div style="display:flex;align-items:center;gap:10px;margin-bottom:24px;">
+      <button class="back-btn" onclick="goPage('home','nav-home')">←</button>
+      <div style="font-weight:800;font-size:20px;">📢 Annoncér med os</div>
+    </div>
 
+    <!-- Priser -->
+    <div style="font-weight:700;font-size:16px;margin-bottom:14px;">Vores pakker</div>
+    <div style="display:flex;flex-direction:column;gap:10px;margin-bottom:24px;">
+      <div style="background:var(--bg2);border-radius:14px;padding:14px 16px;border:1px solid var(--border2);display:flex;align-items:center;gap:14px;">
+        <div style="font-size:28px;">🌱</div>
+        <div style="flex:1;">
+          <div style="font-weight:700;font-size:14px;">Starter</div>
+          <div style="font-size:12px;color:#888;margin-top:2px;">Banner + kort · 30 dage</div>
+        </div>
+        <div style="font-weight:800;font-size:16px;color:#8fbc5a;">500 kr.</div>
+      </div>
+      <div style="background:var(--bg2);border-radius:14px;padding:14px 16px;border:1.5px solid #8fbc5a;display:flex;align-items:center;gap:14px;position:relative;">
+        <div style="position:absolute;top:-10px;left:50%;transform:translateX(-50%);background:#8fbc5a;color:#111;font-size:10px;font-weight:700;padding:2px 12px;border-radius:50px;white-space:nowrap;">⭐ Mest populær</div>
+        <div style="font-size:28px;">🚀</div>
+        <div style="flex:1;">
+          <div style="font-weight:700;font-size:14px;">Pro</div>
+          <div style="font-size:12px;color:#888;margin-top:2px;">Banner + kort · 3 måneder</div>
+        </div>
+        <div style="font-weight:800;font-size:16px;color:#8fbc5a;">1.000 kr.</div>
+      </div>
+      <div style="background:var(--bg2);border-radius:14px;padding:14px 16px;border:1px solid #f0c040;display:flex;align-items:center;gap:14px;">
+        <div style="font-size:28px;">💎</div>
+        <div style="flex:1;">
+          <div style="font-weight:700;font-size:14px;">Premium</div>
+          <div style="font-size:12px;color:#888;margin-top:2px;">Banner + kort · 6 måneder</div>
+        </div>
+        <div style="font-weight:800;font-size:16px;color:#f0c040;">2.000 kr.</div>
+      </div>
+    </div>
+
+    <!-- Kontaktformular -->
+    <div style="font-weight:700;font-size:16px;margin-bottom:14px;">Kontakt os</div>
+    <div id="ad-request-msg" class="msg-box"></div>
+    <div class="form-group"><label class="form-label">Virksomhedsnavn *</label><input class="form-input" type="text" id="ar-company" placeholder="fx. Telia Danmark"></div>
+    <div class="form-group"><label class="form-label">E-mail *</label><input class="form-input" type="email" id="ar-email" placeholder="kontakt@virksomhed.dk"></div>
+    <div class="form-group"><label class="form-label">Telefon</label><input class="form-input" type="tel" id="ar-phone" placeholder="+45 12 34 56 78"></div>
+    <div class="form-group">
+      <label class="form-label">Pakke</label>
+      <select class="form-input" id="ar-budget">
+        <option value="500 kr. - Starter">🌱 Starter – 500 kr./md</option>
+        <option value="1000 kr. - Pro" selected>🚀 Pro – 1.000 kr./md</option>
+        <option value="2000 kr. - Premium">💎 Premium – 2.000 kr./md</option>
+        <option value="Vil diskutere">💬 Vil gerne diskutere</option>
+      </select>
+    </div>
+    <div class="form-group"><label class="form-label">Besked</label><textarea class="form-input" rows="3" id="ar-message" placeholder="Fortæl os lidt om din virksomhed og hvad du ønsker at annoncere..."></textarea></div>
+    <button class="btn-primary" onclick="submitAdRequest()">📨 Send forespørgsel</button>
+    <div style="text-align:center;margin-top:14px;font-size:12px;color:#555;">Vi vender tilbage inden for 24 timer · malsayed516@gmail.com</div>
+  </div>
+</div>
 
 <!-- SKIFT ADGANGSKODE PAGE -->
 <div id="page-skift-password" class="page">
@@ -1581,23 +1512,6 @@ const supabase = {
     </div>
   </div>
 </div>
-<!-- FAVORITES PAGE -->
-<div id="page-favorites" class="page">
-  <div style="padding:16px;">
-    <div style="display:flex;align-items:center;gap:10px;margin-bottom:20px;">
-      <button class="back-btn" onclick="goPage('profile','nav-prof')">←</button>
-      <div style="font-weight:800;font-size:20px;">❤️ Mine favoritter</div>
-    </div>
-    <div id="favorites-list">
-      <div style="text-align:center;padding:40px;color:#555;">
-        <div style="font-size:40px;margin-bottom:12px;">❤️</div>
-        <div style="font-weight:600;font-size:16px;margin-bottom:8px;">Ingen favoritter endnu</div>
-        <div style="font-size:13px;color:#888;">Tryk på hjertet på en annonce for at gemme den her</div>
-      </div>
-    </div>
-  </div>
-</div>
-
 <nav class="bottom-nav">
   <div class="nav-item active" id="nav-home" onclick="goPage('home','nav-home')"><div class="nav-icon">🏠</div><div class="nav-label">Hjem</div></div>
   <div class="nav-item" id="nav-buy" onclick="goPage('buy','nav-buy')"><div class="nav-icon">🔍</div><div class="nav-label">Vil du købe</div></div>
@@ -1634,7 +1548,7 @@ const supabase = {
   </div>
   <div class="share-copy-row">
     <div class="share-copy-url" id="share-url"></div>
-    <button class="share-copy-btn" onclick="copyLink()">Kopiér</button>
+    <button class="share-copy-btn" yLink()">Kopiér</button>
   </div>
 </div>
 
@@ -1739,37 +1653,14 @@ const fallbackAds = [
 ];
 
 async function loadAds(){
-  try{
-    const res = await sb.from('ads')
-      .select('id,brand,logo,description,cta,url,img,price,position,active,created_at')
-      .eq('active', true)
-      .order('created_at', {ascending: false});
-    if(res.error) throw new Error(''+res.error.message);
-    // KEY FIX: Convert via JSON to get plain objects
-    const rows = JSON.parse(JSON.stringify(res.data || []));
+  try {
+    const res = await sb.from('ads').select('id,brand,logo,description,cta,url,img,price,position,active,created_at').eq('active', true).order('created_at', {ascending:false});
+    if(res.error) throw new Error(res.error.message);
+    const rows = res.data || [];
     if(rows.length){
-      ads = rows.map(function(a){
-        return {
-          id: ''+a.id,
-          brand: ''+(a.brand||''),
-          logo: ''+(a.logo||'📢'),
-          desc: ''+(a.description||''),
-          description: ''+(a.description||''),
-          cta: ''+(a.cta||'Se mere →'),
-          url: ''+(a.url||''),
-          img: ''+(a.img||''),
-          price: +(a.price||0),
-          position: ''+(a.position||'both'),
-          active: !!a.active
-        };
-      });
-    } else {
-      ads = fallbackAds.slice();
-    }
-  }catch(e){
-    console.warn('Supabase ads unavailable:', ''+e.message);
-    ads = fallbackAds.slice();
-  }
+      ads = rows.map(a=>({id:String(a.id||''),brand:String(a.brand||''),logo:String(a.logo||'📢'),desc:String(a.description||''),description:String(a.description||''),cta:String(a.cta||'Se mere →'),url:String(a.url||''),img:String(a.img||''),price:Number(a.price||0),position:String(a.position||'both'),active:Boolean(a.active)}));
+    } else { ads = fallbackAds; }
+  } catch(e){ console.warn('Supabase ads unavailable, using fallback'); ads = fallbackAds; }
   rotateBannerAd();
   renderHome(allListings);
 }
@@ -1792,7 +1683,7 @@ async function saveAdToDb(adData){
       const { error } = await sb.from('ads').insert({brand:adData.brand,logo:adData.logo,description:adData.desc,cta:adData.cta,url:adData.url,img:adData.img,price:adData.price||0,position:adData.position||'both',active:true});
       if(error) throw error;
     }
-    loadAds();
+    await loadAds();
     toast('✅ Gemt i Supabase!');
   } catch(e) {
     const existing = fallbackAds.findIndex(x=>x.id===adData.id);
@@ -1803,8 +1694,8 @@ async function saveAdToDb(adData){
   }
 }
 
-async function deleteAdFromDb(id){ try { const { error } = await sb.from('ads').delete().eq('id', id); if(error) throw error; loadAds(); } catch(e){ toast('❌ Fejl: ' + e.message); } }
-async function toggleAdInDb(id, currentActive){ try { const { error } = await sb.from('ads').update({ active: !currentActive }).eq('id', id); if(error) throw error; loadAds(); } catch(e){ toast('❌ Fejl: ' + e.message); } }
+async function deleteAdFromDb(id){ try { const { error } = await sb.from('ads').delete().eq('id', id); if(error) throw error; await loadAds(); } catch(e){ toast('❌ Fejl: ' + e.message); } }
+async function toggleAdInDb(id, currentActive){ try { const { error } = await sb.from('ads').update({ active: !currentActive }).eq('id', id); if(error) throw error; await loadAds(); } catch(e){ toast('❌ Fejl: ' + e.message); } }
 
 const danishCities=[{zip:'1000',city:'København K'},{zip:'1550',city:'København V'},{zip:'1800',city:'Frederiksberg C'},{zip:'2000',city:'Frederiksberg'},{zip:'2100',city:'København Ø'},{zip:'2200',city:'København N'},{zip:'2300',city:'København S'},{zip:'2400',city:'København NV'},{zip:'2450',city:'København SV'},{zip:'2500',city:'Valby'},{zip:'2600',city:'Glostrup'},{zip:'2605',city:'Brøndby'},{zip:'2610',city:'Rødovre'},{zip:'2620',city:'Albertslund'},{zip:'2630',city:'Taastrup'},{zip:'2635',city:'Ishøj'},{zip:'2650',city:'Hvidovre'},{zip:'2670',city:'Greve'},{zip:'2700',city:'Brønshøj'},{zip:'2720',city:'Vanløse'},{zip:'2730',city:'Herlev'},{zip:'2750',city:'Ballerup'},{zip:'2770',city:'Kastrup'},{zip:'2791',city:'Dragør'},{zip:'2800',city:'Kongens Lyngby'},{zip:'2820',city:'Gentofte'},{zip:'2830',city:'Virum'},{zip:'2840',city:'Holte'},{zip:'2860',city:'Søborg'},{zip:'2900',city:'Hellerup'},{zip:'2920',city:'Charlottenlund'},{zip:'2950',city:'Vedbæk'},{zip:'2970',city:'Hørsholm'},{zip:'2990',city:'Nivå'},{zip:'3000',city:'Helsingør'},{zip:'3050',city:'Humlebæk'},{zip:'3060',city:'Espergærde'},{zip:'3100',city:'Hornbæk'},{zip:'3200',city:'Helsinge'},{zip:'3250',city:'Gilleleje'},{zip:'3300',city:'Frederiksværk'},{zip:'3400',city:'Hillerød'},{zip:'3450',city:'Allerød'},{zip:'3460',city:'Birkerød'},{zip:'3480',city:'Fredensborg'},{zip:'3500',city:'Værløse'},{zip:'3520',city:'Farum'},{zip:'3550',city:'Slangerup'},{zip:'3600',city:'Frederikssund'},{zip:'3650',city:'Ølstykke'},{zip:'4000',city:'Roskilde'},{zip:'4100',city:'Ringsted'},{zip:'4200',city:'Slagelse'},{zip:'4300',city:'Holbæk'},{zip:'4400',city:'Kalundborg'},{zip:'4600',city:'Køge'},{zip:'4700',city:'Næstved'},{zip:'4800',city:'Nykøbing F'},{zip:'5000',city:'Odense C'},{zip:'5200',city:'Odense V'},{zip:'5500',city:'Middelfart'},{zip:'5700',city:'Svendborg'},{zip:'5800',city:'Nyborg'},{zip:'6000',city:'Kolding'},{zip:'6100',city:'Haderslev'},{zip:'6200',city:'Aabenraa'},{zip:'6400',city:'Sønderborg'},{zip:'6700',city:'Esbjerg'},{zip:'6800',city:'Varde'},{zip:'6950',city:'Ringkøbing'},{zip:'7000',city:'Fredericia'},{zip:'7100',city:'Vejle'},{zip:'7400',city:'Herning'},{zip:'7500',city:'Holstebro'},{zip:'7700',city:'Thisted'},{zip:'7800',city:'Skive'},{zip:'8000',city:'Aarhus C'},{zip:'8200',city:'Aarhus N'},{zip:'8210',city:'Aarhus V'},{zip:'8600',city:'Silkeborg'},{zip:'8660',city:'Skanderborg'},{zip:'8700',city:'Horsens'},{zip:'8800',city:'Viborg'},{zip:'8900',city:'Randers C'},{zip:'9000',city:'Aalborg'},{zip:'9200',city:'Aalborg SV'},{zip:'9400',city:'Nørresundby'},{zip:'9500',city:'Hobro'},{zip:'9700',city:'Brønderslev'},{zip:'9800',city:'Hjørring'},{zip:'9900',city:'Frederikshavn'},{zip:'9990',city:'Skagen'}];
 
@@ -1818,79 +1709,39 @@ function loadProfile(){const saved=localStorage.getItem('profile');if(saved){con
 
 let currentConvId=null,currentSellerId=null;
 
-let _chatRealtimeChannel=null;
-function subscribeToChat(listingId){
-  if(_chatRealtimeChannel){sb.removeChannel(_chatRealtimeChannel);_chatRealtimeChannel=null;}
-  if(!listingId)return;
-  _chatRealtimeChannel=sb.channel('chat-'+listingId)
-    .on('postgres_changes',{event:'INSERT',schema:'public',table:'messages',filter:'listing_id=eq.'+listingId},()=>{loadChatReal();})
-    .subscribe();
-}
 async function loadChatReal(){
   const el=document.getElementById('chat-msgs');
   if(!el)return;
-  const threadId=String(detailId||currentConvId||'');
-  if(!threadId){el.innerHTML='<div style="text-align:center;padding:30px;color:#888;font-size:13px;">Skriv en besked for at starte samtalen 👇</div>';return;}
+  if(!currentConvId){el.innerHTML='<div style="text-align:center;padding:30px;color:#888;font-size:13px;">Skriv en besked for at starte samtalen 👇</div>';return;}
   el.innerHTML='<div style="text-align:center;padding:20px;color:#555;">⏳ Indlæser...</div>';
   try{
-    const myId=me&&me.id?me.id:'';
-    const otherId=currentSellerId||'';
-    let res;
-    if(otherId&&otherId!==myId){
-      res=await sb.from('messages').select('*')
-        .eq('listing_id',threadId)
-        .or('and(sender_id.eq.'+myId+',receiver_id.eq.'+otherId+'),and(sender_id.eq.'+otherId+',receiver_id.eq.'+myId+')')
-        .order('created_at',{ascending:true});
-      if(res.error)res=await sb.from('messages').select('*').eq('listing_id',threadId).order('id',{ascending:true});
-    } else {
-      res=await sb.from('messages').select('*').eq('listing_id',threadId).order('created_at',{ascending:true});
-    }
-    const{data,error}=res;
+    const{data,error}=await sb.from('messages').select('*').eq('conversation_id',currentConvId).order('created_at',{ascending:true});
     if(error)throw error;
     if(!data||!data.length){el.innerHTML='<div style="text-align:center;padding:30px;color:#888;font-size:13px;">Start samtalen 👇</div>';return;}
-    // Mark received as read
-    const unreadIds=data.filter(m=>m.sender_id!==myId&&!m.is_read).map(m=>m.id);
-    if(unreadIds.length){
-      sb.from('messages').update({is_read:true}).in('id',unreadIds).then(()=>{
-        loadConvsReal();updateBellDot();
-      }).catch(()=>{});
-    }
-    el.innerHTML=data.map(m=>{
-      const sent=m.sender_id===myId;
-      const time=m.created_at?new Date(m.created_at).toLocaleTimeString('da',{hour:'2-digit',minute:'2-digit'}):'';
-      const receipt=sent?'<span style="color:'+(m.is_read?'#8fbc5a':'rgba(255,255,255,0.5)')+';font-size:11px;margin-left:4px;">'+(m.is_read?'✓✓':'✓')+'</span>':'';
-      return '<div style="display:flex;flex-direction:column;align-items:'+(sent?'flex-end':'flex-start')+';margin-bottom:4px;">'
-        +'<div class="bubble '+(sent?'sent':'recv')+'">'+sanitize(m.content||'')+receipt+'</div>'
-        +(time?'<div class="btime" style="align-self:'+(sent?'flex-end':'flex-start')+'">'+time+'</div>':'')
-        +'</div>';
-    }).join('');
+    el.innerHTML=data.map(m=>{const sent=m.sender_id===me?.id;const time=new Date(m.created_at).toLocaleTimeString('da',{hour:'2-digit',minute:'2-digit'});return`<div style="display:flex;flex-direction:column;align-items:${sent?'flex-end':'flex-start'};"><div class="bubble ${sent?'sent':'recv'}">${m.content}</div><div class="btime" style="align-self:${sent?'flex-end':'flex-start'}">${time}</div></div>`;}).join('');
     el.scrollTop=el.scrollHeight;
-  }catch(e){el.innerHTML='<div style="text-align:center;padding:30px;color:#888;">Start samtalen 👇</div><div style="font-size:11px;color:#e03030;text-align:center;">'+String(e&&e.message?e.message:e)+'</div>';}
+    await sb.from('messages').update({read:true}).eq('conversation_id',currentConvId).neq('sender_id',me.id);
+  }catch(e){el.innerHTML='<div style="text-align:center;padding:30px;color:#888;">Start samtalen 👇</div>';}
 }
 
 async function sendMsgReal(){
   const inp=document.getElementById('chat-inp');
-  const t=inp?inp.value.trim():'';
+  const t=inp?.value.trim();
   if(!t||!me)return;
   inp.value='';
-  const threadId=String(detailId||currentConvId||'');
-  if(!threadId){toast('❌ Ingen annonce tilknyttet');return;}
-  if(!currentSellerId||currentSellerId===me.id){toast('❌ Kan ikke sende til dig selv');return;}
+  if(!currentConvId){
+    try{
+      const{data:nc,error}=await sb.from('conversations').insert({listing_id:String(detailId||''),buyer_id:me.id,seller_id:currentSellerId||me.id,last_message:t,updated_at:new Date().toISOString()}).select('id').single();
+      if(!error&&nc)currentConvId=nc.id;
+      else{toast('❌ Kunne ikke oprette samtale');return;}
+    }catch(e){toast('❌ Fejl: '+e.message);return;}
+  }
   try{
-    const{error}=await sb.from('messages').insert({
-      listing_id:threadId,
-      sender_id:me.id,
-      receiver_id:currentSellerId,
-      content:t,
-      created_at:new Date().toISOString(),
-      is_read:false
-    });
+    const{error}=await sb.from('messages').insert({conversation_id:currentConvId,sender_id:me.id,receiver_id:currentSellerId||me.id,content:t,read:false});
     if(error)throw error;
-    if(currentConvId){
-      try{await sb.from('conversations').update({last_message:t,updated_at:new Date().toISOString()}).eq('id',currentConvId);}catch(_){}
-    }
+    await sb.from('conversations').update({last_message:t,updated_at:new Date().toISOString()}).eq('id',currentConvId);
     loadChatReal();
-  }catch(e){toast('❌ Fejl: '+String(e&&e.message?e.message:e));}
+  }catch(e){toast('❌ Fejl: '+e.message);}
 }
 
 async function loadConvsReal(){
@@ -1899,117 +1750,33 @@ async function loadConvsReal(){
   if(!me){el.innerHTML='<div style="text-align:center;padding:40px;color:#555;">Log ind for at se beskeder</div>';return;}
   el.innerHTML='<div style="text-align:center;padding:20px;color:#555;">⏳ Indlæser...</div>';
   try{
-    const{data,error}=await sb.from('conversations').select('*')
-      .or('buyer_id.eq.'+me.id+',seller_id.eq.'+me.id)
-      .order('updated_at',{ascending:false});
+    const{data,error}=await sb.from('conversations').select('*').or('buyer_id.eq.'+me.id+',seller_id.eq.'+me.id).order('updated_at',{ascending:false});
     if(error)throw error;
-    if(!data||!data.length){
-      el.innerHTML='<div style="text-align:center;padding:40px;color:#555;"><div style="font-size:36px;margin-bottom:10px;">💬</div><div>Ingen beskeder endnu</div></div>';
-      return;
-    }
-    // Get real unread counts
-    let unreadMap={};
-    try{
-      const lids=[...new Set(data.map(c=>String(c.listing_id||'')).filter(Boolean))];
-      if(lids.length){
-        const{data:um}=await sb.from('messages').select('listing_id').in('listing_id',lids).eq('receiver_id',me.id).eq('is_read',false);
-        if(um)um.forEach(m=>{const k=String(m.listing_id);unreadMap[k]=(unreadMap[k]||0)+1;});
-      }
-    }catch(_){}
-    // Get other user names
-    const otherIds=[...new Set(data.map(c=>c.buyer_id===me.id?c.seller_id:c.buyer_id).filter(Boolean))];
-    let userMap={};
-    if(otherIds.length){
-      try{
-        const{data:pr}=await sb.from('listings').select('user_id,details').in('user_id',otherIds).limit(50);
-        if(pr)pr.forEach(p=>{if(p.details&&p.details.seller&&!userMap[p.user_id])userMap[p.user_id]=p.details.seller;});
-      }catch(_){}
-    }
-    el.innerHTML=data.map(function(c){
-      const isbuyer=c.buyer_id===me.id;
-      const otherId=isbuyer?c.seller_id:c.buyer_id;
-      const otherName=userMap[otherId]||(isbuyer?'Sælger':'Køber');
-      const time=new Date(c.updated_at).toLocaleTimeString('da',{hour:'2-digit',minute:'2-digit'});
-      const listing=c.listing_id?allListings.find(function(l){return String(l.id)===String(c.listing_id);}):null;
-      const preview=c.last_message&&c.last_message.trim()?c.last_message:(listing?'om: '+sanitize(listing.title):'Skriv en besked …');
-      const uc=unreadMap[String(c.listing_id||'')]||0;
-      const hu=uc>0;
-      const cid=String(c.id||'');
-      const oid=String(otherId||'');
-      const lid=String(c.listing_id||'');
-      const nm=otherName.replace(/\\/g,'').replace(/'/g,'').replace(/"/g,'');
-      const onclickStr='openRealConv('+JSON.stringify(cid)+','+JSON.stringify(oid)+','+JSON.stringify(lid)+','+JSON.stringify(nm)+')';
-      return '<div class="conv-item" onclick="'+onclickStr+'">'
-        +'<div style="position:relative;flex-shrink:0;">'
-        +'<div class="conv-avatar" style="border:2px solid '+(hu?'#8fbc5a':'var(--border2)')+';background:var(--bg3);">👤</div>'
-        +(uc>0?'<div style="position:absolute;top:-4px;right:-4px;background:#8fbc5a;color:#111;border-radius:50px;font-size:10px;font-weight:800;padding:1px 5px;min-width:16px;text-align:center;border:2px solid var(--bg2);">'+uc+'</div>':'')
-        +'</div>'
-        +'<div class="conv-info">'
-        +'<div class="conv-name" style="font-weight:'+(hu?'800':'700')+';">'+sanitize(nm)+'</div>'
-        +'<div class="conv-preview" style="color:'+(hu?'var(--text)':'#999')+';font-weight:'+(hu?'600':'400')+';">'+sanitize(preview)+'</div>'
-        +(listing?'<div style="font-size:10px;color:#555;margin-top:2px;">📦 '+sanitize(listing.title)+'</div>':'')
-        +'</div>'
-        +'<div class="conv-time">'+time+'</div>'
-        +'</div>';
-    }).join('');
-    // Update bell dot
-    const totalUnread=Object.values(unreadMap).reduce(function(a,b){return a+b;},0);
-    if(totalUnread>0)document.getElementById('bell-dot').classList.add('on');
-  }catch(e){el.innerHTML='<div style="text-align:center;padding:30px;color:#e03030;">❌ Fejl: '+String(e&&e.message?e.message:e)+'</div>';}
+    if(!data||!data.length){el.innerHTML='<div style="text-align:center;padding:40px;color:#555;"><div style="font-size:36px;margin-bottom:10px;">💬</div><div>Ingen beskeder endnu</div></div>';return;}
+    el.innerHTML=data.map(c=>{const isbuyer=c.buyer_id===me.id;const time=new Date(c.updated_at).toLocaleTimeString('da',{hour:'2-digit',minute:'2-digit'});return`<div class="conv-item" onclick="openRealConv('${c.id}','${isbuyer?c.seller_id:c.buyer_id}','${c.listing_id||''}')"><div class="conv-avatar">👤</div><div class="conv-info"><div class="conv-name">${isbuyer?'Sælger':'Køber'}</div><div class="conv-preview">${c.last_message||'Ny samtale'}</div></div><div class="conv-time">${time}</div></div>`;}).join('');
+  }catch(e){el.innerHTML='<div style="text-align:center;padding:30px;color:#e03030;">❌ Fejl</div>';}
 }
 
-async function openRealConv(convId,otherId,listingId,otherName){
+async function openRealConv(convId,otherId,listingId){
   currentConvId=convId;currentSellerId=otherId;
-  if(listingId)detailId=listingId;
-  const l=listingId?allListings.find(function(x){return String(x.id)===String(listingId);}):null;
-  document.getElementById('chat-name').textContent=otherName||'Besked';
-  document.getElementById('chat-sub').textContent=l?'om: '+sanitize(l.title):'Privat besked';
-  showPage('chat');
-  subscribeToChat(String(listingId||''));
-  loadChatReal();
+  const l=listingId?allListings.find(x=>String(x.id)===String(listingId)):null;
+  document.getElementById('chat-name').textContent='Besked';
+  document.getElementById('chat-sub').textContent=l?'om: '+l.title:'Privat besked';
+  showPage('chat');loadChatReal();
 }
 
 async function loadListingsFromDb(){
   try{
-    const res = await sb.from('listings')
-      .select('id,title,price,city,category,images,stelnummer,description,details,views,saves,shares,created_at,user_id')
-      .eq('active', true)
-      .order('created_at', {ascending: false})
-      .limit(100);
-    if(res.error) throw new Error(''+res.error.message);
-    // KEY FIX: Convert via JSON to get plain objects (kills Proxy)
-    const rows = JSON.parse(JSON.stringify(res.data || []));
-    if(!rows.length){ renderHome(allListings); return; }
-    const dbListings = rows.map(function(r){
-      var det = r.details || {};
-      var imgs = Array.isArray(r.images) ? r.images : [];
-      return {
-        id: ''+r.id,
-        title: ''+(r.title||''),
-        price: r.price ? (+r.price).toLocaleString('da-DK')+' kr.' : '0 kr.',
-        city: ''+(r.city||''),
-        cat: ''+(r.category||'cykler'),
-        img: imgs.length ? ''+imgs[0] : null,
-        stelnummer: ''+(r.stelnummer||''),
-        desc: ''+(r.description||''),
-        brand: ''+(det.brand||''),
-        type: ''+(det.type||''),
-        seller: ''+(det.seller||'Privat sælger'),
-        phone: ''+(det.phone||''),
-        views: +(r.views||0),
-        saves: +(r.saves||0),
-        shares: +(r.shares||0),
-        created_at: ''+(r.created_at||''),
-        user_id: ''+(r.user_id||'')
-      };
-    });
-    var loc = allListings.filter(function(l){ return typeof l.id === 'number'; });
-    allListings = dbListings.concat(loc);
-    renderHome(allListings);
-  }catch(e){
-    console.warn('loadListings error:', ''+e.message);
-    renderHome(allListings);
-  }
+    const res=await sb.from('listings').select('id,title,price,city,category,images,stelnummer,description,details,views,saves,shares,created_at,user_id').eq('active',true).order('created_at',{ascending:false}).limit(100);
+    if(res.error)throw new Error(res.error.message);
+    const rows=res.data||[];
+    if(rows.length){
+      const dbListings=rows.map(l=>({id:String(l.id),title:String(l.title||''),price:l.price?Number(l.price).toLocaleString('da-DK')+' kr.':'0 kr.',city:String(l.city||''),cat:String(l.category||'cykler'),img:Array.isArray(l.images)&&l.images[0]?String(l.images[0]):null,stelnummer:String(l.stelnummer||''),desc:String(l.description||''),brand:String(l.details?.brand||''),type:String(l.details?.type||''),seller:String(l.details?.seller||'Privat sælger'),phone:String(l.details?.phone||''),views:Number(l.views||0),saves:Number(l.saves||0),shares:Number(l.shares||0),created_at:String(l.created_at||''),user_id:String(l.user_id||'')}));
+      const localSamples=allListings.filter(l=>typeof l.id==='number');
+      allListings=[...dbListings,...localSamples];
+      renderHome(allListings);
+    }
+  }catch(e){console.warn('loadListings error:',e.message);}
 }
 
 function checkResetToken(){
@@ -2022,133 +1789,16 @@ function checkResetToken(){
   }
 }
 
-function sanitize(str){
-  if(!str)return'';
-  return String(str).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#x27;');
-}
-
-let _globalMsgChannel=null;
-function subscribeToMyMessages(){
-  if(_globalMsgChannel){sb.removeChannel(_globalMsgChannel);_globalMsgChannel=null;}
-  if(!me)return;
-  _globalMsgChannel=sb.channel('inbox-'+me.id)
-    .on('postgres_changes',{event:'INSERT',schema:'public',table:'messages',filter:'receiver_id=eq.'+me.id},function(payload){
-      document.getElementById('bell-dot').classList.add('on');
-      const lid=payload.new&&payload.new.listing_id?String(payload.new.listing_id):'';
-      const threadId=String(detailId||currentConvId||'');
-      const chatOpen=document.getElementById('page-chat')&&document.getElementById('page-chat').classList.contains('active');
-      if(lid&&lid===threadId&&chatOpen){
-        loadChatReal();
-      } else {
-        const preview=payload.new&&payload.new.content?String(payload.new.content).slice(0,50):'';
-        showMsgToast('💬 Ny besked'+(preview?': '+preview:''),lid);
-      }
-      const msgsPage=document.getElementById('page-messages');
-      if(msgsPage&&msgsPage.classList.contains('active'))loadConvsReal();
-      updateBellDot();
-    }).subscribe();
-}
-
-function showMsgToast(msg,listingId){
-  const t=document.getElementById('toast');
-  t.textContent=msg;
-  t.style.cursor='pointer';
-  t.style.background='#1a2a1a';
-  t.style.borderColor='#8fbc5a';
-  t.onclick=function(){
-    t.classList.remove('show');t.onclick=null;t.style.cursor='';t.style.background='';t.style.borderColor='';
-    goPage('messages','nav-msgs');
-  };
-  t.classList.add('show');
-  setTimeout(function(){t.classList.remove('show');t.onclick=null;t.style.cursor='';t.style.background='';t.style.borderColor='';},5000);
-}
-
-// ===== FAVORITES SYSTEM =====
-function getFavorites(){
-  try{return JSON.parse(localStorage.getItem('favorites')||'[]');}catch(_){return[];}
-}
-function saveFavorites(favs){
-  try{localStorage.setItem('favorites',JSON.stringify(favs));}catch(_){}
-}
-function isFavorite(id){
-  return getFavorites().includes(String(id));
-}
-function toggleFavorite(id, btnEl){
-  const sid=String(id);
-  let favs=getFavorites();
-  if(favs.includes(sid)){
-    favs=favs.filter(function(f){return f!==sid;});
-    if(btnEl){btnEl.classList.remove('liked');btnEl.innerHTML='♡';btnEl.style.color='';}
-    toast('Fjernet fra favoritter');
-  } else {
-    favs.push(sid);
-    if(btnEl){btnEl.classList.add('liked');btnEl.innerHTML='♥';btnEl.style.color='#8fbc5a';}
-    toast('♥ Gemt i favoritter!');
-  }
-  saveFavorites(favs);
-  // Refresh favorites page if open
-  const favPage=document.getElementById('page-favorites');
-  if(favPage&&favPage.classList.contains('active'))loadFavorites();
-}
-function loadFavorites(){
-  const el=document.getElementById('favorites-list');
-  if(!el)return;
-  const favs=getFavorites();
-  if(!favs.length){
-    el.innerHTML='<div style="text-align:center;padding:40px;color:#555;">'
-      +'<div style="font-size:40px;margin-bottom:12px;">♥</div>'
-      +'<div style="font-weight:600;font-size:16px;margin-bottom:8px;">Ingen favoritter endnu</div>'
-      +'<div style="font-size:13px;color:#888;">Tryk på hjertet på en annonce for at gemme den her</div>'
-      +'</div>';
-    return;
-  }
-  // Find listings from allListings + fetch missing ones from DB
-  const found=[];
-  const missing=[];
-  favs.forEach(function(id){
-    const l=allListings.find(function(x){return String(x.id)===id;});
-    if(l)found.push(l);
-    else missing.push(id);
-  });
-  // Show found immediately
-  renderFavorites(el, found, missing.length);
-  // Fetch missing from DB
-  if(missing.length){
-    sb.from('listings').select('id,title,price,city,category,images,details').in('id',missing).then(function(r){
-      if(r.data&&r.data.length){
-        const dbItems=r.data.map(function(l){
-          let imgs=[];try{imgs=Array.isArray(l.images)?l.images:[];}catch(_){}
-          let det={};try{det=l.details&&typeof l.details==='object'?l.details:{};}catch(_){}
-          return {id:String(l.id),title:String(l.title||''),price:l.price?Number(l.price).toLocaleString('da-DK')+' kr.':'0 kr.',city:String(l.city||''),cat:String(l.category||''),img:imgs[0]||null,brand:String(det.brand||''),type:String(det.type||'')};
-        });
-        renderFavorites(el, found.concat(dbItems), 0);
-      }
-    }).catch(function(){});
-  }
-}
-function renderFavorites(el,items,loadingMore){
-  if(!items.length&&!loadingMore){
-    el.innerHTML='<div style="text-align:center;padding:40px;color:#555;">'
-      +'<div style="font-size:40px;margin-bottom:12px;">♥</div>'
-      +'<div style="font-weight:600;">Ingen favoritter endnu</div>'
-      +'</div>';
-    return;
-  }
-  const cards=items.map(function(l){return listingCard(l);}).join('');
-  el.innerHTML='<div class="listings-grid">'+cards+'</div>'
-    +(loadingMore?'<div style="text-align:center;padding:12px;color:#555;font-size:13px;">⏳ Indlæser...</div>':'');
-}
-
 async function init(){
   loadTheme();
   checkResetToken();
   const{data:{session}}=await sb.auth.getSession();
   if(session)setUser(session.user);
   sb.auth.onAuthStateChange((_,s)=>s?setUser(s.user):clearUser());
-  renderHome(allListings); // Show local data immediately
+  renderHome(allListings);
   updateBellDot();
   loadListings();
-  loadAds();
+  await loadAds();
   window._adTimer = setInterval(rotateBannerAd, adRotateInterval);
   for(let i=0;i<6;i++){const s=document.getElementById('slot-'+i);if(s)s.onclick=()=>document.getElementById('file-input').click();}
 }
@@ -2161,7 +1811,6 @@ function setUser(u){
   document.getElementById('auth-section').style.display='none';
   document.getElementById('profile-section').style.display='block';
   checkAdminAccess();
-  if(typeof subscribeToMyMessages==='function')subscribeToMyMessages();
   const badge = document.getElementById('p-account-badge');
   const isErhverv = meta.accountType === 'erhverv';
   if(badge){
@@ -2178,20 +1827,22 @@ function setUser(u){
 
 function clearUser(){me=null;document.getElementById('auth-section').style.display='block';document.getElementById('profile-section').style.display='none';checkAdminAccess();}
 
-function listingCard(l){
-  const lid=String(l.id);
-  const fav=isFavorite(lid);
-  let html='<div class="listing-card" style="position:relative;" onclick="openListingById('+JSON.stringify(lid)+')">';
-  if(l.img){html+='<img src="'+sanitize(l.img)+'" alt="'+sanitize(l.title)+'" loading="lazy" style="pointer-events:none;">';}
-  else{html+='<div class="listing-img-ph" style="pointer-events:none;">🚲</div>';}
-  if(l.plan==='premium'){html+='<div class="premium-badge" style="pointer-events:none;">⭐ Premium</div>';}
-  html+='<button class="heart-btn" onclick="event.stopPropagation();event.preventDefault();toggleFavorite('+JSON.stringify(lid)+',this);return false;" style="color:'+(fav?'#8fbc5a':'')+';position:absolute;top:8px;right:8px;z-index:20;">'+(fav?'♥':'♡')+'</button>';
-  html+='<div class="listing-info" style="pointer-events:none;">';
-  html+='<div class="listing-title">'+sanitize(l.title)+'</div>';
-  html+='<div class="listing-price">'+sanitize(l.price)+'</div>';
-  html+='<div class="listing-loc">📍 '+sanitize(l.city)+'</div>';
-  html+='</div></div>';
-  return html;
+function listingCard(l){const lid=String(l.id);return`<div class="listing-card" onclick="openListingById('${lid}')">${l.img?`<img src="${l.img}" alt="${l.title}" loading="lazy">`:'<div class="listing-img-ph">🚲</div>'}${l.plan==='premium'?'<div class="premium-badge">⭐ Premium</div>':''}<button class="heart-btn" onclick="event.stopPropagation();this.classList.toggle('liked');this.textContent=this.classList.contains('liked')?'♥':'♡'">♡</button><div class="listing-info"><div class="listing-title">${l.title}</div><div class="listing-price">${l.price}</div><div class="listing-loc">📍 ${l.city}</div></div></div>`;}
+
+function adCard(a){
+  if(!a) return '';
+  return `<div style="grid-column:span 2;border-radius:16px;overflow:hidden;cursor:pointer;position:relative;margin:2px 0;" onclick="trackAdClick('${a.id||''}','${a.url||''}')">
+    <img src="${a.img||''}" loading="lazy" onerror="this.style.display='none'" style="width:100%;height:160px;object-fit:cover;display:block;">
+    <div style="position:absolute;inset:0;background:linear-gradient(to bottom,rgba(0,0,0,0.05) 30%,rgba(0,0,0,0.75) 100%);"></div>
+    <div style="position:absolute;top:10px;left:10px;background:rgba(0,0,0,0.6);color:#bbb;font-size:10px;font-weight:600;padding:3px 10px;border-radius:50px;">Sponsoreret</div>
+    <div style="position:absolute;bottom:0;left:0;right:0;padding:12px 14px;display:flex;align-items:flex-end;justify-content:space-between;gap:10px;">
+      <div>
+        <div style="display:flex;align-items:center;gap:6px;margin-bottom:3px;"><span style="font-size:20px;">${a.logo}</span><span style="font-weight:800;font-size:16px;color:#fff;text-shadow:0 1px 4px rgba(0,0,0,0.9);">${a.brand}</span></div>
+        <div style="font-size:12px;color:rgba(255,255,255,0.85);text-shadow:0 1px 3px rgba(0,0,0,0.8);">${a.desc}</div>
+      </div>
+      <div style="background:#8fbc5a;color:#111;font-size:12px;font-weight:800;padding:9px 16px;border-radius:50px;white-space:nowrap;flex-shrink:0;box-shadow:0 2px 8px rgba(143,188,90,0.5);">${a.cta}</div>
+    </div>
+  </div>`;
 }
 
 function trackAdClick(id, url){bannerClicks++;localStorage.setItem('bannerClicks', bannerClicks);if(url) window.open(url, '_blank');}
@@ -2227,93 +1878,48 @@ function renderHome(items){
   el.innerHTML=h;
 }
 
-function handleSearch(val){if(val.trim()){document.querySelectorAll('.subcat-item').forEach(i=>i.classList.remove('active'));}renderHome(!val.trim()?allListings:allListings.filter(l=>l.title.toLowerCase().includes(val.toLowerCase())||l.city.toLowerCase().includes(val.toLowerCase())||l.brand&&l.brand.toLowerCase().includes(val.toLowerCase())));}
+function handleSearch(val){renderHome(!val.trim()?allListings:allListings.filter(l=>l.title.toLowerCase().includes(val.toLowerCase())||l.city.toLowerCase().includes(val.toLowerCase())));}
 function selectCat(cat,el){document.querySelectorAll('.cat-icon-item').forEach(t=>t.classList.remove('active'));el.classList.add('active');renderHome(allListings);showPage('home');}
-function selectSubcat(subcat,el){if(el.classList.contains('active')){document.querySelectorAll('.subcat-item').forEach(i=>i.classList.remove('active'));renderHome(allListings);showPage('home');return;}document.querySelectorAll('.subcat-item').forEach(i=>i.classList.remove('active'));el.classList.add('active');const map={bycykel:'Bycykel',mountainbike:'Mountainbike',racercykel:'Racercykel',damecykel:'Damecykel',bornecykel:'Børnecykel',ladcykel:'Ladcykel'};const t=map[subcat];let items;if(subcat==='elladcykel')items=allListings.filter(l=>l.cat==='elcykler');else if(t)items=allListings.filter(l=>l.type===t);else items=allListings;renderHome(items);showPage('home');}
+function selectSubcat(subcat,el){document.querySelectorAll('.subcat-item').forEach(i=>i.classList.remove('active'));el.classList.add('active');const map={bycykel:'Bycykel',mountainbike:'Mountainbike',racercykel:'Racercykel',damecykel:'Damecykel',bornecykel:'Børnecykel',ladcykel:'Ladcykel'};const t=map[subcat];let items;if(subcat==='elladcykel')items=allListings.filter(l=>l.cat==='elcykler');else if(t)items=allListings.filter(l=>l.type===t);else items=allListings;renderHome(items);showPage('home');}
 function openCatPage(cat){if(cat==='tilbehor'){activeCat='tilbehor';activeFilters={};document.getElementById('cat-page-title').textContent='🔧 Tilbehør';document.getElementById('filter-open-btn').classList.remove('has-filters');document.getElementById('filter-open-btn').textContent='⚙️ Filter';const items=allListings.filter(l=>l.cat==='tilbehor');document.getElementById('results-count').textContent=items.length+' annoncer';document.getElementById('cat-listings').innerHTML=items.length?items.map(l=>listingCard(l)).join(''):'<div class="empty"><div class="e-icon">🔧</div><p>Ingen tilbehør endnu</p></div>';showPage('cat');return;}activeCat=cat;activeFilters={};const titles={cykler:'🚲 Cykler',elcykler:'⚡ El-cykler'};document.getElementById('cat-page-title').textContent=titles[cat];document.getElementById('filter-open-btn').classList.remove('has-filters');document.getElementById('filter-open-btn').textContent='⚙️ Filter';const items=allListings.filter(l=>l.cat===cat);document.getElementById('results-count').textContent=items.length+' annoncer';document.getElementById('cat-listings').innerHTML=items.length?items.map(l=>listingCard(l)).join(''):'<div class="empty"><div class="e-icon">🔍</div><p>Ingen annoncer</p></div>';showPage('cat');}
 function goBackHome(){document.getElementById('topbar').style.display='block';document.getElementById('subcat-bar').style.display='flex';showPage('home');document.querySelectorAll('.nav-item').forEach((i,idx)=>i.classList.toggle('active',idx===0));}
 
-async function openListingById(id){
-  // Handle both numeric IDs (local) and UUID strings (Supabase)
-  const sid=String(id);
-  const numId=parseInt(sid);
-  const finalId=(!isNaN(numId)&&String(numId)===sid)?numId:sid;
-  await openListing(finalId);
-}
+async function openListingById(id){const sid=String(id);const numId=parseInt(sid);const finalId=(!isNaN(numId)&&String(numId)===sid)?numId:sid;await openListing(finalId);}
 
 async function openListing(id){
   const sid=String(id);
   let l=allListings.find(function(x){return String(x.id)===sid;});
-  if(!l){
-    try{
-      const res=await sb.from('listings').select('*').eq('id',id).single();
-      if(!res.error&&res.data){
-        const raw=JSON.parse(JSON.stringify(res.data));
-        const det=raw.details||{};
-        const imgs=Array.isArray(raw.images)?raw.images:[];
-        l={
-          id:''+raw.id,
-          title:''+(raw.title||''),
-          price:raw.price?(+raw.price).toLocaleString('da-DK')+' kr.':'0 kr.',
-          city:''+(raw.city||''),
-          cat:''+(raw.category||'cykler'),
-          img:imgs.length?''+imgs[0]:null,
-          stelnummer:''+(raw.stelnummer||''),
-          desc:''+(raw.description||''),
-          brand:''+(det.brand||''),
-          type:''+(det.type||''),
-          seller:''+(det.seller||'Privat sælger'),
-          phone:''+(det.phone||''),
-          views:+(raw.views||0),
-          saves:+(raw.saves||0),
-          shares:+(raw.shares||0),
-          created_at:''+(raw.created_at||''),
-          user_id:''+(raw.user_id||'')
-        };
-        allListings.push(l);
-      }
-    }catch(e){console.warn('Could not fetch listing:',''+e.message);}
-  }
+  if(!l){try{
+    const res=await sb.from('listings').select('*').eq('id',sid).single();
+    if(!res.error&&res.data){
+      const raw=JSON.parse(JSON.stringify(res.data));
+      const det=raw.details||{};
+      const imgs=Array.isArray(raw.images)?raw.images:[];
+      l={id:''+raw.id,title:''+(raw.title||''),price:raw.price?(+raw.price).toLocaleString('da-DK')+' kr.':'0 kr.',city:''+(raw.city||''),cat:''+(raw.category||'cykler'),img:imgs.length?''+imgs[0]:null,stelnummer:''+(raw.stelnummer||''),desc:''+(raw.description||''),brand:''+(det.brand||''),type:''+(det.type||''),seller:''+(det.seller||'Privat sælger'),phone:''+(det.phone||''),views:+(raw.views||0),saves:+(raw.saves||0),shares:+(raw.shares||0),created_at:''+(raw.created_at||''),user_id:''+(raw.user_id||'')};
+      allListings.push(l);
+    }
+  }catch(e){console.warn('Could not fetch listing:',''+e.message);}}
   if(!l){toast('Annonce ikke fundet');return;}
   detailId=id;
-  detailFrom=(document.querySelector('.page.active')||{id:''}).id.replace('page-','')||'home';
-  // Track view
-  if(typeof id==='string'&&id.indexOf('-')>-1){
-    sb.from('listings').update({views:(l.views||0)+1}).eq('id',id).then(function(){l.views=(l.views||0)+1;}).catch(function(){});
-  }
+  detailFrom=document.querySelector('.page.active')?.id?.replace('page-','')||'home';
+  if(typeof id==='string'&&id.includes('-')){sb.from('listings').update({views:(l.views||0)+1}).eq('id',id).then(()=>{l.views=(l.views||0)+1;});}
   document.getElementById('detail-header-title').textContent=l.title;
   document.getElementById('detail-title').textContent=l.title;
   document.getElementById('detail-price').textContent=l.price;
   document.getElementById('detail-loc').textContent='📍 '+l.city;
-  document.getElementById('detail-img-wrap').innerHTML=l.img?'<img src="'+sanitize(l.img)+'" alt="'+sanitize(l.title)+'">'  :'<div class="detail-img-ph">🚲</div>';
+  document.getElementById('detail-img-wrap').innerHTML=l.img?`<img src="${l.img}" alt="${l.title}">`:'<div class="detail-img-ph">🚲</div>';
   const stelSec=document.getElementById('detail-stel-section');
-  if(l.stelnummer){stelSec.style.display='block';document.getElementById('detail-stel-val').textContent=l.stelnummer;}
-  else stelSec.style.display='none';
-  const specs=[];
-  if(l.type)specs.push(l.type);
-  if(l.brand)specs.push(l.brand);
-  if(l.year)specs.push(l.year);
-  if(l.color)specs.push(l.color);
-  if(l.condition)specs.push(l.condition);
+  if(l.stelnummer){stelSec.style.display='block';document.getElementById('detail-stel-val').textContent=l.stelnummer;}else stelSec.style.display='none';
+  const specs=[];if(l.type)specs.push(l.type);if(l.brand)specs.push(l.brand);if(l.year)specs.push(l.year);if(l.color)specs.push(l.color);if(l.condition)specs.push(l.condition);
   const spSec=document.getElementById('detail-specs-section');
-  if(specs.length){spSec.style.display='block';document.getElementById('detail-specs').innerHTML=specs.map(function(s){return'<div class="detail-tag">'+sanitize(s)+'</div>';}).join('');}
-  else spSec.style.display='none';
+  if(specs.length){spSec.style.display='block';document.getElementById('detail-specs').innerHTML=specs.map(s=>`<div class="detail-tag">${s}</div>`).join('');}else spSec.style.display='none';
   const dSec=document.getElementById('detail-desc-section');
-  if(l.desc){dSec.style.display='block';document.getElementById('detail-desc-txt').textContent=l.desc;}
-  else dSec.style.display='none';
+  if(l.desc){dSec.style.display='block';document.getElementById('detail-desc-txt').textContent=l.desc;}else dSec.style.display='none';
   document.getElementById('detail-seller').textContent=l.seller||'Privat sælger';
-  const callBtn=document.getElementById('call-btn');
-  if(callBtn)callBtn.style.display=l.phone?'flex':'none';
-  document.getElementById('detail-annonce-id').textContent='Annonce ID: #'+sid.slice(-6).padStart(6,'0');
-  const dHeart=document.getElementById('detail-heart');
-  if(dHeart){dHeart.innerHTML=isFavorite(sid)?'♥':'♡';dHeart.style.color=isFavorite(sid)?'#8fbc5a':'';}
+  const callBtn=document.getElementById('call-btn');if(callBtn){callBtn.style.display=l.phone?'flex':'none';}
+  document.getElementById('detail-annonce-id').textContent='Annonce ID: #'+String(l.id).slice(-6).padStart(6,'0');
   const statsBar=document.getElementById('detail-stats-bar');
-  if(statsBar){statsBar.innerHTML='<div style="display:flex;gap:16px;padding:10px 16px;background:var(--bg2);border-top:1px solid var(--border2);border-bottom:1px solid var(--border2);">'
-    +'<div style="font-size:12px;color:#888;">👁 '+((l.views||0)+1)+' visninger</div>'
-    +'<div style="font-size:12px;color:#888;">♥ '+(l.saves||0)+' gemt</div>'
-    +'<div style="font-size:12px;color:#888;">📤 '+(l.shares||0)+' delt</div>'
-    +(l.created_at?'<div style="font-size:12px;color:#888;">📅 '+new Date(l.created_at).toLocaleDateString('da-DK')+'</div>':'')
-    +'</div>';}
+  if(statsBar){statsBar.innerHTML=`<div style="display:flex;gap:16px;padding:10px 16px;background:var(--bg2);border-top:1px solid var(--border2);border-bottom:1px solid var(--border2);"><div style="display:flex;align-items:center;gap:5px;font-size:12px;color:#888;">👁️ <span>${(l.views||0)+1} visninger</span></div><div style="display:flex;align-items:center;gap:5px;font-size:12px;color:#888;">❤️ <span>${l.saves||0} gemt</span></div><div style="display:flex;align-items:center;gap:5px;font-size:12px;color:#888;">📤 <span>${l.shares||0} delt</span></div>${l.created_at?`<div style="display:flex;align-items:center;gap:5px;font-size:12px;color:#888;">📅 <span>${new Date(l.created_at).toLocaleDateString('da-DK')}</span></div>`:''}</div>`;}
   showPage('detail');
 }
 
@@ -2326,26 +1932,17 @@ async function contactSeller(){
   if(!l){toast('Fejl - prøv igen');return;}
   if(l.user_id&&l.user_id===me.id){toast('Dette er din egen annonce');return;}
   document.getElementById('chat-name').textContent=l.seller||'Sælger';
-  document.getElementById('chat-sub').textContent='om: '+sanitize(l.title);
+  document.getElementById('chat-sub').textContent='om: '+l.title;
   let sellerId=l.user_id||null;
+  if(!sellerId&&typeof detailId==='string'&&detailId.includes('-')){try{const{data:ld}=await sb.from('listings').select('user_id').eq('id',detailId).single();if(ld)sellerId=ld.user_id;}catch(e){}}
   try{
-    const{data:ld}=await sb.from('listings').select('user_id').eq('id',String(detailId)).single();
-    if(ld&&ld.user_id)sellerId=ld.user_id;
-  }catch(_){}
-  if(!sellerId){toast('❌ Kan ikke finde sælger');return;}
-  if(sellerId===me.id){toast('Dette er din egen annonce');return;}
-  currentSellerId=sellerId;
-  try{
+    let convId=null;
     const{data:existing}=await sb.from('conversations').select('id').eq('listing_id',String(detailId)).eq('buyer_id',me.id).limit(1);
-    if(existing&&existing.length>0){currentConvId=existing[0].id;}
-    else{
-      const{data:nc}=await sb.from('conversations').insert({listing_id:String(detailId),buyer_id:me.id,seller_id:sellerId,last_message:'',updated_at:new Date().toISOString()}).select('id').single();
-      if(nc)currentConvId=nc.id;
-    }
-  }catch(_){currentConvId=null;}
-  showPage('chat');
-  subscribeToChat(String(detailId));
-  loadChatReal();
+    if(existing&&existing.length>0){convId=existing[0].id;}
+    else{const{data:newConv,error}=await sb.from('conversations').insert({listing_id:String(detailId),buyer_id:me.id,seller_id:sellerId||me.id,last_message:'',updated_at:new Date().toISOString()}).select('id').single();if(!error&&newConv)convId=newConv.id;}
+    currentConvId=convId;currentSellerId=sellerId;
+  }catch(e){console.warn('Conv error:',e.message);currentConvId=null;currentSellerId=sellerId;}
+  showPage('chat');loadChatReal();
 }
 
 function openShareDrawer(){const l=allListings.find(x=>x.id===detailId);if(!l)return;shareListingId=detailId;const url='https://moalsayed684.github.io/hjul-markedsplads/index.html?annonce='+detailId;document.getElementById('share-url').textContent=url;document.getElementById('share-overlay').classList.add('open');document.getElementById('share-drawer').classList.add('open');}
@@ -2353,15 +1950,7 @@ function closeShareDrawer(){document.getElementById('share-overlay').classList.r
 function shareVia(platform){const l=allListings.find(x=>x.id===shareListingId);if(!l)return;const url='https://moalsayed684.github.io/hjul-markedsplads/index.html?annonce='+shareListingId;const text=l.title+' - '+l.price+' - CykelHub';const links={sms:'sms:?body='+encodeURIComponent(text+' '+url),email:'mailto:?subject='+encodeURIComponent(l.title+' på CykelHub')+'&body='+encodeURIComponent(text+'\n\n'+url),facebook:'https://www.facebook.com/sharer/sharer.php?u='+encodeURIComponent(url),whatsapp:'https://api.whatsapp.com/send?text='+encodeURIComponent(text+' '+url)};window.open(links[platform],'_blank');closeShareDrawer();}
 function copyLink(){const url=document.getElementById('share-url').textContent;navigator.clipboard.writeText(url).then(()=>{toast('Link kopieret! 🔗');closeShareDrawer();}).catch(()=>toast('Link kopieret!'));}
 
-function updateBellDot(){
-  const hasLocalNotif=notifs.some(function(n){return n.unread;});
-  document.getElementById('bell-dot').classList.toggle('on',hasLocalNotif);
-  if(me){
-    sb.from('messages').select('id',{count:'exact',head:true}).eq('receiver_id',me.id).eq('is_read',false).then(function(r){
-      if(r.count&&r.count>0)document.getElementById('bell-dot').classList.add('on');
-    }).catch(function(){});
-  }
-}
+function updateBellDot(){document.getElementById('bell-dot').classList.toggle('on',notifs.some(n=>n.unread));}
 
 function switchTab(tab){document.querySelectorAll('.auth-tab').forEach((t,i)=>t.classList.toggle('active',(i===0&&tab==='login')||(i===1&&tab==='signup')));document.getElementById('f-login').style.display=tab==='login'?'block':'none';document.getElementById('f-signup').style.display=tab==='signup'?'block':'none';document.getElementById('f-forgot').style.display='none';clearMsg();}
 function showForgot(){document.getElementById('f-login').style.display='none';document.getElementById('f-forgot').style.display='block';document.querySelectorAll('.auth-tab').forEach(t=>t.classList.remove('active'));}
@@ -2454,7 +2043,7 @@ async function submitListing(){
   if(!title||!priceRaw||!city){el.textContent='Udfyld titel, pris og by';el.className='msg-box err';return;}
   const price=parseInt(priceRaw);const details={};const def=sellFields[currentSellCat];
   if(def)def.fields.forEach(f=>{if(f.type==='chips'){const sel=document.querySelectorAll(`#chips-${f.id} .chip-opt.sel`);if(sel.length)details[f.id]=Array.from(sel).map(x=>x.textContent).join(', ');}else if(f.type==='brand'){const v=document.getElementById('field-brand');if(v&&v.value)details[f.id]=v.value;}else{const v=document.getElementById('field-'+f.id);if(v&&v.value)details[f.id]=v.value;}});
-  details.seller=me.user_metadata&&me.user_metadata.name?me.user_metadata.name:''||me.email.split('@')[0];details.phone=me.user_metadata&&me.user_metadata.phone?me.user_metadata.phone:''||'';
+  details.seller=me.user_metadata?.name||me.email.split('@')[0];details.phone=me.user_metadata?.phone||'';
   el.textContent='⏳ Opretter annonce...';el.className='msg-box ok';
   try{
     const{data,error}=await sb.from('listings').insert({user_id:me.id,title,price,city,category:currentSellCat,images:uploadedImgs.length?uploadedImgs:[],stelnummer,description:desc,details,active:true,views:0,saves:0,shares:0}).select('id').single();
@@ -2647,19 +2236,16 @@ function showPage(name){
   document.getElementById('topbar').style.display=hideTop?'none':'block';
   document.getElementById('subcat-bar').style.display=hideTop?'none':'flex';
   if(name==='messages')loadConvsReal();
-  if(name==='chat')subscribeToChat(String(detailId||currentConvId||''));
-  if(name!=='chat'&&_chatRealtimeChannel){try{sb.removeChannel(_chatRealtimeChannel);_chatRealtimeChannel=null;}catch(_){}}
   if(name==='vaerksted')renderWorkshops(filteredWorkshops);
   if(name==='edit-profile')loadProfile();
   if(name==='notifications'){notifs.forEach(n=>n.unread=false);updateBellDot();document.getElementById('notif-list').innerHTML=notifs.map(n=>`<div class="notif-item ${n.unread?'unread':''}"><div style="font-size:22px">${n.icon}</div><div><div style="font-weight:600;font-size:14px">${n.title}</div><div style="font-size:12px;color:#999;margin-top:2px">${n.sub}</div></div></div>`).join('');}
 }
 
-function goPage(name,navId){showPage(name);document.querySelectorAll('.nav-item').forEach(i=>i.classList.remove('active'));if(navId)var _nav=document.getElementById(navId);if(_nav)_nav.classList.add('active');}
+function goPage(name,navId){showPage(name);document.querySelectorAll('.nav-item').forEach(i=>i.classList.remove('active'));if(navId)document.getElementById(navId)?.classList.add('active');}
 function requireAuth(page,navId){if(!me){toast('Log ind for at fortsætte');goPage('profile','nav-prof');return;}goPage(page,navId);}
 function toast(msg){const t=document.getElementById('toast');t.textContent=msg;t.classList.add('show');setTimeout(()=>t.classList.remove('show'),2500);}
 
 init();
-window.addEventListener('beforeunload',function(){if(window._adTimer)clearInterval(window._adTimer);if(_chatRealtimeChannel){try{sb.removeChannel(_chatRealtimeChannel);}catch(_){}}if(_globalMsgChannel){try{sb.removeChannel(_globalMsgChannel);}catch(_){}}});
 
 </script>
 </body>
