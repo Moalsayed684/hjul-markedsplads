@@ -616,7 +616,7 @@
         <button onclick="openShareDrawer()" style="width:40px;height:40px;background:#1c1c1c;border-radius:50%;border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;">
           <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#ccc" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg>
         </button>
-        <button class="heart-btn" id="detail-heart" style="position:static;width:40px;height:40px;background:#1c1c1c;font-size:18px;color:#ccc;" onclick="this.classList.toggle('liked');this.style.color=this.classList.contains('liked')?'#8fbc5a':'#ccc'">♡</button>
+        <button class="heart-btn" id="detail-heart" style="position:static;width:40px;height:40px;background:#1c1c1c;font-size:18px;color:#ccc;" onclick="this.classList.toggle('liked');this.innerHTML=this.classList.contains('liked')?'♥':'♡';this.style.color=this.classList.contains('liked')?'#8fbc5a':'';">♡</button>
       </div>
     </div>
     <div class="detail-imgs" id="detail-img-wrap"></div>
@@ -828,6 +828,7 @@
         <div id="p-cvr-info"></div>
       </div>
       <div class="menu-row" onclick="goPage('mine-annoncer');loadMineAnnoncer()">📝 Mine annoncer <span>→</span></div>
+      <div class="menu-row" onclick="goPage('favorites');loadFavorites()">❤️ Mine favoritter <span>→</span></div>
       <div class="menu-row" onclick="goPage('messages','nav-msgs')">💬 Beskeder <span>→</span></div>
       <div class="menu-row" style="justify-content:space-between;"><span>☀️ Lyst skærm</span><div class="tgsw" id="theme-toggle" onclick="toggleTheme()"></div></div>
       <div class="menu-row" onclick="goPage('pricing')">💎 Opgrader plan <span>→</span></div>
@@ -1512,6 +1513,23 @@
     </div>
   </div>
 </div>
+<!-- FAVORITES PAGE -->
+<div id="page-favorites" class="page">
+  <div style="padding:16px;">
+    <div style="display:flex;align-items:center;gap:10px;margin-bottom:20px;">
+      <button class="back-btn" onclick="goPage('profile','nav-prof')">←</button>
+      <div style="font-weight:800;font-size:20px;">❤️ Mine favoritter</div>
+    </div>
+    <div id="favorites-list">
+      <div style="text-align:center;padding:40px;color:#555;">
+        <div style="font-size:40px;margin-bottom:12px;">❤️</div>
+        <div style="font-weight:600;font-size:16px;margin-bottom:8px;">Ingen favoritter endnu</div>
+        <div style="font-size:13px;color:#888;">Tryk på hjertet på en annonce for at gemme den her</div>
+      </div>
+    </div>
+  </div>
+</div>
+
 <nav class="bottom-nav">
   <div class="nav-item active" id="nav-home" onclick="goPage('home','nav-home')"><div class="nav-icon">🏠</div><div class="nav-label">Hjem</div></div>
   <div class="nav-item" id="nav-buy" onclick="goPage('buy','nav-buy')"><div class="nav-icon">🔍</div><div class="nav-label">Vil du købe</div></div>
@@ -1789,6 +1807,43 @@ function checkResetToken(){
   }
 }
 
+// ===== FAVORITES =====
+function getFavorites(){try{return JSON.parse(localStorage.getItem('favorites')||'[]');}catch(_){return[];}}
+function saveFavorites(favs){try{localStorage.setItem('favorites',JSON.stringify(favs));}catch(_){}}
+function isFavorite(id){return getFavorites().indexOf(String(id))>-1;}
+function toggleFavorite(id,btnEl){
+  var sid=String(id);
+  var favs=getFavorites();
+  var idx=favs.indexOf(sid);
+  if(idx>-1){
+    favs.splice(idx,1);
+    if(btnEl){btnEl.innerHTML='♡';btnEl.style.color='';}
+    toast('Fjernet fra favoritter');
+  } else {
+    favs.push(sid);
+    if(btnEl){btnEl.innerHTML='♥';btnEl.style.color='#8fbc5a';}
+    toast('❤️ Gemt i favoritter!');
+  }
+  saveFavorites(favs);
+  var fp=document.getElementById('page-favorites');
+  if(fp&&fp.classList.contains('active'))loadFavorites();
+}
+function loadFavorites(){
+  var el=document.getElementById('favorites-list');
+  if(!el)return;
+  var favs=getFavorites();
+  if(!favs.length){
+    el.innerHTML='<div style="text-align:center;padding:40px;color:#555;"><div style="font-size:40px;margin-bottom:12px;">❤️</div><div style="font-weight:600;font-size:16px;">Ingen favoritter endnu</div><div style="font-size:13px;color:#888;margin-top:8px;">Tryk på hjertet for at gemme annoncer</div></div>';
+    return;
+  }
+  var items=allListings.filter(function(l){return favs.indexOf(String(l.id))>-1;});
+  if(!items.length){
+    el.innerHTML='<div style="text-align:center;padding:40px;color:#555;">Dine gemte annoncer kan ikke findes</div>';
+    return;
+  }
+  el.innerHTML='<div class="listings-grid">'+items.map(function(l){return listingCard(l);}).join('')+'</div>';
+}
+
 async function init(){
   loadTheme();
   checkResetToken();
@@ -1827,7 +1882,7 @@ function setUser(u){
 
 function clearUser(){me=null;document.getElementById('auth-section').style.display='block';document.getElementById('profile-section').style.display='none';checkAdminAccess();}
 
-function listingCard(l){const lid=String(l.id);return`<div class="listing-card" onclick="openListingById('${lid}')">${l.img?`<img src="${l.img}" alt="${l.title}" loading="lazy">`:'<div class="listing-img-ph">🚲</div>'}${l.plan==='premium'?'<div class="premium-badge">⭐ Premium</div>':''}<button class="heart-btn" onclick="event.stopPropagation();this.classList.toggle('liked');this.textContent=this.classList.contains('liked')?'♥':'♡'">♡</button><div class="listing-info"><div class="listing-title">${l.title}</div><div class="listing-price">${l.price}</div><div class="listing-loc">📍 ${l.city}</div></div></div>`;}
+function listingCard(l){const lid=String(l.id);return`<div class="listing-card" onclick="openListingById('${lid}')">${l.img?`<img src="${l.img}" alt="${l.title}" loading="lazy">`:'<div class="listing-img-ph">🚲</div>'}${l.plan==='premium'?'<div class="premium-badge">⭐ Premium</div>':''}<button class="heart-btn" onclick="event.stopPropagation();toggleFavorite(l.id,this)">♡</button><div class="listing-info"><div class="listing-title">${l.title}</div><div class="listing-price">${l.price}</div><div class="listing-loc">📍 ${l.city}</div></div></div>`;}
 
 function adCard(a){
   if(!a) return '';
