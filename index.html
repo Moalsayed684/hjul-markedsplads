@@ -616,7 +616,7 @@
         <button onclick="openShareDrawer()" style="width:40px;height:40px;background:#1c1c1c;border-radius:50%;border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;">
           <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#ccc" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg>
         </button>
-        <button class="heart-btn" id="detail-heart" style="position:static;width:40px;height:40px;background:#1c1c1c;font-size:18px;color:#ccc;" onclick="this.classList.toggle('liked');this.innerHTML=this.classList.contains('liked')?'♥':'♡';this.style.color=this.classList.contains('liked')?'#8fbc5a':'';">♡</button>
+        <button class="heart-btn" id="detail-heart" style="position:static;width:40px;height:40px;background:var(--bg3);border:1px solid var(--border2);font-size:18px;" onclick="toggleFavorite(detailId,this)">♡</button>
       </div>
     </div>
     <div class="detail-imgs" id="detail-img-wrap"></div>
@@ -1882,7 +1882,23 @@ function setUser(u){
 
 function clearUser(){me=null;document.getElementById('auth-section').style.display='block';document.getElementById('profile-section').style.display='none';checkAdminAccess();}
 
-function listingCard(l){const lid=String(l.id);return`<div class="listing-card" onclick="openListingById('${lid}')">${l.img?`<img src="${l.img}" alt="${l.title}" loading="lazy">`:'<div class="listing-img-ph">🚲</div>'}${l.plan==='premium'?'<div class="premium-badge">⭐ Premium</div>':''}<button class="heart-btn" onclick="event.stopPropagation();toggleFavorite(l.id,this)">♡</button><div class="listing-info"><div class="listing-title">${l.title}</div><div class="listing-price">${l.price}</div><div class="listing-loc">📍 ${l.city}</div></div></div>`;}
+function listingCard(l){
+  var lid=String(l.id);
+  var fav=isFavorite(lid);
+  var heartColor=fav?'color:#8fbc5a;':' ';
+  var heartIcon=fav?'♥':'♡';
+  var img=l.img?'<img src="'+l.img+'" alt="'+l.title+'" loading="lazy" style="pointer-events:none;">'
+              :'<div class="listing-img-ph" style="pointer-events:none;">🚲</div>';
+  var premium=l.plan==='premium'?'<div class="premium-badge">⭐ Premium</div>':'';
+  return '<div class="listing-card" onclick="openListingById('+JSON.stringify(lid)+')">'
+    +img+premium
+    +'<button class="heart-btn" style="'+heartColor+'" onclick="event.stopPropagation();toggleFavorite('+JSON.stringify(lid)+',this)">'+heartIcon+'</button>'
+    +'<div class="listing-info">'
+    +'<div class="listing-title">'+l.title+'</div>'
+    +'<div class="listing-price">'+l.price+'</div>'
+    +'<div class="listing-loc">📍 '+l.city+'</div>'
+    +'</div></div>';
+}
 
 function adCard(a){
   if(!a) return '';
@@ -1975,10 +1991,12 @@ async function openListing(id){
   document.getElementById('detail-annonce-id').textContent='Annonce ID: #'+String(l.id).slice(-6).padStart(6,'0');
   const statsBar=document.getElementById('detail-stats-bar');
   if(statsBar){statsBar.innerHTML=`<div style="display:flex;gap:16px;padding:10px 16px;background:var(--bg2);border-top:1px solid var(--border2);border-bottom:1px solid var(--border2);"><div style="display:flex;align-items:center;gap:5px;font-size:12px;color:#888;">👁️ <span>${(l.views||0)+1} visninger</span></div><div style="display:flex;align-items:center;gap:5px;font-size:12px;color:#888;">❤️ <span>${l.saves||0} gemt</span></div><div style="display:flex;align-items:center;gap:5px;font-size:12px;color:#888;">📤 <span>${l.shares||0} delt</span></div>${l.created_at?`<div style="display:flex;align-items:center;gap:5px;font-size:12px;color:#888;">📅 <span>${new Date(l.created_at).toLocaleDateString('da-DK')}</span></div>`:''}</div>`;}
+  var dh=document.getElementById('detail-heart');
+  if(dh){dh.innerHTML=isFavorite(sid)?'♥':'♡';dh.style.color=isFavorite(sid)?'#8fbc5a':'';}
   showPage('detail');
 }
 
-function goDetailBack(){showPage(detailFrom);if(detailFrom==='cat'){document.getElementById('topbar').style.display='none';document.getElementById('subcat-bar').style.display='none';}else{document.getElementById('topbar').style.display='block';document.getElementById('subcat-bar').style.display='flex';}}
+function goDetailBack(){renderHome(allListings);showPage(detailFrom);if(detailFrom==='cat'){document.getElementById('topbar').style.display='none';document.getElementById('subcat-bar').style.display='none';}else{document.getElementById('topbar').style.display='block';document.getElementById('subcat-bar').style.display='flex';}}
 function callSeller(){const l=allListings.find(x=>x.id===detailId);if(!l||!l.phone)return;window.location.href='tel:'+l.phone;}
 
 async function contactSeller(){
